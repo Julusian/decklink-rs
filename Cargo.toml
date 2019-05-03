@@ -1,0 +1,12 @@
+[package]
+name = "rust-decklink"
+version = "0.1.0"
+license = "MIT/Apache-2.0"
+authors = ["Julian Waller <git@julusian.co.uk>"]
+edition = "2018"
+build="build.rs"
+
+[dependencies]
+
+[build-dependencies]
+cmake = "0.1.38"
