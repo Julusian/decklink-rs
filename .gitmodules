@@ -1,0 +1,3 @@
+[submodule "vendor/libdecklink_c"]
+	path = vendor/libdecklink_c
+	url = https://github.com/Julusian/decklink-c.git

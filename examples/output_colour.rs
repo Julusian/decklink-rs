@@ -14,8 +14,7 @@ fn main() {
             println!("{}: {}", i, devices[i].display_name());
         }
 
-        //        let index: usize = read!();
-        let index = 3;
+        let index: usize = read!();
         if index >= devices.len() {
             println!("Invalid device index");
             return;
@@ -42,8 +41,7 @@ fn main() {
             println!("{}: {}", i, supported_modes[i].name());
         }
 
-        //        let index: usize = read!();
-        let index = 7;
+        let index: usize = read!();
         if index >= supported_modes.len() {
             println!("Invalid mode index");
             return;
