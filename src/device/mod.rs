@@ -2,6 +2,12 @@ use crate::sdk;
 use crate::util::{convert_string, SdkError};
 use std::ptr::null_mut;
 
+pub mod output;
+
+pub struct DecklinkOutputDevice {
+    dev: *mut crate::sdk::cdecklink_device_output,
+}
+
 pub struct DecklinkDevice {
     dev: *mut crate::sdk::cdecklink_device,
 }
@@ -21,6 +27,15 @@ impl DecklinkDevice {
     }
     pub fn display_name(&self) -> String {
         unsafe { convert_string(sdk::cdecklink_device_display_name(self.dev)) }
+    }
+
+    pub fn output(&self) -> Option<DecklinkOutputDevice> {
+        let output = unsafe { sdk::cdecklink_device_output_cast(self.dev) };
+        if output.is_null() {
+            None
+        } else {
+            Some(DecklinkOutputDevice { dev: output })
+        }
     }
 }
 

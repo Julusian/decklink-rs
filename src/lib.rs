@@ -15,6 +15,7 @@ mod sdk;
 
 pub mod device;
 pub mod display_mode;
+pub mod frame;
 mod util;
 
 use util::convert_string;

@@ -26,6 +26,7 @@ impl SdkError {
     pub fn is_false(value: i32) -> bool {
         value == (SdkError::FALSE as i32)
     }
+    pub fn is_ok(value: i32) -> bool { value == 0 }
     pub fn succeeded(r: i32) -> bool {
         r >= 0
     }

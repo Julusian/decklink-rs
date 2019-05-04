@@ -254,6 +254,586 @@ pub const _BMDDisplayModeFlags_bmdDisplayModeSupports3D: _BMDDisplayModeFlags = 
 pub const _BMDDisplayModeFlags_bmdDisplayModeColorspaceRec601: _BMDDisplayModeFlags = 2;
 pub const _BMDDisplayModeFlags_bmdDisplayModeColorspaceRec709: _BMDDisplayModeFlags = 4;
 pub type _BMDDisplayModeFlags = u32;
+pub type BMDVideoOutputFlags = u32;
+pub const _BMDVideoOutputFlags_bmdVideoOutputFlagDefault: _BMDVideoOutputFlags = 0;
+pub const _BMDVideoOutputFlags_bmdVideoOutputVANC: _BMDVideoOutputFlags = 1;
+pub const _BMDVideoOutputFlags_bmdVideoOutputVITC: _BMDVideoOutputFlags = 2;
+pub const _BMDVideoOutputFlags_bmdVideoOutputRP188: _BMDVideoOutputFlags = 4;
+pub const _BMDVideoOutputFlags_bmdVideoOutputDualStream3D: _BMDVideoOutputFlags = 16;
+pub type _BMDVideoOutputFlags = u32;
+pub type BMDPacketType = u32;
+pub const _BMDPacketType_bmdPacketTypeStreamInterruptedMarker: _BMDPacketType = 1936289396;
+pub const _BMDPacketType_bmdPacketTypeStreamData: _BMDPacketType = 1935958388;
+pub type _BMDPacketType = u32;
+pub type BMDFrameFlags = u32;
+pub const _BMDFrameFlags_bmdFrameFlagDefault: _BMDFrameFlags = 0;
+pub const _BMDFrameFlags_bmdFrameFlagFlipVertical: _BMDFrameFlags = 1;
+pub const _BMDFrameFlags_bmdFrameContainsHDRMetadata: _BMDFrameFlags = 2;
+pub const _BMDFrameFlags_bmdFrameContainsCintelMetadata: _BMDFrameFlags = 4;
+pub const _BMDFrameFlags_bmdFrameHasNoInputSource: _BMDFrameFlags = -2147483648;
+pub type _BMDFrameFlags = i32;
+pub type BMDVideoInputFlags = u32;
+pub const _BMDVideoInputFlags_bmdVideoInputFlagDefault: _BMDVideoInputFlags = 0;
+pub const _BMDVideoInputFlags_bmdVideoInputEnableFormatDetection: _BMDVideoInputFlags = 1;
+pub const _BMDVideoInputFlags_bmdVideoInputDualStream3D: _BMDVideoInputFlags = 2;
+pub type _BMDVideoInputFlags = u32;
+pub type BMDVideoInputFormatChangedEvents = u32;
+pub const _BMDVideoInputFormatChangedEvents_bmdVideoInputDisplayModeChanged:
+    _BMDVideoInputFormatChangedEvents = 1;
+pub const _BMDVideoInputFormatChangedEvents_bmdVideoInputFieldDominanceChanged:
+    _BMDVideoInputFormatChangedEvents = 2;
+pub const _BMDVideoInputFormatChangedEvents_bmdVideoInputColorspaceChanged:
+    _BMDVideoInputFormatChangedEvents = 4;
+pub type _BMDVideoInputFormatChangedEvents = u32;
+pub type BMDDetectedVideoInputFormatFlags = u32;
+pub const _BMDDetectedVideoInputFormatFlags_bmdDetectedVideoInputYCbCr422:
+    _BMDDetectedVideoInputFormatFlags = 1;
+pub const _BMDDetectedVideoInputFormatFlags_bmdDetectedVideoInputRGB444:
+    _BMDDetectedVideoInputFormatFlags = 2;
+pub const _BMDDetectedVideoInputFormatFlags_bmdDetectedVideoInputDualStream3D:
+    _BMDDetectedVideoInputFormatFlags = 4;
+pub type _BMDDetectedVideoInputFormatFlags = u32;
+pub type BMDDeckLinkCapturePassthroughMode = u32;
+pub const _BMDDeckLinkCapturePassthroughMode_bmdDeckLinkCapturePassthroughModeDisabled:
+    _BMDDeckLinkCapturePassthroughMode = 1885628787;
+pub const _BMDDeckLinkCapturePassthroughMode_bmdDeckLinkCapturePassthroughModeDirect:
+    _BMDDeckLinkCapturePassthroughMode = 1885628786;
+pub const _BMDDeckLinkCapturePassthroughMode_bmdDeckLinkCapturePassthroughModeCleanSwitch:
+    _BMDDeckLinkCapturePassthroughMode = 1885564014;
+pub type _BMDDeckLinkCapturePassthroughMode = u32;
+pub type BMDOutputFrameCompletionResult = u32;
+pub const _BMDOutputFrameCompletionResult_bmdOutputFrameCompleted: _BMDOutputFrameCompletionResult =
+    0;
+pub const _BMDOutputFrameCompletionResult_bmdOutputFrameDisplayedLate:
+    _BMDOutputFrameCompletionResult = 1;
+pub const _BMDOutputFrameCompletionResult_bmdOutputFrameDropped: _BMDOutputFrameCompletionResult =
+    2;
+pub const _BMDOutputFrameCompletionResult_bmdOutputFrameFlushed: _BMDOutputFrameCompletionResult =
+    3;
+pub type _BMDOutputFrameCompletionResult = u32;
+pub type BMDReferenceStatus = u32;
+pub const _BMDReferenceStatus_bmdReferenceNotSupportedByHardware: _BMDReferenceStatus = 1;
+pub const _BMDReferenceStatus_bmdReferenceLocked: _BMDReferenceStatus = 2;
+pub type _BMDReferenceStatus = u32;
+pub type BMDAudioFormat = u32;
+pub const _BMDAudioFormat_bmdAudioFormatPCM: _BMDAudioFormat = 1819304813;
+pub type _BMDAudioFormat = u32;
+pub type BMDAudioSampleRate = u32;
+pub const _BMDAudioSampleRate_bmdAudioSampleRate48kHz: _BMDAudioSampleRate = 48000;
+pub type _BMDAudioSampleRate = u32;
+pub type BMDAudioSampleType = u32;
+pub const _BMDAudioSampleType_bmdAudioSampleType16bitInteger: _BMDAudioSampleType = 16;
+pub const _BMDAudioSampleType_bmdAudioSampleType32bitInteger: _BMDAudioSampleType = 32;
+pub type _BMDAudioSampleType = u32;
+pub type BMDAudioOutputStreamType = u32;
+pub const _BMDAudioOutputStreamType_bmdAudioOutputStreamContinuous: _BMDAudioOutputStreamType = 0;
+pub const _BMDAudioOutputStreamType_bmdAudioOutputStreamContinuousDontResample:
+    _BMDAudioOutputStreamType = 1;
+pub const _BMDAudioOutputStreamType_bmdAudioOutputStreamTimestamped: _BMDAudioOutputStreamType = 2;
+pub type _BMDAudioOutputStreamType = u32;
+pub type BMDDisplayModeSupport = u32;
+pub const _BMDDisplayModeSupport_bmdDisplayModeNotSupported: _BMDDisplayModeSupport = 0;
+pub const _BMDDisplayModeSupport_bmdDisplayModeSupported: _BMDDisplayModeSupport = 1;
+pub const _BMDDisplayModeSupport_bmdDisplayModeSupportedWithConversion: _BMDDisplayModeSupport = 2;
+pub type _BMDDisplayModeSupport = u32;
+pub type BMDTimecodeFormat = u32;
+pub const _BMDTimecodeFormat_bmdTimecodeRP188VITC1: _BMDTimecodeFormat = 1919972913;
+pub const _BMDTimecodeFormat_bmdTimecodeRP188VITC2: _BMDTimecodeFormat = 1919955250;
+pub const _BMDTimecodeFormat_bmdTimecodeRP188LTC: _BMDTimecodeFormat = 1919970420;
+pub const _BMDTimecodeFormat_bmdTimecodeRP188Any: _BMDTimecodeFormat = 1919955256;
+pub const _BMDTimecodeFormat_bmdTimecodeVITC: _BMDTimecodeFormat = 1986622563;
+pub const _BMDTimecodeFormat_bmdTimecodeVITCField2: _BMDTimecodeFormat = 1986622514;
+pub const _BMDTimecodeFormat_bmdTimecodeSerial: _BMDTimecodeFormat = 1936028265;
+pub type _BMDTimecodeFormat = u32;
+pub type BMDAnalogVideoFlags = u32;
+pub const _BMDAnalogVideoFlags_bmdAnalogVideoFlagCompositeSetup75: _BMDAnalogVideoFlags = 1;
+pub const _BMDAnalogVideoFlags_bmdAnalogVideoFlagComponentBetacamLevels: _BMDAnalogVideoFlags = 2;
+pub type _BMDAnalogVideoFlags = u32;
+pub type BMDAudioOutputAnalogAESSwitch = u32;
+pub const _BMDAudioOutputAnalogAESSwitch_bmdAudioOutputSwitchAESEBU:
+    _BMDAudioOutputAnalogAESSwitch = 1634038560;
+pub const _BMDAudioOutputAnalogAESSwitch_bmdAudioOutputSwitchAnalog:
+    _BMDAudioOutputAnalogAESSwitch = 1634626663;
+pub type _BMDAudioOutputAnalogAESSwitch = u32;
+pub type BMDVideoOutputConversionMode = u32;
+pub const _BMDVideoOutputConversionMode_bmdNoVideoOutputConversion: _BMDVideoOutputConversionMode =
+    1852796517;
+pub const _BMDVideoOutputConversionMode_bmdVideoOutputLetterboxDownconversion:
+    _BMDVideoOutputConversionMode = 1819566712;
+pub const _BMDVideoOutputConversionMode_bmdVideoOutputAnamorphicDownconversion:
+    _BMDVideoOutputConversionMode = 1634562152;
+pub const _BMDVideoOutputConversionMode_bmdVideoOutputHD720toHD1080Conversion:
+    _BMDVideoOutputConversionMode = 926036067;
+pub const _BMDVideoOutputConversionMode_bmdVideoOutputHardwareLetterboxDownconversion:
+    _BMDVideoOutputConversionMode = 1213688930;
+pub const _BMDVideoOutputConversionMode_bmdVideoOutputHardwareAnamorphicDownconversion:
+    _BMDVideoOutputConversionMode = 1213686125;
+pub const _BMDVideoOutputConversionMode_bmdVideoOutputHardwareCenterCutDownconversion:
+    _BMDVideoOutputConversionMode = 1213686627;
+pub const _BMDVideoOutputConversionMode_bmdVideoOutputHardware720p1080pCrossconversion:
+    _BMDVideoOutputConversionMode = 2019778928;
+pub const _BMDVideoOutputConversionMode_bmdVideoOutputHardwareAnamorphic720pUpconversion:
+    _BMDVideoOutputConversionMode = 1969305456;
+pub const _BMDVideoOutputConversionMode_bmdVideoOutputHardwareAnamorphic1080iUpconversion:
+    _BMDVideoOutputConversionMode = 1969303913;
+pub const _BMDVideoOutputConversionMode_bmdVideoOutputHardwareAnamorphic149To720pUpconversion:
+    _BMDVideoOutputConversionMode = 1966356336;
+pub const _BMDVideoOutputConversionMode_bmdVideoOutputHardwareAnamorphic149To1080iUpconversion:
+    _BMDVideoOutputConversionMode = 1966354793;
+pub const _BMDVideoOutputConversionMode_bmdVideoOutputHardwarePillarbox720pUpconversion:
+    _BMDVideoOutputConversionMode = 1970288496;
+pub const _BMDVideoOutputConversionMode_bmdVideoOutputHardwarePillarbox1080iUpconversion:
+    _BMDVideoOutputConversionMode = 1970286953;
+pub type _BMDVideoOutputConversionMode = u32;
+pub type BMDVideoInputConversionMode = u32;
+pub const _BMDVideoInputConversionMode_bmdNoVideoInputConversion: _BMDVideoInputConversionMode =
+    1852796517;
+pub const _BMDVideoInputConversionMode_bmdVideoInputLetterboxDownconversionFromHD1080:
+    _BMDVideoInputConversionMode = 825257058;
+pub const _BMDVideoInputConversionMode_bmdVideoInputAnamorphicDownconversionFromHD1080:
+    _BMDVideoInputConversionMode = 825254253;
+pub const _BMDVideoInputConversionMode_bmdVideoInputLetterboxDownconversionFromHD720:
+    _BMDVideoInputConversionMode = 926051426;
+pub const _BMDVideoInputConversionMode_bmdVideoInputAnamorphicDownconversionFromHD720:
+    _BMDVideoInputConversionMode = 926048621;
+pub const _BMDVideoInputConversionMode_bmdVideoInputLetterboxUpconversion:
+    _BMDVideoInputConversionMode = 1818391920;
+pub const _BMDVideoInputConversionMode_bmdVideoInputAnamorphicUpconversion:
+    _BMDVideoInputConversionMode = 1634563440;
+pub type _BMDVideoInputConversionMode = u32;
+pub type BMDVideo3DPackingFormat = u32;
+pub const _BMDVideo3DPackingFormat_bmdVideo3DPackingSidebySideHalf: _BMDVideo3DPackingFormat =
+    1935831912;
+pub const _BMDVideo3DPackingFormat_bmdVideo3DPackingLinebyLine: _BMDVideo3DPackingFormat =
+    1818392940;
+pub const _BMDVideo3DPackingFormat_bmdVideo3DPackingTopAndBottom: _BMDVideo3DPackingFormat =
+    1952539247;
+pub const _BMDVideo3DPackingFormat_bmdVideo3DPackingFramePacking: _BMDVideo3DPackingFormat =
+    1718775915;
+pub const _BMDVideo3DPackingFormat_bmdVideo3DPackingLeftOnly: _BMDVideo3DPackingFormat = 1818584692;
+pub const _BMDVideo3DPackingFormat_bmdVideo3DPackingRightOnly: _BMDVideo3DPackingFormat =
+    1919510376;
+pub type _BMDVideo3DPackingFormat = u32;
+pub type BMDIdleVideoOutputOperation = u32;
+pub const _BMDIdleVideoOutputOperation_bmdIdleVideoOutputBlack: _BMDIdleVideoOutputOperation =
+    1651269987;
+pub const _BMDIdleVideoOutputOperation_bmdIdleVideoOutputLastFrame: _BMDIdleVideoOutputOperation =
+    1818322529;
+pub type _BMDIdleVideoOutputOperation = u32;
+pub type BMDVideoEncoderFrameCodingMode = u32;
+pub const _BMDVideoEncoderFrameCodingMode_bmdVideoEncoderFrameCodingModeInter:
+    _BMDVideoEncoderFrameCodingMode = 1768846437;
+pub const _BMDVideoEncoderFrameCodingMode_bmdVideoEncoderFrameCodingModeIntra:
+    _BMDVideoEncoderFrameCodingMode = 1768846450;
+pub type _BMDVideoEncoderFrameCodingMode = u32;
+pub type BMDDNxHRLevel = u32;
+pub const _BMDDNxHRLevel_bmdDNxHRLevelSQ: _BMDDNxHRLevel = 1684960113;
+pub const _BMDDNxHRLevel_bmdDNxHRLevelLB: _BMDDNxHRLevel = 1684958306;
+pub const _BMDDNxHRLevel_bmdDNxHRLevelHQ: _BMDDNxHRLevel = 1684957297;
+pub const _BMDDNxHRLevel_bmdDNxHRLevelHQX: _BMDDNxHRLevel = 1684566392;
+pub const _BMDDNxHRLevel_bmdDNxHRLevel444: _BMDDNxHRLevel = 1681142836;
+pub type _BMDDNxHRLevel = u32;
+pub type BMDLinkConfiguration = u32;
+pub const _BMDLinkConfiguration_bmdLinkConfigurationSingleLink: _BMDLinkConfiguration = 1818456940;
+pub const _BMDLinkConfiguration_bmdLinkConfigurationDualLink: _BMDLinkConfiguration = 1818453100;
+pub const _BMDLinkConfiguration_bmdLinkConfigurationQuadLink: _BMDLinkConfiguration = 1818456428;
+pub type _BMDLinkConfiguration = u32;
+pub type BMDDeviceInterface = u32;
+pub const _BMDDeviceInterface_bmdDeviceInterfacePCI: _BMDDeviceInterface = 1885563168;
+pub const _BMDDeviceInterface_bmdDeviceInterfaceUSB: _BMDDeviceInterface = 1970496032;
+pub const _BMDDeviceInterface_bmdDeviceInterfaceThunderbolt: _BMDDeviceInterface = 1953002862;
+pub type _BMDDeviceInterface = u32;
+pub type BMDDeckLinkFrameMetadataID = u32;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRElectroOpticalTransferFunc:
+    _BMDDeckLinkFrameMetadataID = 1701803110;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelFilmType:
+    _BMDDeckLinkFrameMetadataID = 1667658873;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelFilmGauge:
+    _BMDDeckLinkFrameMetadataID = 1667655521;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelOffsetDetectedHorizontal:
+    _BMDDeckLinkFrameMetadataID = 1868850792;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelOffsetDetectedVertical:
+    _BMDDeckLinkFrameMetadataID = 1868850806;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelKeykodeLow:
+    _BMDDeckLinkFrameMetadataID = 1667984236;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelKeykodeHigh:
+    _BMDDeckLinkFrameMetadataID = 1667984232;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelTile1Size:
+    _BMDDeckLinkFrameMetadataID = 1668559219;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelTile2Size:
+    _BMDDeckLinkFrameMetadataID = 1668559475;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelTile3Size:
+    _BMDDeckLinkFrameMetadataID = 1668559731;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelTile4Size:
+    _BMDDeckLinkFrameMetadataID = 1668559987;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelImageWidth:
+    _BMDDeckLinkFrameMetadataID = 1230459000;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelImageHeight:
+    _BMDDeckLinkFrameMetadataID = 1229475960;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLinearMaskingRedInRed:
+    _BMDDeckLinkFrameMetadataID = 1836214642;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLinearMaskingGreenInRed:
+    _BMDDeckLinkFrameMetadataID = 1835493746;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLinearMaskingBlueInRed:
+    _BMDDeckLinkFrameMetadataID = 1835166066;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLinearMaskingRedInGreen:
+    _BMDDeckLinkFrameMetadataID = 1836214631;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLinearMaskingGreenInGreen:
+    _BMDDeckLinkFrameMetadataID = 1835493735;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLinearMaskingBlueInGreen:
+    _BMDDeckLinkFrameMetadataID = 1835166055;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLinearMaskingRedInBlue:
+    _BMDDeckLinkFrameMetadataID = 1836214626;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLinearMaskingGreenInBlue:
+    _BMDDeckLinkFrameMetadataID = 1835493730;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLinearMaskingBlueInBlue:
+    _BMDDeckLinkFrameMetadataID = 1835166050;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLogMaskingRedInRed:
+    _BMDDeckLinkFrameMetadataID = 1835823730;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLogMaskingGreenInRed:
+    _BMDDeckLinkFrameMetadataID = 1835820914;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLogMaskingBlueInRed:
+    _BMDDeckLinkFrameMetadataID = 1835819634;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLogMaskingRedInGreen:
+    _BMDDeckLinkFrameMetadataID = 1835823719;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLogMaskingGreenInGreen:
+    _BMDDeckLinkFrameMetadataID = 1835820903;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLogMaskingBlueInGreen:
+    _BMDDeckLinkFrameMetadataID = 1835819623;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLogMaskingRedInBlue:
+    _BMDDeckLinkFrameMetadataID = 1835823714;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLogMaskingGreenInBlue:
+    _BMDDeckLinkFrameMetadataID = 1835820898;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLogMaskingBlueInBlue:
+    _BMDDeckLinkFrameMetadataID = 1835819618;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelFilmFrameRate:
+    _BMDDeckLinkFrameMetadataID = 1667655282;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRDisplayPrimariesRedX:
+    _BMDDeckLinkFrameMetadataID = 1751413368;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRDisplayPrimariesRedY:
+    _BMDDeckLinkFrameMetadataID = 1751413369;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRDisplayPrimariesGreenX:
+    _BMDDeckLinkFrameMetadataID = 1751410552;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRDisplayPrimariesGreenY:
+    _BMDDeckLinkFrameMetadataID = 1751410553;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRDisplayPrimariesBlueX:
+    _BMDDeckLinkFrameMetadataID = 1751409272;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRDisplayPrimariesBlueY:
+    _BMDDeckLinkFrameMetadataID = 1751409273;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRWhitePointX:
+    _BMDDeckLinkFrameMetadataID = 1751414648;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRWhitePointY:
+    _BMDDeckLinkFrameMetadataID = 1751414649;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRMaxDisplayMasteringLuminance:
+    _BMDDeckLinkFrameMetadataID = 1751412076;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRMinDisplayMasteringLuminance:
+    _BMDDeckLinkFrameMetadataID = 1752000876;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRMaximumContentLightLevel:
+    _BMDDeckLinkFrameMetadataID = 1835232364;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRMaximumFrameAverageLightLevel:
+    _BMDDeckLinkFrameMetadataID = 1717660780;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelOffsetToApplyHorizontal:
+    _BMDDeckLinkFrameMetadataID = 1869898088;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelOffsetToApplyVertical:
+    _BMDDeckLinkFrameMetadataID = 1869898102;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelGainRed:
+    _BMDDeckLinkFrameMetadataID = 1281774180;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelGainGreen:
+    _BMDDeckLinkFrameMetadataID = 1281771378;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelGainBlue:
+    _BMDDeckLinkFrameMetadataID = 1281770092;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLiftRed:
+    _BMDDeckLinkFrameMetadataID = 1198412388;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLiftGreen:
+    _BMDDeckLinkFrameMetadataID = 1198409586;
+pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLiftBlue:
+    _BMDDeckLinkFrameMetadataID = 1198408300;
+pub type _BMDDeckLinkFrameMetadataID = u32;
+pub type BMDDuplexMode = u32;
+pub const _BMDDuplexMode_bmdDuplexModeFull: _BMDDuplexMode = 1717859696;
+pub const _BMDDuplexMode_bmdDuplexModeHalf: _BMDDuplexMode = 1751414128;
+pub type _BMDDuplexMode = u32;
+pub type BMDDeckLinkAttributeID = u32;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsInternalKeying: _BMDDeckLinkAttributeID =
+    1801812329;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsExternalKeying: _BMDDeckLinkAttributeID =
+    1801812325;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsHDKeying: _BMDDeckLinkAttributeID = 1801812328;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsInputFormatDetection: _BMDDeckLinkAttributeID =
+    1768842852;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkHasReferenceInput: _BMDDeckLinkAttributeID =
+    1752328558;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkHasSerialPort: _BMDDeckLinkAttributeID = 1752395892;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkHasAnalogVideoOutputGain: _BMDDeckLinkAttributeID =
+    1635151719;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkCanOnlyAdjustOverallVideoOutputGain:
+    _BMDDeckLinkAttributeID = 1870032743;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkHasVideoInputAntiAliasingFilter:
+    _BMDDeckLinkAttributeID = 1633773164;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkHasBypass: _BMDDeckLinkAttributeID = 1652125811;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsClockTimingAdjustment:
+    _BMDDeckLinkAttributeID = 1668571492;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsFullDuplex: _BMDDeckLinkAttributeID =
+    1717859696;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsFullFrameReferenceInputTimingOffset:
+    _BMDDeckLinkAttributeID = 1718774126;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsSMPTELevelAOutput: _BMDDeckLinkAttributeID =
+    1819700321;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsDualLinkSDI: _BMDDeckLinkAttributeID =
+    1935961203;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsQuadLinkSDI: _BMDDeckLinkAttributeID =
+    1936813171;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsIdleOutput: _BMDDeckLinkAttributeID =
+    1768189813;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkHasLTCTimecodeInput: _BMDDeckLinkAttributeID =
+    1751938147;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsDuplexModeConfiguration:
+    _BMDDeckLinkAttributeID = 1685418104;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsHDRMetadata: _BMDDeckLinkAttributeID =
+    1751413357;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkMaximumAudioChannels: _BMDDeckLinkAttributeID =
+    1835098984;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkMaximumAnalogAudioInputChannels:
+    _BMDDeckLinkAttributeID = 1767990120;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkMaximumAnalogAudioOutputChannels:
+    _BMDDeckLinkAttributeID = 1633772392;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkNumberOfSubDevices: _BMDDeckLinkAttributeID =
+    1853055588;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkSubDeviceIndex: _BMDDeckLinkAttributeID = 1937072745;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkPersistentID: _BMDDeckLinkAttributeID = 1885694308;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkDeviceGroupID: _BMDDeckLinkAttributeID = 1684498788;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkTopologicalID: _BMDDeckLinkAttributeID = 1953458532;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkVideoOutputConnections: _BMDDeckLinkAttributeID =
+    1987011438;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkVideoInputConnections: _BMDDeckLinkAttributeID =
+    1986618222;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkAudioOutputConnections: _BMDDeckLinkAttributeID =
+    1634689902;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkAudioInputConnections: _BMDDeckLinkAttributeID =
+    1634296686;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkVideoIOSupport: _BMDDeckLinkAttributeID = 1986621299;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkDeckControlConnections: _BMDDeckLinkAttributeID =
+    1684235118;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkDeviceInterface: _BMDDeckLinkAttributeID = 1684174195;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkAudioInputRCAChannelCount: _BMDDeckLinkAttributeID =
+    1634300515;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkAudioInputXLRChannelCount: _BMDDeckLinkAttributeID =
+    1634302051;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkAudioOutputRCAChannelCount: _BMDDeckLinkAttributeID =
+    1634693731;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkAudioOutputXLRChannelCount: _BMDDeckLinkAttributeID =
+    1634695267;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkPairedDevicePersistentID: _BMDDeckLinkAttributeID =
+    1886415204;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkVideoInputGainMinimum: _BMDDeckLinkAttributeID =
+    1986619245;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkVideoInputGainMaximum: _BMDDeckLinkAttributeID =
+    1986619256;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkVideoOutputGainMinimum: _BMDDeckLinkAttributeID =
+    1987012461;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkVideoOutputGainMaximum: _BMDDeckLinkAttributeID =
+    1987012472;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkMicrophoneInputGainMinimum: _BMDDeckLinkAttributeID =
+    1835624301;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkMicrophoneInputGainMaximum: _BMDDeckLinkAttributeID =
+    1835624312;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkSerialPortDeviceName: _BMDDeckLinkAttributeID =
+    1936486510;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkVendorName: _BMDDeckLinkAttributeID = 1986946162;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkDisplayName: _BMDDeckLinkAttributeID = 1685287022;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkModelName: _BMDDeckLinkAttributeID = 1835297902;
+pub const _BMDDeckLinkAttributeID_BMDDeckLinkDeviceHandle: _BMDDeckLinkAttributeID = 1684371048;
+pub type _BMDDeckLinkAttributeID = u32;
+pub type BMDDeckLinkAPIInformationID = u32;
+pub const _BMDDeckLinkAPIInformationID_BMDDeckLinkAPIVersion: _BMDDeckLinkAPIInformationID =
+    1986359923;
+pub type _BMDDeckLinkAPIInformationID = u32;
+pub type BMDDeckLinkStatusID = u32;
+pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusDetectedVideoInputMode: _BMDDeckLinkStatusID =
+    1685481837;
+pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusDetectedVideoInputFlags: _BMDDeckLinkStatusID =
+    1685481830;
+pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusCurrentVideoInputMode: _BMDDeckLinkStatusID =
+    1668704621;
+pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusCurrentVideoInputPixelFormat: _BMDDeckLinkStatusID =
+    1668704624;
+pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusCurrentVideoInputFlags: _BMDDeckLinkStatusID =
+    1668704614;
+pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusCurrentVideoOutputMode: _BMDDeckLinkStatusID =
+    1668706157;
+pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusCurrentVideoOutputFlags: _BMDDeckLinkStatusID =
+    1668706150;
+pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusPCIExpressLinkWidth: _BMDDeckLinkStatusID =
+    1886873956;
+pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusPCIExpressLinkSpeed: _BMDDeckLinkStatusID =
+    1886154347;
+pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusLastVideoOutputPixelFormat: _BMDDeckLinkStatusID =
+    1869638008;
+pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusReferenceSignalMode: _BMDDeckLinkStatusID =
+    1919247981;
+pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusReferenceSignalFlags: _BMDDeckLinkStatusID =
+    1919247974;
+pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusDuplexMode: _BMDDeckLinkStatusID = 1685418104;
+pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusBusy: _BMDDeckLinkStatusID = 1651864441;
+pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusInterchangeablePanelType: _BMDDeckLinkStatusID =
+    1768124532;
+pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusVideoInputSignalLocked: _BMDDeckLinkStatusID =
+    1986622316;
+pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusReferenceSignalLocked: _BMDDeckLinkStatusID =
+    1919247980;
+pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusReceivedEDID: _BMDDeckLinkStatusID = 1701079396;
+pub type _BMDDeckLinkStatusID = u32;
+pub type BMDDeckLinkVideoStatusFlags = u32;
+pub const _BMDDeckLinkVideoStatusFlags_bmdDeckLinkVideoStatusPsF: _BMDDeckLinkVideoStatusFlags = 1;
+pub const _BMDDeckLinkVideoStatusFlags_bmdDeckLinkVideoStatusDualStream3D:
+    _BMDDeckLinkVideoStatusFlags = 2;
+pub type _BMDDeckLinkVideoStatusFlags = u32;
+pub type BMDDuplexStatus = u32;
+pub const _BMDDuplexStatus_bmdDuplexStatusFullDuplex: _BMDDuplexStatus = 1717859696;
+pub const _BMDDuplexStatus_bmdDuplexStatusHalfDuplex: _BMDDuplexStatus = 1751414128;
+pub const _BMDDuplexStatus_bmdDuplexStatusSimplex: _BMDDuplexStatus = 1936747640;
+pub const _BMDDuplexStatus_bmdDuplexStatusInactive: _BMDDuplexStatus = 1768841571;
+pub type _BMDDuplexStatus = u32;
+pub type BMDPanelType = u32;
+pub const _BMDPanelType_bmdPanelNotDetected: _BMDPanelType = 1852862060;
+pub const _BMDPanelType_bmdPanelTeranexMiniSmartPanel: _BMDPanelType = 1953330029;
+pub type _BMDPanelType = u32;
+pub type BMDDeviceBusyState = u32;
+pub const _BMDDeviceBusyState_bmdDeviceCaptureBusy: _BMDDeviceBusyState = 1;
+pub const _BMDDeviceBusyState_bmdDevicePlaybackBusy: _BMDDeviceBusyState = 2;
+pub const _BMDDeviceBusyState_bmdDeviceSerialPortBusy: _BMDDeviceBusyState = 4;
+pub type _BMDDeviceBusyState = u32;
+pub type BMDVideoIOSupport = u32;
+pub const _BMDVideoIOSupport_bmdDeviceSupportsCapture: _BMDVideoIOSupport = 1;
+pub const _BMDVideoIOSupport_bmdDeviceSupportsPlayback: _BMDVideoIOSupport = 2;
+pub type _BMDVideoIOSupport = u32;
+pub type BMD3DPreviewFormat = u32;
+pub const _BMD3DPreviewFormat_bmd3DPreviewFormatDefault: _BMD3DPreviewFormat = 1684366945;
+pub const _BMD3DPreviewFormat_bmd3DPreviewFormatLeftOnly: _BMD3DPreviewFormat = 1818584692;
+pub const _BMD3DPreviewFormat_bmd3DPreviewFormatRightOnly: _BMD3DPreviewFormat = 1919510376;
+pub const _BMD3DPreviewFormat_bmd3DPreviewFormatSideBySide: _BMD3DPreviewFormat = 1936286821;
+pub const _BMD3DPreviewFormat_bmd3DPreviewFormatTopBottom: _BMD3DPreviewFormat = 1953460322;
+pub type _BMD3DPreviewFormat = u32;
+pub type BMDNotifications = u32;
+pub const _BMDNotifications_bmdPreferencesChanged: _BMDNotifications = 1886545254;
+pub const _BMDNotifications_bmdStatusChanged: _BMDNotifications = 1937006964;
+pub type _BMDNotifications = u32;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct cdecklink_display_mode_iterator {
+    _unused: [u8; 0],
+}
+pub type cdecklink_display_mode_iterator_t = cdecklink_display_mode_iterator;
+extern "C" {
+    pub fn cdecklink_destroy_display_mode_iterator(it: *mut cdecklink_display_mode_iterator_t);
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct cdecklink_display_mode {
+    _unused: [u8; 0],
+}
+pub type cdecklink_display_mode_t = cdecklink_display_mode;
+extern "C" {
+    pub fn cdecklink_next_display_mode(
+        it: *mut cdecklink_display_mode_iterator_t,
+        mode: *mut *mut cdecklink_display_mode_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_destroy_display_mode(mode: *mut cdecklink_display_mode_t);
+}
+extern "C" {
+    pub fn cdecklink_display_mode_name(
+        mode: *mut cdecklink_display_mode_t,
+    ) -> *const ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn cdecklink_display_mode_mode(mode: *mut cdecklink_display_mode_t) -> BMDDisplayMode;
+}
+extern "C" {
+    pub fn cdecklink_display_mode_width(
+        mode: *mut cdecklink_display_mode_t,
+    ) -> ::std::os::raw::c_long;
+}
+extern "C" {
+    pub fn cdecklink_display_mode_height(
+        mode: *mut cdecklink_display_mode_t,
+    ) -> ::std::os::raw::c_long;
+}
+extern "C" {
+    pub fn cdecklink_display_mode_framerate(
+        mode: *mut cdecklink_display_mode_t,
+        duration: *mut i64,
+        scale: *mut i64,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_display_mode_field_dominance(
+        mode: *mut cdecklink_display_mode_t,
+    ) -> BMDFieldDominance;
+}
+extern "C" {
+    pub fn cdecklink_display_mode_flags(mode: *mut cdecklink_display_mode_t)
+        -> BMDDisplayModeFlags;
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct cdecklink_video_frame {
+    _unused: [u8; 0],
+}
+pub type cdecklink_video_frame_t = cdecklink_video_frame;
+extern "C" {
+    pub fn cdecklink_destroy_frame(frame: *mut cdecklink_video_frame_t);
+}
+extern "C" {
+    pub fn cdecklink_video_frame_width(
+        frame: *mut cdecklink_video_frame_t,
+    ) -> ::std::os::raw::c_long;
+}
+extern "C" {
+    pub fn cdecklink_video_frame_height(
+        frame: *mut cdecklink_video_frame_t,
+    ) -> ::std::os::raw::c_long;
+}
+extern "C" {
+    pub fn cdecklink_video_frame_row_bytes(
+        frame: *mut cdecklink_video_frame_t,
+    ) -> ::std::os::raw::c_long;
+}
+extern "C" {
+    pub fn cdecklink_video_frame_pixel_format(
+        frame: *mut cdecklink_video_frame_t,
+    ) -> BMDPixelFormat;
+}
+extern "C" {
+    pub fn cdecklink_video_frame_flags(frame: *mut cdecklink_video_frame_t) -> BMDFrameFlags;
+}
+extern "C" {
+    pub fn cdecklink_video_frame_bytes(
+        frame: *mut cdecklink_video_frame_t,
+        buffer: *mut *mut ::std::os::raw::c_void,
+    ) -> HRESULT;
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct cdecklink_mutable_video_frame {
+    _unused: [u8; 0],
+}
+pub type cdecklink_mutable_video_frame_t = cdecklink_mutable_video_frame;
+extern "C" {
+    pub fn cdecklink_video_mutable_frame_base(
+        frame: *mut cdecklink_mutable_video_frame_t,
+    ) -> *mut cdecklink_video_frame_t;
+}
+extern "C" {
+    pub fn cdecklink_destroy_mutable_frame(frame: *mut cdecklink_mutable_video_frame_t);
+}
+extern "C" {
+    pub fn cdecklink_video_mutable_frame_set_flags(
+        frame: *mut cdecklink_mutable_video_frame_t,
+        newFlags: BMDFrameFlags,
+    ) -> HRESULT;
+}
 extern "C" {
     pub fn cdecklink_free_string(str: *const ::std::os::raw::c_char);
 }
@@ -311,43 +891,48 @@ extern "C" {
 extern "C" {
     pub fn cdecklink_destroy_device_output(output: *mut cdecklink_device_output_t);
 }
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct cdecklink_display_mode {
-    _unused: [u8; 0],
-}
-pub type cdecklink_display_mode_t = cdecklink_display_mode;
 extern "C" {
-    pub fn cdecklink_display_mode_name(
-        mode: *mut cdecklink_display_mode_t,
-    ) -> *const ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn cdecklink_display_mode_mode(mode: *mut cdecklink_display_mode_t) -> BMDDisplayMode;
-}
-extern "C" {
-    pub fn cdecklink_display_mode_width(
-        mode: *mut cdecklink_display_mode_t,
-    ) -> ::std::os::raw::c_long;
-}
-extern "C" {
-    pub fn cdecklink_display_mode_height(
-        mode: *mut cdecklink_display_mode_t,
-    ) -> ::std::os::raw::c_long;
-}
-extern "C" {
-    pub fn cdecklink_display_mode_framerate(
-        mode: *mut cdecklink_display_mode_t,
-        duration: *mut i64,
-        scale: *mut i64,
+    pub fn cdecklink_device_output_does_support_display_mode(
+        output: *mut cdecklink_device_output_t,
+        displayMode: BMDDisplayMode,
+        pixelFormat: BMDPixelFormat,
+        flags: BMDVideoOutputFlags,
+        result: *mut BMDDisplayModeSupport,
+        resultDisplayMode: *mut *mut cdecklink_display_mode_t,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_display_mode_field_dominance(
-        mode: *mut cdecklink_display_mode_t,
-    ) -> BMDFieldDominance;
+    pub fn cdecklink_device_output_display_mode_iterator(
+        output: *mut cdecklink_device_output_t,
+        iterator: *mut *mut cdecklink_display_mode_iterator_t,
+    ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_display_mode_flags(mode: *mut cdecklink_display_mode_t)
-        -> BMDDisplayModeFlags;
+    pub fn cdecklink_device_output_enable_video_output(
+        output: *mut cdecklink_device_output_t,
+        displayMode: BMDDisplayMode,
+        flags: BMDVideoOutputFlags,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_device_output_disable_video_output(
+        output: *mut cdecklink_device_output_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_device_output_create_video_frame(
+        output: *mut cdecklink_device_output_t,
+        width: i32,
+        height: i32,
+        rowBytes: i32,
+        pixelFormat: BMDPixelFormat,
+        flags: BMDFrameFlags,
+        outFrame: *mut *mut cdecklink_mutable_video_frame_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_device_output_display_video_frame_sync(
+        output: *mut cdecklink_device_output_t,
+        frame: *mut cdecklink_video_frame_t,
+    ) -> HRESULT;
 }

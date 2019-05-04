@@ -10,6 +10,13 @@ fn main() {
     let devices = get_devices().expect("list devices failed");
     println!("Found {} devices", devices.len());
     for device in devices {
-        println!("{} - {}", device.model_name(), device.display_name());
+        let output = device.output();
+        println!(
+            "{} - {} (Output: {}, Input: {})",
+            device.model_name(),
+            device.display_name(),
+            output.is_some(),
+            "?"
+        );
     }
 }
