@@ -1,5 +1,5 @@
-use crate::sdk;
 use crate::sdk::cdecklink_mutable_video_frame;
+use crate::{sdk, SdkError};
 use num_traits::FromPrimitive;
 use std::ptr::null_mut;
 
@@ -70,6 +70,25 @@ impl DecklinkVideoFrame {
         // TODO
         //        unsafe { sdk::cdecklink_video_frame_bytes()}
     }
+
+    pub fn set_bytes(&self, data: &[u8]) -> bool {
+        let expected_len = (self.row_bytes() * self.height()) as usize;
+        if data.len() != expected_len {
+            false
+        } else {
+            let mut bytes = null_mut();
+            unsafe {
+                let r = sdk::cdecklink_video_frame_bytes(self.frame, &mut bytes);
+                if !SdkError::is_ok(r) {
+                    // TODO - better
+                    return false;
+                }
+
+                std::ptr::copy(data.as_ptr(), bytes as *mut u8, expected_len);
+                return true;
+            }
+        }
+    }
 }
 
 pub struct DecklinkVideoMutableFrame {
@@ -92,7 +111,7 @@ impl DecklinkVideoMutableFrame {
     }
 
     pub fn set_flags(&self, flags: DecklinkFrameFlags) {
-        unsafe { sdk::cdecklink_video_mutable_frame_set_flags(self.frame, flags.bits) };
+        unsafe { sdk::cdecklink_video_mutable_frame_set_flags(self.frame, flags.bits()) };
     }
 }
 

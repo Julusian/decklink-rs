@@ -51,7 +51,7 @@ pub fn get_devices() -> Result<Vec<DecklinkDevice>, SdkError> {
             let ok = unsafe { sdk::cdecklink_next_device(it, &mut dev) };
             if SdkError::is_false(ok) {
                 break;
-            } else if SdkError::succeeded(ok) {
+            } else if SdkError::is_ok(ok) {
                 res.push(DecklinkDevice { dev });
             } else {
                 unsafe {

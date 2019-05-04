@@ -1,14 +1,14 @@
 use crate::device::DecklinkOutputDevice;
-use crate::display_mode::{DecklinkDisplayMode, DecklinkDisplayModeId, iterate_display_modes};
+use crate::display_mode::{iterate_display_modes, DecklinkDisplayMode, DecklinkDisplayModeId};
 use crate::frame::{
-    unwrap_frame, wrap_mutable_frame, DecklinkPixelFormat, DecklinkVideoFrame,
+    unwrap_frame, wrap_mutable_frame, DecklinkFrameFlags, DecklinkPixelFormat, DecklinkVideoFrame,
     DecklinkVideoMutableFrame,
 };
 use crate::{sdk, SdkError};
 use std::ptr::null_mut;
 
 bitflags! {
-    pub struct DecklinkFrameFlags: u32 {
+    pub struct DecklinkOutputFrameFlags: u32 {
         const VANC = sdk::_BMDVideoOutputFlags_bmdVideoOutputVANC;
         const VITC = sdk::_BMDVideoOutputFlags_bmdVideoOutputVITC;
         const RP188 = sdk::_BMDVideoOutputFlags_bmdVideoOutputRP188;
@@ -43,12 +43,15 @@ impl DecklinkOutputDevice {
     pub fn enable_video_output(
         &self,
         mode: DecklinkDisplayModeId,
-        flags: DecklinkFrameFlags,
+        flags: DecklinkOutputFrameFlags,
     ) -> Result<(), SdkError> {
         unsafe {
-            Err(SdkError::from(
-                sdk::cdecklink_device_output_enable_video_output(self.dev, mode as u32, flags.bits),
-            ))
+            let result = sdk::cdecklink_device_output_enable_video_output(
+                self.dev,
+                mode as u32,
+                flags.bits(),
+            );
+            SdkError::err_or_ok(result, || ())
         }
     }
     pub fn disable_video_output(&self) -> SdkError {
@@ -70,10 +73,10 @@ impl DecklinkOutputDevice {
                 height,
                 row_bytes,
                 pixel_format as u32,
-                flags.bits,
+                flags.bits(),
                 &mut frame,
             );
-            if SdkError::succeeded(res) {
+            if SdkError::is_ok(res) {
                 Ok(wrap_mutable_frame(frame))
             } else {
                 Err(SdkError::from(res))
@@ -83,12 +86,11 @@ impl DecklinkOutputDevice {
 
     pub fn display_video_frame_sync(&self, frame: &DecklinkVideoFrame) -> Result<(), SdkError> {
         unsafe {
-            Err(SdkError::from(
-                sdk::cdecklink_device_output_display_video_frame_sync(
-                    self.dev,
-                    unwrap_frame(frame),
-                ),
-            ))
+            let result = sdk::cdecklink_device_output_display_video_frame_sync(
+                self.dev,
+                unwrap_frame(frame),
+            );
+            SdkError::err_or_ok(result, || ())
         }
     }
 }

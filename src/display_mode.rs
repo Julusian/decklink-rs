@@ -1,8 +1,8 @@
+use crate::sdk::cdecklink_display_mode_iterator;
 use crate::util::convert_string;
 use crate::{sdk, SdkError};
 use num_traits::FromPrimitive;
 use std::ptr::null_mut;
-use crate::sdk::cdecklink_display_mode_iterator;
 
 #[derive(FromPrimitive)]
 pub enum DecklinkDisplayModeId {
@@ -102,7 +102,7 @@ impl DecklinkDisplayMode {
         unsafe {
             let mut duration = 0;
             let mut scale = 0;
-            if SdkError::succeeded(sdk::cdecklink_display_mode_framerate(
+            if SdkError::is_ok(sdk::cdecklink_display_mode_framerate(
                 self.mode,
                 &mut duration,
                 &mut scale,
@@ -126,20 +126,20 @@ impl DecklinkDisplayMode {
     }
 }
 
-pub unsafe fn iterate_display_modes(it: *mut cdecklink_display_mode_iterator) -> Result<Vec<DecklinkDisplayMode>, SdkError> {
+pub unsafe fn iterate_display_modes(
+    it: *mut cdecklink_display_mode_iterator,
+) -> Result<Vec<DecklinkDisplayMode>, SdkError> {
     let mut res = Vec::new();
 
     let mut mode = null_mut();
     loop {
         let ok2 = sdk::cdecklink_next_display_mode(it, &mut mode);
         if SdkError::is_ok(ok2) {
-            res.push(DecklinkDisplayMode{
-                mode
-            })
+            res.push(DecklinkDisplayMode { mode })
         } else if SdkError::is_false(ok2) {
-            break
+            break;
         } else {
-            return Err(SdkError::from(ok2))
+            return Err(SdkError::from(ok2));
         }
     }
 
