@@ -21,7 +21,7 @@ pub enum SdkError {
 impl SdkError {
     #[allow(overflowing_literals)]
     pub fn from(value: i32) -> SdkError {
-        SdkError::from_i32(value).unwrap_or(SdkError::FALSE)
+        Self::from_i32(value).unwrap_or(SdkError::FALSE)
     }
     pub fn is_false(value: i32) -> bool {
         value == (SdkError::FALSE as i32)
@@ -29,11 +29,25 @@ impl SdkError {
     pub fn is_ok(value: i32) -> bool {
         value == 0
     }
-    pub fn err_or_ok<T>(r: i32, ok: fn() -> T) -> Result<T, SdkError> {
+
+    pub fn result<T>(r: i32) -> Result<T, SdkError>
+    where
+        T: Default,
+    {
+        Self::result_or_else(r, Box::new(|| Default::default()))
+    }
+    pub fn result_or<T>(r: i32, def: T) -> Result<T, SdkError> {
+        if Self::is_ok(r) {
+            Ok(def)
+        } else {
+            Err(Self::from(r))
+        }
+    }
+    pub fn result_or_else<T>(r: i32, ok: Box<FnOnce() -> T>) -> Result<T, SdkError> {
         if Self::is_ok(r) {
             Ok(ok())
         } else {
-            Err(SdkError::from(r))
+            Err(Self::from(r))
         }
     }
 }

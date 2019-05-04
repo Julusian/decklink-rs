@@ -16,6 +16,22 @@ bitflags! {
     }
 }
 
+#[derive(FromPrimitive)]
+pub enum DecklinkAudioSampleRate {
+    Rate48kHz = sdk::_BMDAudioSampleRate_bmdAudioSampleRate48kHz as isize,
+}
+#[derive(FromPrimitive)]
+pub enum DecklinkAudioSampleType {
+    Int16 = sdk::_BMDAudioSampleType_bmdAudioSampleType16bitInteger as isize,
+    Int32 = sdk::_BMDAudioSampleType_bmdAudioSampleType32bitInteger as isize,
+}
+#[derive(FromPrimitive)]
+pub enum DecklinkAudioOutputStreamType {
+    Continuous = sdk::_BMDAudioOutputStreamType_bmdAudioOutputStreamContinuous as isize,
+    ContinuousDontResample =
+        sdk::_BMDAudioOutputStreamType_bmdAudioOutputStreamContinuousDontResample as isize,
+}
+
 impl Drop for DecklinkOutputDevice {
     fn drop(&mut self) {
         if !self.dev.is_null() {
@@ -25,7 +41,10 @@ impl Drop for DecklinkOutputDevice {
     }
 }
 
+// TODO - this is currently a bag of methods, and it could do with some more sanity checking (eg allow schedule when video not enabled etc)
 impl DecklinkOutputDevice {
+    // TODO - does support display mode
+
     pub fn display_modes(&self) -> Result<Vec<DecklinkDisplayMode>, SdkError> {
         unsafe {
             let mut it = null_mut();
@@ -40,6 +59,8 @@ impl DecklinkOutputDevice {
         }
     }
 
+    /* Video Output */
+
     pub fn enable_video_output(
         &self,
         mode: DecklinkDisplayModeId,
@@ -51,7 +72,7 @@ impl DecklinkOutputDevice {
                 mode as u32,
                 flags.bits(),
             );
-            SdkError::err_or_ok(result, || ())
+            SdkError::result(result)
         }
     }
     pub fn disable_video_output(&self) -> SdkError {
@@ -90,7 +111,100 @@ impl DecklinkOutputDevice {
                 self.dev,
                 unwrap_frame(frame),
             );
-            SdkError::err_or_ok(result, || ())
+            SdkError::result(result)
+        }
+    }
+
+    pub fn schedule_video_frame(
+        &self,
+        frame: &DecklinkVideoFrame,
+        display_time: i64,
+        duration: i64,
+        scale: i64,
+    ) -> Result<(), SdkError> {
+        unsafe {
+            let result = sdk::cdecklink_device_output_schedule_video_frame(
+                self.dev,
+                unwrap_frame(frame),
+                display_time,
+                duration,
+                scale,
+            );
+            SdkError::result(result)
+        }
+    }
+
+    pub fn buffered_video_frame_count(&self) -> Result<u32, SdkError> {
+        unsafe {
+            let mut count = 0;
+            let result =
+                sdk::cdecklink_device_output_buffered_video_frame_count(self.dev, &mut count);
+            SdkError::result_or(result, count)
+        }
+    }
+
+    /* Audio Output */
+
+    pub fn enable_audio_output(
+        &self,
+        sample_rate: DecklinkAudioSampleRate,
+        sample_type: DecklinkAudioSampleType,
+        channels: u32,
+        stream_type: DecklinkAudioOutputStreamType,
+    ) -> Result<(), SdkError> {
+        unsafe {
+            let result = sdk::cdecklink_device_output_enable_audio_output(
+                self.dev,
+                sample_rate as u32,
+                sample_type as u32,
+                channels,
+                stream_type as u32,
+            );
+            SdkError::result(result)
+        }
+    }
+
+    pub fn disable_audio_output(&self) -> Result<(), SdkError> {
+        unsafe {
+            let result = sdk::cdecklink_device_output_disable_audio_output(self.dev);
+            SdkError::result(result)
+        }
+    }
+
+    //    pub fn write_audio_samples_sync(&self, )
+    //    HRESULT cdecklink_device_output_write_audio_samples_sync(cdecklink_device_output_t *output, void *buffer,
+    //    uint32_t sampleFrameCount, uint32_t *sampleFramesWritten);
+
+    pub fn begin_audio_preroll(&self) -> Result<(), SdkError> {
+        unsafe {
+            let result = sdk::cdecklink_device_output_begin_audio_preroll(self.dev);
+            SdkError::result(result)
+        }
+    }
+    pub fn end_audio_preroll(&self) -> Result<(), SdkError> {
+        unsafe {
+            let result = sdk::cdecklink_device_output_end_audio_preroll(self.dev);
+            SdkError::result(result)
+        }
+    }
+
+    //    HRESULT cdecklink_device_output_schedule_audio_samples(cdecklink_device_output_t *output, void *buffer,
+    //    uint32_t sampleFrameCount, int64_t streamTime,
+    //    int64_t timeScale, uint32_t *sampleFramesWritten);
+
+    pub fn buffered_audio_sample_frame_count(&self) -> Result<u32, SdkError> {
+        unsafe {
+            let mut count = 0;
+            let result = sdk::cdecklink_device_output_buffered_audio_sample_frame_count(
+                self.dev, &mut count,
+            );
+            SdkError::result_or(result, count)
+        }
+    }
+    pub fn flush_buffered_audio_samples(&self) -> Result<(), SdkError> {
+        unsafe {
+            let result = sdk::cdecklink_device_output_flush_buffered_audio_samples(self.dev);
+            SdkError::result(result)
         }
     }
 }
