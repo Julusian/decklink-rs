@@ -3,7 +3,7 @@ use crate::{sdk, SdkError};
 use num_traits::FromPrimitive;
 use std::ptr::null_mut;
 
-#[derive(FromPrimitive)]
+#[derive(FromPrimitive, PartialEq)]
 pub enum DecklinkPixelFormat {
     Format8BitYUV = sdk::_BMDPixelFormat_bmdFormat8BitYUV as isize,
     Format10BitYUV = sdk::_BMDPixelFormat_bmdFormat10BitYUV as isize,
@@ -81,11 +81,11 @@ impl DecklinkVideoFrame {
                 let r = sdk::cdecklink_video_frame_bytes(self.frame, &mut bytes);
                 if !SdkError::is_ok(r) {
                     // TODO - better
-                    return false;
+                    false
+                } else {
+                    std::ptr::copy(data.as_ptr(), bytes as *mut u8, expected_len);
+                    true
                 }
-
-                std::ptr::copy(data.as_ptr(), bytes as *mut u8, expected_len);
-                return true;
             }
         }
     }

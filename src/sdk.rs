@@ -22,14 +22,14 @@ pub const __USE_MISC: u32 = 1;
 pub const __USE_ATFILE: u32 = 1;
 pub const __USE_FORTIFY_LEVEL: u32 = 0;
 pub const __GLIBC_USE_DEPRECATED_GETS: u32 = 0;
-pub const __GLIBC_USE_DEPRECATED_SCANF: u32 = 0;
 pub const _STDC_PREDEF_H: u32 = 1;
 pub const __STDC_IEC_559__: u32 = 1;
 pub const __STDC_IEC_559_COMPLEX__: u32 = 1;
 pub const __STDC_ISO_10646__: u32 = 201706;
+pub const __STDC_NO_THREADS__: u32 = 1;
 pub const __GNU_LIBRARY__: u32 = 6;
 pub const __GLIBC__: u32 = 2;
-pub const __GLIBC_MINOR__: u32 = 29;
+pub const __GLIBC_MINOR__: u32 = 27;
 pub const _SYS_CDEFS_H: u32 = 1;
 pub const __glibc_c99_flexarr_available: u32 = 1;
 pub const __WORDSIZE: u32 = 64;
@@ -41,13 +41,11 @@ pub const __GLIBC_USE_IEC_60559_BFP_EXT: u32 = 0;
 pub const __GLIBC_USE_IEC_60559_FUNCS_EXT: u32 = 0;
 pub const __GLIBC_USE_IEC_60559_TYPES_EXT: u32 = 0;
 pub const _BITS_TYPES_H: u32 = 1;
-pub const __TIMESIZE: u32 = 64;
 pub const _BITS_TYPESIZES_H: u32 = 1;
 pub const __OFF_T_MATCHES_OFF64_T: u32 = 1;
 pub const __INO_T_MATCHES_INO64_T: u32 = 1;
 pub const __RLIM_T_MATCHES_RLIM64_T: u32 = 1;
 pub const __FD_SETSIZE: u32 = 1024;
-pub const _BITS_TIME64_H: u32 = 1;
 pub const _BITS_WCHAR_H: u32 = 1;
 pub const _BITS_STDINT_INTN_H: u32 = 1;
 pub const _BITS_STDINT_UINTN_H: u32 = 1;
@@ -101,14 +99,6 @@ pub type __int32_t = ::std::os::raw::c_int;
 pub type __uint32_t = ::std::os::raw::c_uint;
 pub type __int64_t = ::std::os::raw::c_long;
 pub type __uint64_t = ::std::os::raw::c_ulong;
-pub type __int_least8_t = __int8_t;
-pub type __uint_least8_t = __uint8_t;
-pub type __int_least16_t = __int16_t;
-pub type __uint_least16_t = __uint16_t;
-pub type __int_least32_t = __int32_t;
-pub type __uint_least32_t = __uint32_t;
-pub type __int_least64_t = __int64_t;
-pub type __uint_least64_t = __uint64_t;
 pub type __quad_t = ::std::os::raw::c_long;
 pub type __u_quad_t = ::std::os::raw::c_ulong;
 pub type __intmax_t = ::std::os::raw::c_long;
@@ -178,14 +168,14 @@ pub type __caddr_t = *mut ::std::os::raw::c_char;
 pub type __intptr_t = ::std::os::raw::c_long;
 pub type __socklen_t = ::std::os::raw::c_uint;
 pub type __sig_atomic_t = ::std::os::raw::c_int;
-pub type int_least8_t = __int_least8_t;
-pub type int_least16_t = __int_least16_t;
-pub type int_least32_t = __int_least32_t;
-pub type int_least64_t = __int_least64_t;
-pub type uint_least8_t = __uint_least8_t;
-pub type uint_least16_t = __uint_least16_t;
-pub type uint_least32_t = __uint_least32_t;
-pub type uint_least64_t = __uint_least64_t;
+pub type int_least8_t = ::std::os::raw::c_schar;
+pub type int_least16_t = ::std::os::raw::c_short;
+pub type int_least32_t = ::std::os::raw::c_int;
+pub type int_least64_t = ::std::os::raw::c_long;
+pub type uint_least8_t = ::std::os::raw::c_uchar;
+pub type uint_least16_t = ::std::os::raw::c_ushort;
+pub type uint_least32_t = ::std::os::raw::c_uint;
+pub type uint_least64_t = ::std::os::raw::c_ulong;
 pub type int_fast8_t = ::std::os::raw::c_schar;
 pub type int_fast16_t = ::std::os::raw::c_long;
 pub type int_fast32_t = ::std::os::raw::c_long;
@@ -902,7 +892,7 @@ extern "C" {
     pub fn cdecklink_destroy_device_output(output: *mut cdecklink_device_output_t);
 }
 extern "C" {
-    pub fn cdecklink_device_output_does_support_display_mode(
+    pub fn cdecklink_device_output_does_support_video_mode(
         output: *mut cdecklink_device_output_t,
         displayMode: BMDDisplayMode,
         pixelFormat: BMDPixelFormat,

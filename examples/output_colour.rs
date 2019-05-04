@@ -3,7 +3,7 @@ extern crate decklink_sdk;
 extern crate text_io;
 
 use decklink_sdk::device::get_devices;
-use decklink_sdk::device::output::DecklinkOutputFrameFlags;
+use decklink_sdk::device::output::DecklinkVideoOutputFlags;
 use decklink_sdk::frame::{DecklinkFrameFlags, DecklinkPixelFormat};
 
 fn main() {
@@ -60,7 +60,6 @@ fn main() {
         )
         .expect("Failed to create video frame");
 
-    // TODO - fill bytes
     let bytes = vec![120u8; (mode.width() * mode.height() * 4) as usize];
     if !frame.base().set_bytes(&bytes) {
         println!("Failed to set frame bytes");
@@ -68,7 +67,7 @@ fn main() {
     }
 
     output
-        .enable_video_output(mode.mode(), DecklinkOutputFrameFlags::empty())
+        .enable_video_output(mode.mode(), DecklinkVideoOutputFlags::empty())
         .expect("Failed to enable video output");
     output
         .display_video_frame_sync(frame.base())

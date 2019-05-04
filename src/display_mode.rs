@@ -1,10 +1,10 @@
-use crate::sdk::cdecklink_display_mode_iterator;
+use crate::sdk::cdecklink_display_mode;
 use crate::util::convert_string;
 use crate::{sdk, SdkError};
 use num_traits::FromPrimitive;
 use std::ptr::null_mut;
 
-#[derive(FromPrimitive)]
+#[derive(FromPrimitive, PartialEq)]
 pub enum DecklinkDisplayModeId {
     NTSC = sdk::_BMDDisplayMode_bmdModeNTSC as isize,
     NTSC2398 = sdk::_BMDDisplayMode_bmdModeNTSC2398 as isize,
@@ -47,7 +47,7 @@ pub enum DecklinkDisplayModeId {
     Unknown = sdk::_BMDDisplayMode_bmdModeUnknown as isize,
 }
 
-#[derive(FromPrimitive)]
+#[derive(FromPrimitive, PartialEq)]
 pub enum DecklinkFieldDominance {
     Unknown = sdk::_BMDFieldDominance_bmdUnknownFieldDominance as isize,
     LowerFieldFirst = sdk::_BMDFieldDominance_bmdLowerFieldFirst as isize,
@@ -71,7 +71,7 @@ bitflags! {
 //}
 
 pub struct DecklinkDisplayMode {
-    mode: *mut crate::sdk::cdecklink_display_mode,
+    mode: *mut sdk::cdecklink_display_mode,
 }
 
 impl Drop for DecklinkDisplayMode {
@@ -127,7 +127,7 @@ impl DecklinkDisplayMode {
 }
 
 pub unsafe fn iterate_display_modes(
-    it: *mut cdecklink_display_mode_iterator,
+    it: *mut sdk::cdecklink_display_mode_iterator,
 ) -> Result<Vec<DecklinkDisplayMode>, SdkError> {
     let mut res = Vec::new();
 
@@ -144,4 +144,8 @@ pub unsafe fn iterate_display_modes(
     }
 
     Ok(res)
+}
+
+pub unsafe fn wrap_display_mode(ptr: *mut cdecklink_display_mode) -> DecklinkDisplayMode {
+    DecklinkDisplayMode { mode: ptr }
 }

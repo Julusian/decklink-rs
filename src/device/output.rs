@@ -1,14 +1,17 @@
 use crate::device::DecklinkOutputDevice;
-use crate::display_mode::{iterate_display_modes, DecklinkDisplayMode, DecklinkDisplayModeId};
+use crate::display_mode::{
+    iterate_display_modes, wrap_display_mode, DecklinkDisplayMode, DecklinkDisplayModeId,
+};
 use crate::frame::{
     unwrap_frame, wrap_mutable_frame, DecklinkFrameFlags, DecklinkPixelFormat, DecklinkVideoFrame,
     DecklinkVideoMutableFrame,
 };
 use crate::{sdk, SdkError};
+use num_traits::FromPrimitive;
 use std::ptr::null_mut;
 
 bitflags! {
-    pub struct DecklinkOutputFrameFlags: u32 {
+    pub struct DecklinkVideoOutputFlags: u32 {
         const VANC = sdk::_BMDVideoOutputFlags_bmdVideoOutputVANC;
         const VITC = sdk::_BMDVideoOutputFlags_bmdVideoOutputVITC;
         const RP188 = sdk::_BMDVideoOutputFlags_bmdVideoOutputRP188;
@@ -16,20 +19,27 @@ bitflags! {
     }
 }
 
-#[derive(FromPrimitive)]
+#[derive(FromPrimitive, PartialEq)]
 pub enum DecklinkAudioSampleRate {
     Rate48kHz = sdk::_BMDAudioSampleRate_bmdAudioSampleRate48kHz as isize,
 }
-#[derive(FromPrimitive)]
+#[derive(FromPrimitive, PartialEq)]
 pub enum DecklinkAudioSampleType {
     Int16 = sdk::_BMDAudioSampleType_bmdAudioSampleType16bitInteger as isize,
     Int32 = sdk::_BMDAudioSampleType_bmdAudioSampleType32bitInteger as isize,
 }
-#[derive(FromPrimitive)]
+#[derive(FromPrimitive, PartialEq)]
 pub enum DecklinkAudioOutputStreamType {
     Continuous = sdk::_BMDAudioOutputStreamType_bmdAudioOutputStreamContinuous as isize,
     ContinuousDontResample =
         sdk::_BMDAudioOutputStreamType_bmdAudioOutputStreamContinuousDontResample as isize,
+}
+#[derive(FromPrimitive, PartialEq)]
+pub enum DecklinkDisplayModeSupport {
+    NotSupported = sdk::_BMDDisplayModeSupport_bmdDisplayModeNotSupported as isize,
+    Supported = sdk::_BMDDisplayModeSupport_bmdDisplayModeSupported as isize,
+    SupportedWithConversion =
+        sdk::_BMDDisplayModeSupport_bmdDisplayModeSupportedWithConversion as isize,
 }
 
 impl Drop for DecklinkOutputDevice {
@@ -43,7 +53,38 @@ impl Drop for DecklinkOutputDevice {
 
 // TODO - this is currently a bag of methods, and it could do with some more sanity checking (eg allow schedule when video not enabled etc)
 impl DecklinkOutputDevice {
-    // TODO - does support display mode
+    pub fn does_support_video_mode(
+        &self,
+        mode: DecklinkDisplayModeId,
+        pixel_format: DecklinkPixelFormat,
+        flags: DecklinkVideoOutputFlags,
+    ) -> Result<(DecklinkDisplayModeSupport, Option<DecklinkDisplayMode>), SdkError> {
+        let mut supported = sdk::_BMDDisplayModeSupport_bmdDisplayModeNotSupported;
+        let mut display_mode = null_mut();
+        let result = unsafe {
+            sdk::cdecklink_device_output_does_support_video_mode(
+                self.dev,
+                mode as u32,
+                pixel_format as u32,
+                flags.bits(),
+                &mut supported,
+                &mut display_mode,
+            )
+        };
+        SdkError::result_or_else(
+            result,
+            Box::new(move || {
+                let supported2 = DecklinkDisplayModeSupport::from_u32(supported)
+                    .unwrap_or(DecklinkDisplayModeSupport::NotSupported);
+                if display_mode.is_null() || supported2 == DecklinkDisplayModeSupport::NotSupported
+                {
+                    (DecklinkDisplayModeSupport::NotSupported, None)
+                } else {
+                    unsafe { (supported2, Some(wrap_display_mode(display_mode))) }
+                }
+            }),
+        )
+    }
 
     pub fn display_modes(&self) -> Result<Vec<DecklinkDisplayMode>, SdkError> {
         unsafe {
@@ -64,7 +105,7 @@ impl DecklinkOutputDevice {
     pub fn enable_video_output(
         &self,
         mode: DecklinkDisplayModeId,
-        flags: DecklinkOutputFrameFlags,
+        flags: DecklinkVideoOutputFlags,
     ) -> Result<(), SdkError> {
         unsafe {
             let result = sdk::cdecklink_device_output_enable_video_output(
