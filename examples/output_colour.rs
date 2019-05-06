@@ -11,7 +11,13 @@ fn main() {
         let mut devices = get_devices().expect("list devices failed");
         println!("Found {} devices", devices.len());
         for i in 0..devices.len() {
-            println!("{}: {}", i, devices[i].display_name());
+            println!(
+                "{}: {}",
+                i,
+                devices[i]
+                    .display_name()
+                    .unwrap_or_else(|| "Unknown".to_string())
+            );
         }
 
         let index: usize = read!();
@@ -23,7 +29,12 @@ fn main() {
         devices.swap_remove(index)
     };
 
-    println!("Selected device: {}\n", device.display_name());
+    println!(
+        "Selected device: {}\n",
+        device
+            .display_name()
+            .unwrap_or_else(|| "Unknown".to_string())
+    );
 
     let output = match device.output() {
         None => {
@@ -38,7 +49,13 @@ fn main() {
             .display_modes()
             .expect("Failed to list display modes");
         for i in 0..supported_modes.len() {
-            println!("{}: {}", i, supported_modes[i].name());
+            println!(
+                "{}: {}",
+                i,
+                supported_modes[i]
+                    .name()
+                    .unwrap_or_else(|| "Unknown".to_string())
+            );
         }
 
         let index: usize = read!();
@@ -66,11 +83,12 @@ fn main() {
         return;
     }
 
-    output
-        .enable_video_output(mode.mode(), DecklinkVideoOutputFlags::empty())
+    let video_output = output
+        .enable_video_output_sync(mode.mode(), DecklinkVideoOutputFlags::empty())
         .expect("Failed to enable video output");
-    output
-        .display_video_frame_sync(frame.base())
+
+    video_output
+        .display_frame(frame.base())
         .expect("Failed to display frame");
 
     println!("Press enter to continue");

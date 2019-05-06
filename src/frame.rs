@@ -1,4 +1,3 @@
-use crate::sdk::cdecklink_mutable_video_frame;
 use crate::{sdk, SdkError};
 use num_traits::FromPrimitive;
 use std::ptr::null_mut;
@@ -30,7 +29,7 @@ bitflags! {
 }
 
 pub struct DecklinkVideoFrame {
-    frame: *mut crate::sdk::cdecklink_video_frame,
+    frame: *mut crate::sdk::cdecklink_video_frame_t,
     is_child: bool,
 }
 
@@ -38,7 +37,7 @@ impl Drop for DecklinkVideoFrame {
     fn drop(&mut self) {
         if !self.frame.is_null() {
             if !self.is_child {
-                unsafe { sdk::cdecklink_destroy_frame(self.frame) };
+                unsafe { sdk::cdecklink_release_frame(self.frame) };
             }
             self.frame = null_mut();
         }
@@ -93,13 +92,13 @@ impl DecklinkVideoFrame {
 
 pub struct DecklinkVideoMutableFrame {
     base: DecklinkVideoFrame,
-    frame: *mut crate::sdk::cdecklink_mutable_video_frame,
+    frame: *mut crate::sdk::cdecklink_mutable_video_frame_t,
 }
 
 impl Drop for DecklinkVideoMutableFrame {
     fn drop(&mut self) {
         if !self.frame.is_null() {
-            unsafe { sdk::cdecklink_destroy_mutable_frame(self.frame) };
+            unsafe { sdk::cdecklink_release_mutable_frame(self.frame) };
             self.frame = null_mut();
         }
     }
@@ -116,16 +115,16 @@ impl DecklinkVideoMutableFrame {
 }
 
 pub unsafe fn wrap_mutable_frame(
-    ptr: *mut cdecklink_mutable_video_frame,
+    ptr: *mut sdk::cdecklink_mutable_video_frame_t,
 ) -> DecklinkVideoMutableFrame {
     DecklinkVideoMutableFrame {
         frame: ptr,
         base: DecklinkVideoFrame {
-            frame: sdk::cdecklink_video_mutable_frame_base(ptr),
+            frame: sdk::cdecklink_video_mutable_frame_get_frame(ptr),
             is_child: true,
         },
     }
 }
-pub unsafe fn unwrap_frame(frame: &DecklinkVideoFrame) -> *mut sdk::cdecklink_video_frame {
+pub unsafe fn unwrap_frame(frame: &DecklinkVideoFrame) -> *mut sdk::cdecklink_video_frame_t {
     frame.frame
 }

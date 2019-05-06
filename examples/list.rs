@@ -13,8 +13,10 @@ fn main() {
         let output = device.output();
         println!(
             "{} - {} (Output: {}, Input: {})",
-            device.model_name(),
-            device.display_name(),
+            device.model_name().unwrap_or_else(|| "Unknown".to_string()),
+            device
+                .display_name()
+                .unwrap_or_else(|| "Unknown".to_string()),
             output.is_some(),
             "?"
         );

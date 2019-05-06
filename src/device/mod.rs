@@ -1,40 +1,40 @@
+use crate::device::output::{wrap_device_output, DecklinkOutputDevice};
 use crate::sdk;
 use crate::util::{convert_string, SdkError};
-use std::ptr::null_mut;
+use std::ptr::{null, null_mut};
 
 pub mod output;
 
-pub struct DecklinkOutputDevice {
-    dev: *mut crate::sdk::cdecklink_device_output,
-}
-
 pub struct DecklinkDevice {
-    dev: *mut crate::sdk::cdecklink_device,
+    dev: *mut crate::sdk::cdecklink_device_t,
 }
 
 impl Drop for DecklinkDevice {
     fn drop(&mut self) {
         if !self.dev.is_null() {
-            unsafe { sdk::cdecklink_destroy_device(self.dev) };
+            unsafe { sdk::cdecklink_release_device(self.dev) };
             self.dev = null_mut();
         }
     }
 }
 
 impl DecklinkDevice {
-    pub fn model_name(&self) -> String {
-        unsafe { convert_string(sdk::cdecklink_device_model_name(self.dev)) }
+    pub fn model_name(&self) -> Option<String> {
+        let mut s = null();
+        unsafe { convert_string(sdk::cdecklink_device_model_name(self.dev, &mut s), s) }
     }
-    pub fn display_name(&self) -> String {
-        unsafe { convert_string(sdk::cdecklink_device_display_name(self.dev)) }
+    pub fn display_name(&self) -> Option<String> {
+        let mut s = null();
+        unsafe { convert_string(sdk::cdecklink_device_display_name(self.dev, &mut s), s) }
     }
 
     pub fn output(&self) -> Option<DecklinkOutputDevice> {
-        let output = unsafe { sdk::cdecklink_device_output_cast(self.dev) };
-        if output.is_null() {
+        let mut output = null_mut();
+        let res = unsafe { sdk::cdecklink_device_output_cast(self.dev, &mut output) };
+        if !SdkError::is_ok(res) || output.is_null() {
             None
         } else {
-            Some(DecklinkOutputDevice { dev: output })
+            Some(wrap_device_output(output))
         }
     }
 }
@@ -55,14 +55,14 @@ pub fn get_devices() -> Result<Vec<DecklinkDevice>, SdkError> {
                 res.push(DecklinkDevice { dev });
             } else {
                 unsafe {
-                    sdk::cdecklink_destroy_iterator(it);
+                    sdk::cdecklink_release_iterator(it);
                 }
                 return Err(SdkError::from(ok));
             }
         }
 
         unsafe {
-            sdk::cdecklink_destroy_iterator(it);
+            sdk::cdecklink_release_iterator(it);
         }
         Ok(res)
     }

@@ -18,6 +18,7 @@ pub mod display_mode;
 pub mod frame;
 mod util;
 
+use std::ptr::null;
 use util::convert_string;
 pub use util::SdkError;
 
@@ -26,10 +27,9 @@ pub fn api_version() -> Option<String> {
     if it.is_null() {
         None
     } else {
-        let str = unsafe { convert_string(sdk::cdecklink_api_version(it)) };
-        unsafe {
-            sdk::cdecklink_destroy_iterator(it);
-        }
-        Some(str)
+        let mut s = null();
+        let str = unsafe { convert_string(sdk::cdecklink_api_version(it, &mut s), s) };
+        unsafe { sdk::cdecklink_release_iterator(it) };
+        str
     }
 }

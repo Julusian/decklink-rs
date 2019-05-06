@@ -34,7 +34,7 @@ impl SdkError {
     where
         T: Default,
     {
-        Self::result_or_else(r, Box::new(|| Default::default()))
+        Self::result_or_else(r, || Default::default())
     }
     pub fn result_or<T>(r: i32, def: T) -> Result<T, SdkError> {
         if Self::is_ok(r) {
@@ -43,7 +43,7 @@ impl SdkError {
             Err(Self::from(r))
         }
     }
-    pub fn result_or_else<T>(r: i32, ok: Box<FnOnce() -> T>) -> Result<T, SdkError> {
+    pub fn result_or_else<T, F: FnOnce() -> T>(r: i32, ok: F) -> Result<T, SdkError> {
         if Self::is_ok(r) {
             Ok(ok())
         } else {
@@ -52,8 +52,12 @@ impl SdkError {
     }
 }
 
-pub unsafe fn convert_string(ptr: *const ::std::os::raw::c_char) -> String {
-    let str = CStr::from_ptr(ptr).to_str().unwrap_or_default().to_string();
-    crate::sdk::cdecklink_free_string(ptr);
-    str
+pub unsafe fn convert_string(res: i32, ptr: *const ::std::os::raw::c_char) -> Option<String> {
+    if res == 0 {
+        let str = CStr::from_ptr(ptr).to_str().unwrap_or_default().to_string();
+        crate::sdk::cdecklink_free_string(ptr);
+        Some(str)
+    } else {
+        None
+    }
 }

@@ -1,8 +1,7 @@
-use crate::sdk::cdecklink_display_mode;
 use crate::util::convert_string;
 use crate::{sdk, SdkError};
 use num_traits::FromPrimitive;
-use std::ptr::null_mut;
+use std::ptr::{null, null_mut};
 
 #[derive(FromPrimitive, PartialEq)]
 pub enum DecklinkDisplayModeId {
@@ -63,30 +62,24 @@ bitflags! {
         const COLORSPACE_REC709 = sdk::_BMDDisplayModeFlags_bmdDisplayModeColorspaceRec709;
     }
 }
-//#[derive(FromPrimitive)]
-//pub enum DecklinkDisplayModeFlag {
-//    Supports3D = sdk::_BMDDisplayModeFlags_bmdDisplayModeSupports3D as isize,
-//    ColorspaceRec601 = sdk::_BMDDisplayModeFlags_bmdDisplayModeColorspaceRec601 as isize,
-//    ColorspaceRec709 = sdk::_BMDDisplayModeFlags_bmdDisplayModeColorspaceRec709 as isize,
-//}
 
 pub struct DecklinkDisplayMode {
-    mode: *mut sdk::cdecklink_display_mode,
+    mode: *mut sdk::cdecklink_display_mode_t,
 }
 
 impl Drop for DecklinkDisplayMode {
     fn drop(&mut self) {
         if !self.mode.is_null() {
-            // TODO
-            // unsafe { sdk::cdecklink_destroy_device(self.dev) };
+            unsafe { sdk::cdecklink_release_display_mode(self.mode) };
             self.mode = null_mut();
         }
     }
 }
 
 impl DecklinkDisplayMode {
-    pub fn name(&self) -> String {
-        unsafe { convert_string(sdk::cdecklink_display_mode_name(self.mode)) }
+    pub fn name(&self) -> Option<String> {
+        let mut s = null();
+        unsafe { convert_string(sdk::cdecklink_display_mode_name(self.mode, &mut s), s) }
     }
     pub fn mode(&self) -> DecklinkDisplayModeId {
         DecklinkDisplayModeId::from_u32(unsafe { sdk::cdecklink_display_mode_mode(self.mode) })
@@ -127,7 +120,7 @@ impl DecklinkDisplayMode {
 }
 
 pub unsafe fn iterate_display_modes(
-    it: *mut sdk::cdecklink_display_mode_iterator,
+    it: *mut sdk::cdecklink_display_mode_iterator_t,
 ) -> Result<Vec<DecklinkDisplayMode>, SdkError> {
     let mut res = Vec::new();
 
@@ -146,6 +139,6 @@ pub unsafe fn iterate_display_modes(
     Ok(res)
 }
 
-pub unsafe fn wrap_display_mode(ptr: *mut cdecklink_display_mode) -> DecklinkDisplayMode {
+pub unsafe fn wrap_display_mode(ptr: *mut sdk::cdecklink_display_mode_t) -> DecklinkDisplayMode {
     DecklinkDisplayMode { mode: ptr }
 }
