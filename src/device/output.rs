@@ -2,8 +2,8 @@ use crate::display_mode::{
     iterate_display_modes, wrap_display_mode, DecklinkDisplayMode, DecklinkDisplayModeId,
 };
 use crate::frame::{
-    unwrap_frame, wrap_mutable_frame, DecklinkFrameFlags, DecklinkPixelFormat, DecklinkVideoFrame,
-    DecklinkVideoMutableFrame,
+    unwrap_frame, wrap_frame, wrap_mutable_frame, DecklinkFrameFlags, DecklinkPixelFormat,
+    DecklinkVideoFrame, DecklinkVideoMutableFrame,
 };
 use crate::{sdk, SdkError};
 use num_traits::FromPrimitive;
@@ -42,6 +42,14 @@ pub enum DecklinkDisplayModeSupport {
     Supported = sdk::_BMDDisplayModeSupport_bmdDisplayModeSupported as isize,
     SupportedWithConversion =
         sdk::_BMDDisplayModeSupport_bmdDisplayModeSupportedWithConversion as isize,
+}
+
+#[derive(FromPrimitive, PartialEq)]
+pub enum DecklinkOutputFrameCompletionResult {
+    Completed = sdk::_BMDOutputFrameCompletionResult_bmdOutputFrameCompleted as isize,
+    DisplayedLate = sdk::_BMDOutputFrameCompletionResult_bmdOutputFrameDisplayedLate as isize,
+    Dropped = sdk::_BMDOutputFrameCompletionResult_bmdOutputFrameDropped as isize,
+    Flushed = sdk::_BMDOutputFrameCompletionResult_bmdOutputFrameFlushed as isize,
 }
 
 struct DecklinkOutputDevicePtr {
@@ -150,6 +158,7 @@ impl DecklinkOutputDevice {
             let r: Rc<DecklinkOutputDeviceVideoScheduled> =
                 Rc::new(DecklinkOutputDeviceVideoImpl {
                     ptr: self.ptr.clone(),
+                    callback_handler: null_mut(),
                 });
             r
         })
@@ -163,6 +172,7 @@ impl DecklinkOutputDevice {
         SdkError::result_or_else(result, || {
             let r: Rc<DecklinkOutputDeviceVideoSync> = Rc::new(DecklinkOutputDeviceVideoImpl {
                 ptr: self.ptr.clone(),
+                callback_handler: null_mut(),
             });
             r
         })
@@ -224,6 +234,52 @@ impl DecklinkOutputDevice {
     }
 }
 
+pub trait DeckLinkVideoOutputCallback {
+    fn schedule_frame_completed_callback(
+        &self,
+        frame: Option<DecklinkVideoFrame>,
+        result: DecklinkOutputFrameCompletionResult,
+    ) -> bool;
+    fn playback_stopped(&self) -> bool;
+}
+
+extern "C" fn schedule_frame_completed_callback(
+    context: *mut ::std::os::raw::c_void,
+    frame: *mut sdk::cdecklink_video_frame_t,
+    result: sdk::BMDOutputFrameCompletionResult,
+) -> sdk::HRESULT {
+    //    let handler = unsafe {
+    //      &mut *(context as *mut DeckLinkVideoOutputCallback)
+    //    };
+    //    let handler: Box<Box<dyn DeckLinkVideoOutputCallback>> =
+    //        unsafe { Box::from_raw(context as *mut _) };
+
+    let handler: &mut Box<DeckLinkVideoOutputCallback> = unsafe { &mut *(context as *mut _) };
+
+    let frame2 = if frame.is_null() {
+        None
+    } else {
+        unsafe { Some(wrap_frame(frame)) }
+    };
+    let result2 = DecklinkOutputFrameCompletionResult::from_u32(result)
+        .unwrap_or(DecklinkOutputFrameCompletionResult::Completed);
+
+    if handler.schedule_frame_completed_callback(frame2, result2) {
+        0 // Ok
+    } else {
+        1 // False
+    }
+}
+extern "C" fn playback_stopped(context: *mut ::std::os::raw::c_void) -> sdk::HRESULT {
+    let handler: &mut Box<DeckLinkVideoOutputCallback> = unsafe { &mut *(context as *mut _) };
+
+    if handler.playback_stopped() {
+        0 // Ok
+    } else {
+        1 // False
+    }
+}
+
 pub trait DecklinkOutputDeviceVideo {
     // TODO - is this valid in sync context?
     fn buffered_video_frame_count(&self) -> Result<u32, SdkError>;
@@ -237,6 +293,8 @@ pub trait DecklinkOutputDeviceVideoScheduled: DecklinkOutputDeviceVideo {
         duration: i64,
         scale: i64,
     ) -> Result<(), SdkError>;
+
+    fn set_callback(&mut self, handler: Box<DeckLinkVideoOutputCallback>) -> Result<(), SdkError>;
 }
 pub trait DecklinkOutputDeviceVideoSync: DecklinkOutputDeviceVideo {
     // TODO return type
@@ -245,12 +303,14 @@ pub trait DecklinkOutputDeviceVideoSync: DecklinkOutputDeviceVideo {
 
 struct DecklinkOutputDeviceVideoImpl {
     ptr: Arc<DecklinkOutputDevicePtr>,
+    callback_handler: *mut Box<DeckLinkVideoOutputCallback>,
 }
 impl Drop for DecklinkOutputDeviceVideoImpl {
     fn drop(&mut self) {
         unsafe {
             sdk::cdecklink_device_output_disable_video_output(self.ptr.dev);
-            self.ptr.video_active.store(false, Ordering::Relaxed)
+            self.ptr.video_active.store(false, Ordering::Relaxed);
+            Box::from_raw(self.callback_handler); // Reclaim the box so it gets freed
         }
     }
 }
@@ -280,6 +340,21 @@ impl DecklinkOutputDeviceVideoScheduled for DecklinkOutputDeviceVideoImpl {
                 display_time,
                 duration,
                 scale,
+            );
+            SdkError::result(result)
+        }
+    }
+
+    fn set_callback(&mut self, handler: Box<DeckLinkVideoOutputCallback>) -> Result<(), SdkError> {
+        let context = Box::into_raw(Box::new(handler));
+        self.callback_handler = context; // TODO - free previous context after call to api below
+
+        unsafe {
+            let result = sdk::cdecklink_device_output_set_scheduled_frame_completion_callback(
+                self.ptr.dev,
+                context as *mut std::ffi::c_void,
+                Some(schedule_frame_completed_callback),
+                Some(playback_stopped),
             );
             SdkError::result(result)
         }

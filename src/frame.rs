@@ -125,6 +125,12 @@ pub unsafe fn wrap_mutable_frame(
         },
     }
 }
+pub unsafe fn wrap_frame(ptr: *mut sdk::cdecklink_video_frame_t) -> DecklinkVideoFrame {
+    DecklinkVideoFrame {
+        frame: ptr,
+        is_child: false,
+    }
+}
 pub unsafe fn unwrap_frame(frame: &DecklinkVideoFrame) -> *mut sdk::cdecklink_video_frame_t {
     frame.frame
 }
