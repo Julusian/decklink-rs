@@ -23,13 +23,13 @@ use util::convert_string;
 pub use util::SdkError;
 
 pub fn api_version() -> Option<String> {
-    let it = unsafe { sdk::cdecklink_create_iterator() };
+    let it = unsafe { sdk::cdecklink_create_decklink_iterator_instance() };
     if it.is_null() {
         None
     } else {
         let mut s = null();
         let str = unsafe { convert_string(sdk::cdecklink_api_version(it, &mut s), s) };
-        unsafe { sdk::cdecklink_release_iterator(it) };
+        unsafe { sdk::cdecklink_iterator_release(it) };
         str
     }
 }

@@ -4,27 +4,27 @@ use std::ptr::null_mut;
 
 #[derive(FromPrimitive, PartialEq)]
 pub enum DecklinkPixelFormat {
-    Format8BitYUV = sdk::_BMDPixelFormat_bmdFormat8BitYUV as isize,
-    Format10BitYUV = sdk::_BMDPixelFormat_bmdFormat10BitYUV as isize,
-    Format8BitARGB = sdk::_BMDPixelFormat_bmdFormat8BitARGB as isize,
-    Format8BitBGRA = sdk::_BMDPixelFormat_bmdFormat8BitBGRA as isize,
-    Format10BitRGB = sdk::_BMDPixelFormat_bmdFormat10BitRGB as isize,
-    Format12BitRGB = sdk::_BMDPixelFormat_bmdFormat12BitRGB as isize,
-    Format12BitRGBLE = sdk::_BMDPixelFormat_bmdFormat12BitRGBLE as isize,
-    Format10BitRGBXLE = sdk::_BMDPixelFormat_bmdFormat10BitRGBXLE as isize,
-    Format10BitRGBX = sdk::_BMDPixelFormat_bmdFormat10BitRGBX as isize,
-    FormatH265 = sdk::_BMDPixelFormat_bmdFormatH265 as isize,
-    FormatDNxHR = sdk::_BMDPixelFormat_bmdFormatDNxHR as isize,
-    Format12BitRAWGRBG = sdk::_BMDPixelFormat_bmdFormat12BitRAWGRBG as isize,
-    Format12BitRAWJPEG = sdk::_BMDPixelFormat_bmdFormat12BitRAWJPEG as isize,
+    Format8BitYUV = sdk::_DecklinkPixelFormat_decklinkFormat8BitYUV as isize,
+    Format10BitYUV = sdk::_DecklinkPixelFormat_decklinkFormat10BitYUV as isize,
+    Format8BitARGB = sdk::_DecklinkPixelFormat_decklinkFormat8BitARGB as isize,
+    Format8BitBGRA = sdk::_DecklinkPixelFormat_decklinkFormat8BitBGRA as isize,
+    Format10BitRGB = sdk::_DecklinkPixelFormat_decklinkFormat10BitRGB as isize,
+    Format12BitRGB = sdk::_DecklinkPixelFormat_decklinkFormat12BitRGB as isize,
+    Format12BitRGBLE = sdk::_DecklinkPixelFormat_decklinkFormat12BitRGBLE as isize,
+    Format10BitRGBXLE = sdk::_DecklinkPixelFormat_decklinkFormat10BitRGBXLE as isize,
+    Format10BitRGBX = sdk::_DecklinkPixelFormat_decklinkFormat10BitRGBX as isize,
+    FormatH265 = sdk::_DecklinkPixelFormat_decklinkFormatH265 as isize,
+    FormatDNxHR = sdk::_DecklinkPixelFormat_decklinkFormatDNxHR as isize,
+    Format12BitRAWGRBG = sdk::_DecklinkPixelFormat_decklinkFormat12BitRAWGRBG as isize,
+    Format12BitRAWJPEG = sdk::_DecklinkPixelFormat_decklinkFormat12BitRAWJPEG as isize,
 }
 
 bitflags! {
     pub struct DecklinkFrameFlags: u32 {
-        const FLIP_VERTICAL = sdk::_BMDFrameFlags_bmdFrameFlagFlipVertical as u32;
-        const CONTAINS_HDR_METADATA = sdk::_BMDFrameFlags_bmdFrameContainsHDRMetadata as u32;
-        const CONTAINS_CINTEL_METADATA = sdk::_BMDFrameFlags_bmdFrameContainsCintelMetadata as u32;
-        const HAS_NO_INPUT_SOURCE = sdk::_BMDFrameFlags_bmdFrameHasNoInputSource as u32;
+        const FLIP_VERTICAL = sdk::_DecklinkFrameFlags_decklinkFrameFlagFlipVertical as u32;
+        const CONTAINS_HDR_METADATA = sdk::_DecklinkFrameFlags_decklinkFrameContainsHDRMetadata as u32;
+        const CONTAINS_CINTEL_METADATA = sdk::_DecklinkFrameFlags_decklinkFrameContainsCintelMetadata as u32;
+        const HAS_NO_INPUT_SOURCE = sdk::_DecklinkFrameFlags_decklinkFrameHasNoInputSource as u32;
     }
 }
 
@@ -37,7 +37,7 @@ impl Drop for DecklinkVideoFrame {
     fn drop(&mut self) {
         if !self.frame.is_null() {
             if !self.is_child {
-                unsafe { sdk::cdecklink_release_frame(self.frame) };
+                unsafe { sdk::cdecklink_video_frame_release(self.frame) };
             }
             self.frame = null_mut();
         }
@@ -46,23 +46,23 @@ impl Drop for DecklinkVideoFrame {
 
 impl DecklinkVideoFrame {
     pub fn width(&self) -> i64 {
-        unsafe { sdk::cdecklink_video_frame_width(self.frame) }
+        unsafe { sdk::cdecklink_video_frame_get_width(self.frame) }
     }
     pub fn height(&self) -> i64 {
-        unsafe { sdk::cdecklink_video_frame_height(self.frame) }
+        unsafe { sdk::cdecklink_video_frame_get_height(self.frame) }
     }
     pub fn row_bytes(&self) -> i64 {
-        unsafe { sdk::cdecklink_video_frame_row_bytes(self.frame) }
+        unsafe { sdk::cdecklink_video_frame_get_row_bytes(self.frame) }
     }
     pub fn pixel_format(&self) -> DecklinkPixelFormat {
         DecklinkPixelFormat::from_u32(unsafe {
-            sdk::cdecklink_video_frame_pixel_format(self.frame)
+            sdk::cdecklink_video_frame_get_pixel_format(self.frame)
         })
         .unwrap_or(DecklinkPixelFormat::Format8BitYUV)
     }
     pub fn flags(&self) -> DecklinkFrameFlags {
         DecklinkFrameFlags::from_bits_truncate(unsafe {
-            sdk::cdecklink_video_frame_flags(self.frame)
+            sdk::cdecklink_video_frame_get_flags(self.frame)
         })
     }
     pub fn bytes(&self) {
@@ -77,7 +77,7 @@ impl DecklinkVideoFrame {
         } else {
             let mut bytes = null_mut();
             unsafe {
-                let r = sdk::cdecklink_video_frame_bytes(self.frame, &mut bytes);
+                let r = sdk::cdecklink_video_frame_get_bytes(self.frame, &mut bytes);
                 if !SdkError::is_ok(r) {
                     // TODO - better
                     false
@@ -98,7 +98,7 @@ pub struct DecklinkVideoMutableFrame {
 impl Drop for DecklinkVideoMutableFrame {
     fn drop(&mut self) {
         if !self.frame.is_null() {
-            unsafe { sdk::cdecklink_release_mutable_frame(self.frame) };
+            unsafe { sdk::cdecklink_mutable_video_frame_release(self.frame) };
             self.frame = null_mut();
         }
     }
@@ -110,7 +110,7 @@ impl DecklinkVideoMutableFrame {
     }
 
     pub fn set_flags(&self, flags: DecklinkFrameFlags) {
-        unsafe { sdk::cdecklink_video_mutable_frame_set_flags(self.frame, flags.bits()) };
+        unsafe { sdk::cdecklink_mutable_video_frame_set_flags(self.frame, flags.bits()) };
     }
 }
 
@@ -120,7 +120,7 @@ pub unsafe fn wrap_mutable_frame(
     DecklinkVideoMutableFrame {
         frame: ptr,
         base: DecklinkVideoFrame {
-            frame: sdk::cdecklink_video_mutable_frame_get_frame(ptr),
+            frame: sdk::cdecklink_mutable_video_frame_to_video_frame(ptr),
             is_child: true,
         },
     }

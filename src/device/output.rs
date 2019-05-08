@@ -14,53 +14,55 @@ use std::sync::Arc;
 
 bitflags! {
     pub struct DecklinkVideoOutputFlags: u32 {
-        const VANC = sdk::_BMDVideoOutputFlags_bmdVideoOutputVANC;
-        const VITC = sdk::_BMDVideoOutputFlags_bmdVideoOutputVITC;
-        const RP188 = sdk::_BMDVideoOutputFlags_bmdVideoOutputRP188;
-        const DUAL_STREAM_3D = sdk::_BMDVideoOutputFlags_bmdVideoOutputDualStream3D;
+        const VANC = sdk::_DecklinkVideoOutputFlags_decklinkVideoOutputVANC;
+        const VITC = sdk::_DecklinkVideoOutputFlags_decklinkVideoOutputVITC;
+        const RP188 = sdk::_DecklinkVideoOutputFlags_decklinkVideoOutputRP188;
+        const DUAL_STREAM_3D = sdk::_DecklinkVideoOutputFlags_decklinkVideoOutputDualStream3D;
     }
 }
 
 #[derive(FromPrimitive, PartialEq)]
 pub enum DecklinkAudioSampleRate {
-    Rate48kHz = sdk::_BMDAudioSampleRate_bmdAudioSampleRate48kHz as isize,
+    Rate48kHz = sdk::_DecklinkAudioSampleRate_decklinkAudioSampleRate48kHz as isize,
 }
 #[derive(FromPrimitive, PartialEq)]
 pub enum DecklinkAudioSampleType {
-    Int16 = sdk::_BMDAudioSampleType_bmdAudioSampleType16bitInteger as isize,
-    Int32 = sdk::_BMDAudioSampleType_bmdAudioSampleType32bitInteger as isize,
+    Int16 = sdk::_DecklinkAudioSampleType_decklinkAudioSampleType16bitInteger as isize,
+    Int32 = sdk::_DecklinkAudioSampleType_decklinkAudioSampleType32bitInteger as isize,
 }
 #[derive(FromPrimitive, PartialEq)]
 pub enum DecklinkAudioOutputStreamType {
-    Continuous = sdk::_BMDAudioOutputStreamType_bmdAudioOutputStreamContinuous as isize,
+    Continuous = sdk::_DecklinkAudioOutputStreamType_decklinkAudioOutputStreamContinuous as isize,
     ContinuousDontResample =
-        sdk::_BMDAudioOutputStreamType_bmdAudioOutputStreamContinuousDontResample as isize,
+        sdk::_DecklinkAudioOutputStreamType_decklinkAudioOutputStreamContinuousDontResample
+            as isize,
 }
 #[derive(FromPrimitive, PartialEq)]
 pub enum DecklinkDisplayModeSupport {
-    NotSupported = sdk::_BMDDisplayModeSupport_bmdDisplayModeNotSupported as isize,
-    Supported = sdk::_BMDDisplayModeSupport_bmdDisplayModeSupported as isize,
+    NotSupported = sdk::_DecklinkDisplayModeSupport_decklinkDisplayModeNotSupported as isize,
+    Supported = sdk::_DecklinkDisplayModeSupport_decklinkDisplayModeSupported as isize,
     SupportedWithConversion =
-        sdk::_BMDDisplayModeSupport_bmdDisplayModeSupportedWithConversion as isize,
+        sdk::_DecklinkDisplayModeSupport_decklinkDisplayModeSupportedWithConversion as isize,
 }
 
 #[derive(FromPrimitive, PartialEq)]
 pub enum DecklinkOutputFrameCompletionResult {
-    Completed = sdk::_BMDOutputFrameCompletionResult_bmdOutputFrameCompleted as isize,
-    DisplayedLate = sdk::_BMDOutputFrameCompletionResult_bmdOutputFrameDisplayedLate as isize,
-    Dropped = sdk::_BMDOutputFrameCompletionResult_bmdOutputFrameDropped as isize,
-    Flushed = sdk::_BMDOutputFrameCompletionResult_bmdOutputFrameFlushed as isize,
+    Completed = sdk::_DecklinkOutputFrameCompletionResult_decklinkOutputFrameCompleted as isize,
+    DisplayedLate =
+        sdk::_DecklinkOutputFrameCompletionResult_decklinkOutputFrameDisplayedLate as isize,
+    Dropped = sdk::_DecklinkOutputFrameCompletionResult_decklinkOutputFrameDropped as isize,
+    Flushed = sdk::_DecklinkOutputFrameCompletionResult_decklinkOutputFrameFlushed as isize,
 }
 
 struct DecklinkOutputDevicePtr {
-    dev: *mut crate::sdk::cdecklink_device_output_t,
+    dev: *mut crate::sdk::cdecklink_output_t,
     video_active: Rc<AtomicBool>,
     audio_active: Rc<AtomicBool>,
 }
 impl Drop for DecklinkOutputDevicePtr {
     fn drop(&mut self) {
         if !self.dev.is_null() {
-            unsafe { sdk::cdecklink_release_device_output(self.dev) };
+            unsafe { sdk::cdecklink_output_release(self.dev) };
             self.dev = null_mut();
         }
     }
@@ -70,7 +72,7 @@ pub struct DecklinkOutputDevice {
     ptr: Arc<DecklinkOutputDevicePtr>,
 }
 
-pub fn wrap_device_output(ptr: *mut crate::sdk::cdecklink_device_output_t) -> DecklinkOutputDevice {
+pub fn wrap_device_output(ptr: *mut crate::sdk::cdecklink_output_t) -> DecklinkOutputDevice {
     DecklinkOutputDevice {
         ptr: Arc::new(DecklinkOutputDevicePtr {
             dev: ptr,
@@ -88,10 +90,10 @@ impl DecklinkOutputDevice {
         pixel_format: DecklinkPixelFormat,
         flags: DecklinkVideoOutputFlags,
     ) -> Result<(DecklinkDisplayModeSupport, Option<DecklinkDisplayMode>), SdkError> {
-        let mut supported = sdk::_BMDDisplayModeSupport_bmdDisplayModeNotSupported;
+        let mut supported = sdk::_DecklinkDisplayModeSupport_decklinkDisplayModeNotSupported;
         let mut display_mode = null_mut();
         let result = unsafe {
-            sdk::cdecklink_device_output_does_support_video_mode(
+            sdk::cdecklink_output_does_support_video_mode(
                 self.ptr.dev,
                 mode as u32,
                 pixel_format as u32,
@@ -118,10 +120,10 @@ impl DecklinkOutputDevice {
     pub fn display_modes(&self) -> Result<Vec<DecklinkDisplayMode>, SdkError> {
         unsafe {
             let mut it = null_mut();
-            let ok = sdk::cdecklink_device_output_display_mode_iterator(self.ptr.dev, &mut it);
+            let ok = sdk::cdecklink_output_get_display_mode_iterator(self.ptr.dev, &mut it);
             if SdkError::is_ok(ok) {
                 let v = iterate_display_modes(it);
-                sdk::cdecklink_release_display_mode_iterator(it);
+                sdk::cdecklink_display_mode_iterator_release(it);
                 v
             } else {
                 Err(SdkError::from(ok))
@@ -140,11 +142,7 @@ impl DecklinkOutputDevice {
             // TODO - better mode
             SdkError::ACCESSDENIED as i32
         } else {
-            sdk::cdecklink_device_output_enable_video_output(
-                self.ptr.dev,
-                mode as u32,
-                flags.bits(),
-            )
+            sdk::cdecklink_output_enable_video_output(self.ptr.dev, mode as u32, flags.bits())
         }
     }
 
@@ -188,7 +186,7 @@ impl DecklinkOutputDevice {
     ) -> Result<DecklinkVideoMutableFrame, SdkError> {
         unsafe {
             let mut frame = null_mut();
-            let res = sdk::cdecklink_device_output_create_video_frame(
+            let res = sdk::cdecklink_output_create_video_frame(
                 self.ptr.dev,
                 width,
                 height,
@@ -219,7 +217,7 @@ impl DecklinkOutputDevice {
             Err(SdkError::ACCESSDENIED)
         } else {
             unsafe {
-                let result = sdk::cdecklink_device_output_enable_audio_output(
+                let result = sdk::cdecklink_output_enable_audio_output(
                     self.ptr.dev,
                     sample_rate as u32,
                     sample_type as u32,
@@ -246,7 +244,7 @@ pub trait DeckLinkVideoOutputCallback {
 extern "C" fn schedule_frame_completed_callback(
     context: *mut ::std::os::raw::c_void,
     frame: *mut sdk::cdecklink_video_frame_t,
-    result: sdk::BMDOutputFrameCompletionResult,
+    result: sdk::DecklinkOutputFrameCompletionResult,
 ) -> sdk::HRESULT {
     //    let handler = unsafe {
     //      &mut *(context as *mut DeckLinkVideoOutputCallback)
@@ -308,7 +306,7 @@ struct DecklinkOutputDeviceVideoImpl {
 impl Drop for DecklinkOutputDeviceVideoImpl {
     fn drop(&mut self) {
         unsafe {
-            sdk::cdecklink_device_output_disable_video_output(self.ptr.dev);
+            sdk::cdecklink_output_disable_video_output(self.ptr.dev);
             self.ptr.video_active.store(false, Ordering::Relaxed);
             Box::from_raw(self.callback_handler); // Reclaim the box so it gets freed
         }
@@ -320,7 +318,7 @@ impl DecklinkOutputDeviceVideo for DecklinkOutputDeviceVideoImpl {
         unsafe {
             let mut count = 0;
             let result =
-                sdk::cdecklink_device_output_buffered_video_frame_count(self.ptr.dev, &mut count);
+                sdk::cdecklink_output_get_buffered_video_frame_count(self.ptr.dev, &mut count);
             SdkError::result_or(result, count)
         }
     }
@@ -334,7 +332,7 @@ impl DecklinkOutputDeviceVideoScheduled for DecklinkOutputDeviceVideoImpl {
         scale: i64,
     ) -> Result<(), SdkError> {
         unsafe {
-            let result = sdk::cdecklink_device_output_schedule_video_frame(
+            let result = sdk::cdecklink_output_schedule_video_frame(
                 self.ptr.dev,
                 unwrap_frame(frame),
                 display_time,
@@ -350,7 +348,7 @@ impl DecklinkOutputDeviceVideoScheduled for DecklinkOutputDeviceVideoImpl {
         self.callback_handler = context; // TODO - free previous context after call to api below
 
         unsafe {
-            let result = sdk::cdecklink_device_output_set_scheduled_frame_completion_callback(
+            let result = sdk::cdecklink_output_set_scheduled_frame_completion_callback(
                 self.ptr.dev,
                 context as *mut std::ffi::c_void,
                 Some(schedule_frame_completed_callback),
@@ -364,10 +362,8 @@ impl DecklinkOutputDeviceVideoScheduled for DecklinkOutputDeviceVideoImpl {
 impl DecklinkOutputDeviceVideoSync for DecklinkOutputDeviceVideoImpl {
     fn display_frame(&self, frame: &DecklinkVideoFrame) -> Result<(), SdkError> {
         unsafe {
-            let result = sdk::cdecklink_device_output_display_video_frame_sync(
-                self.ptr.dev,
-                unwrap_frame(frame),
-            );
+            let result =
+                sdk::cdecklink_output_display_video_frame_sync(self.ptr.dev, unwrap_frame(frame));
             SdkError::result(result)
         }
     }
@@ -379,37 +375,37 @@ pub struct DecklinkOutputDeviceAudio {
 impl Drop for DecklinkOutputDeviceAudio {
     fn drop(&mut self) {
         unsafe {
-            sdk::cdecklink_device_output_disable_audio_output(self.ptr.dev);
+            sdk::cdecklink_output_disable_audio_output(self.ptr.dev);
             self.ptr.audio_active.store(false, Ordering::Relaxed)
         }
     }
 }
 impl DecklinkOutputDeviceAudio {
     //    pub fn write_audio_samples_sync(&self, )
-    //    HRESULT cdecklink_device_output_write_audio_samples_sync(cdecklink_device_output_t *output, void *buffer,
+    //    HRESULT cdecklink_output_write_audio_samples_sync(cdecklink_output_t *output, void *buffer,
     //    uint32_t sampleFrameCount, uint32_t *sampleFramesWritten);
 
     pub fn begin_audio_preroll(&self) -> Result<(), SdkError> {
         unsafe {
-            let result = sdk::cdecklink_device_output_begin_audio_preroll(self.ptr.dev);
+            let result = sdk::cdecklink_output_begin_audio_preroll(self.ptr.dev);
             SdkError::result(result)
         }
     }
     pub fn end_audio_preroll(&self) -> Result<(), SdkError> {
         unsafe {
-            let result = sdk::cdecklink_device_output_end_audio_preroll(self.ptr.dev);
+            let result = sdk::cdecklink_output_end_audio_preroll(self.ptr.dev);
             SdkError::result(result)
         }
     }
 
-    //    HRESULT cdecklink_device_output_schedule_audio_samples(cdecklink_device_output_t *output, void *buffer,
+    //    HRESULT cdecklink_output_schedule_audio_samples(cdecklink_output_t *output, void *buffer,
     //    uint32_t sampleFrameCount, int64_t streamTime,
     //    int64_t timeScale, uint32_t *sampleFramesWritten);
 
     pub fn buffered_audio_sample_frame_count(&self) -> Result<u32, SdkError> {
         unsafe {
             let mut count = 0;
-            let result = sdk::cdecklink_device_output_buffered_audio_sample_frame_count(
+            let result = sdk::cdecklink_output_get_buffered_audio_sample_frame_count(
                 self.ptr.dev,
                 &mut count,
             );
@@ -418,7 +414,7 @@ impl DecklinkOutputDeviceAudio {
     }
     pub fn flush_buffered_audio_samples(&self) -> Result<(), SdkError> {
         unsafe {
-            let result = sdk::cdecklink_device_output_flush_buffered_audio_samples(self.ptr.dev);
+            let result = sdk::cdecklink_output_flush_buffered_audio_samples(self.ptr.dev);
             SdkError::result(result)
         }
     }
