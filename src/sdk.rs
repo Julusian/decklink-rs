@@ -23,14 +23,14 @@ pub const __USE_MISC: u32 = 1;
 pub const __USE_ATFILE: u32 = 1;
 pub const __USE_FORTIFY_LEVEL: u32 = 0;
 pub const __GLIBC_USE_DEPRECATED_GETS: u32 = 0;
-pub const __GLIBC_USE_DEPRECATED_SCANF: u32 = 0;
 pub const _STDC_PREDEF_H: u32 = 1;
 pub const __STDC_IEC_559__: u32 = 1;
 pub const __STDC_IEC_559_COMPLEX__: u32 = 1;
 pub const __STDC_ISO_10646__: u32 = 201706;
+pub const __STDC_NO_THREADS__: u32 = 1;
 pub const __GNU_LIBRARY__: u32 = 6;
 pub const __GLIBC__: u32 = 2;
-pub const __GLIBC_MINOR__: u32 = 29;
+pub const __GLIBC_MINOR__: u32 = 27;
 pub const _SYS_CDEFS_H: u32 = 1;
 pub const __glibc_c99_flexarr_available: u32 = 1;
 pub const __WORDSIZE: u32 = 64;
@@ -42,13 +42,11 @@ pub const __GLIBC_USE_IEC_60559_BFP_EXT: u32 = 0;
 pub const __GLIBC_USE_IEC_60559_FUNCS_EXT: u32 = 0;
 pub const __GLIBC_USE_IEC_60559_TYPES_EXT: u32 = 0;
 pub const _BITS_TYPES_H: u32 = 1;
-pub const __TIMESIZE: u32 = 64;
 pub const _BITS_TYPESIZES_H: u32 = 1;
 pub const __OFF_T_MATCHES_OFF64_T: u32 = 1;
 pub const __INO_T_MATCHES_INO64_T: u32 = 1;
 pub const __RLIM_T_MATCHES_RLIM64_T: u32 = 1;
 pub const __FD_SETSIZE: u32 = 1024;
-pub const _BITS_TIME64_H: u32 = 1;
 pub const _BITS_WCHAR_H: u32 = 1;
 pub const _BITS_STDINT_INTN_H: u32 = 1;
 pub const _BITS_STDINT_UINTN_H: u32 = 1;
@@ -103,14 +101,6 @@ pub type __int32_t = ::std::os::raw::c_int;
 pub type __uint32_t = ::std::os::raw::c_uint;
 pub type __int64_t = ::std::os::raw::c_long;
 pub type __uint64_t = ::std::os::raw::c_ulong;
-pub type __int_least8_t = __int8_t;
-pub type __uint_least8_t = __uint8_t;
-pub type __int_least16_t = __int16_t;
-pub type __uint_least16_t = __uint16_t;
-pub type __int_least32_t = __int32_t;
-pub type __uint_least32_t = __uint32_t;
-pub type __int_least64_t = __int64_t;
-pub type __uint_least64_t = __uint64_t;
 pub type __quad_t = ::std::os::raw::c_long;
 pub type __u_quad_t = ::std::os::raw::c_ulong;
 pub type __intmax_t = ::std::os::raw::c_long;
@@ -180,14 +170,14 @@ pub type __caddr_t = *mut ::std::os::raw::c_char;
 pub type __intptr_t = ::std::os::raw::c_long;
 pub type __socklen_t = ::std::os::raw::c_uint;
 pub type __sig_atomic_t = ::std::os::raw::c_int;
-pub type int_least8_t = __int_least8_t;
-pub type int_least16_t = __int_least16_t;
-pub type int_least32_t = __int_least32_t;
-pub type int_least64_t = __int_least64_t;
-pub type uint_least8_t = __uint_least8_t;
-pub type uint_least16_t = __uint_least16_t;
-pub type uint_least32_t = __uint_least32_t;
-pub type uint_least64_t = __uint_least64_t;
+pub type int_least8_t = ::std::os::raw::c_schar;
+pub type int_least16_t = ::std::os::raw::c_short;
+pub type int_least32_t = ::std::os::raw::c_int;
+pub type int_least64_t = ::std::os::raw::c_long;
+pub type uint_least8_t = ::std::os::raw::c_uchar;
+pub type uint_least16_t = ::std::os::raw::c_ushort;
+pub type uint_least32_t = ::std::os::raw::c_uint;
+pub type uint_least64_t = ::std::os::raw::c_ulong;
 pub type int_fast8_t = ::std::os::raw::c_schar;
 pub type int_fast16_t = ::std::os::raw::c_long;
 pub type int_fast32_t = ::std::os::raw::c_long;
@@ -198,1041 +188,2546 @@ pub type uint_fast32_t = ::std::os::raw::c_ulong;
 pub type uint_fast64_t = ::std::os::raw::c_ulong;
 pub type intmax_t = __intmax_t;
 pub type uintmax_t = __uintmax_t;
-pub type BMDTimeValue = i64;
-pub type BMDTimeScale = i64;
 pub type HRESULT = ::std::os::raw::c_int;
-pub type BMDDisplayMode = u32;
-pub const _BMDDisplayMode_bmdModeNTSC: _BMDDisplayMode = 1853125475;
-pub const _BMDDisplayMode_bmdModeNTSC2398: _BMDDisplayMode = 1853108787;
-pub const _BMDDisplayMode_bmdModePAL: _BMDDisplayMode = 1885432864;
-pub const _BMDDisplayMode_bmdModeNTSCp: _BMDDisplayMode = 1853125488;
-pub const _BMDDisplayMode_bmdModePALp: _BMDDisplayMode = 1885432944;
-pub const _BMDDisplayMode_bmdModeHD1080p2398: _BMDDisplayMode = 842231923;
-pub const _BMDDisplayMode_bmdModeHD1080p24: _BMDDisplayMode = 842297459;
-pub const _BMDDisplayMode_bmdModeHD1080p25: _BMDDisplayMode = 1215312437;
-pub const _BMDDisplayMode_bmdModeHD1080p2997: _BMDDisplayMode = 1215312441;
-pub const _BMDDisplayMode_bmdModeHD1080p30: _BMDDisplayMode = 1215312688;
-pub const _BMDDisplayMode_bmdModeHD1080i50: _BMDDisplayMode = 1214854448;
-pub const _BMDDisplayMode_bmdModeHD1080i5994: _BMDDisplayMode = 1214854457;
-pub const _BMDDisplayMode_bmdModeHD1080i6000: _BMDDisplayMode = 1214854704;
-pub const _BMDDisplayMode_bmdModeHD1080p50: _BMDDisplayMode = 1215313200;
-pub const _BMDDisplayMode_bmdModeHD1080p5994: _BMDDisplayMode = 1215313209;
-pub const _BMDDisplayMode_bmdModeHD1080p6000: _BMDDisplayMode = 1215313456;
-pub const _BMDDisplayMode_bmdModeHD720p50: _BMDDisplayMode = 1752184112;
-pub const _BMDDisplayMode_bmdModeHD720p5994: _BMDDisplayMode = 1752184121;
-pub const _BMDDisplayMode_bmdModeHD720p60: _BMDDisplayMode = 1752184368;
-pub const _BMDDisplayMode_bmdMode2k2398: _BMDDisplayMode = 845886003;
-pub const _BMDDisplayMode_bmdMode2k24: _BMDDisplayMode = 845886004;
-pub const _BMDDisplayMode_bmdMode2k25: _BMDDisplayMode = 845886005;
-pub const _BMDDisplayMode_bmdMode2kDCI2398: _BMDDisplayMode = 845427251;
-pub const _BMDDisplayMode_bmdMode2kDCI24: _BMDDisplayMode = 845427252;
-pub const _BMDDisplayMode_bmdMode2kDCI25: _BMDDisplayMode = 845427253;
-pub const _BMDDisplayMode_bmdMode4K2160p2398: _BMDDisplayMode = 879440435;
-pub const _BMDDisplayMode_bmdMode4K2160p24: _BMDDisplayMode = 879440436;
-pub const _BMDDisplayMode_bmdMode4K2160p25: _BMDDisplayMode = 879440437;
-pub const _BMDDisplayMode_bmdMode4K2160p2997: _BMDDisplayMode = 879440441;
-pub const _BMDDisplayMode_bmdMode4K2160p30: _BMDDisplayMode = 879440688;
-pub const _BMDDisplayMode_bmdMode4K2160p50: _BMDDisplayMode = 879441200;
-pub const _BMDDisplayMode_bmdMode4K2160p5994: _BMDDisplayMode = 879441209;
-pub const _BMDDisplayMode_bmdMode4K2160p60: _BMDDisplayMode = 879441456;
-pub const _BMDDisplayMode_bmdMode4kDCI2398: _BMDDisplayMode = 878981683;
-pub const _BMDDisplayMode_bmdMode4kDCI24: _BMDDisplayMode = 878981684;
-pub const _BMDDisplayMode_bmdMode4kDCI25: _BMDDisplayMode = 878981685;
-pub const _BMDDisplayMode_bmdModeCintelRAW: _BMDDisplayMode = 1920426857;
-pub const _BMDDisplayMode_bmdModeCintelCompressedRAW: _BMDDisplayMode = 1920426851;
-pub const _BMDDisplayMode_bmdModeUnknown: _BMDDisplayMode = 1769303659;
-pub type _BMDDisplayMode = u32;
-pub type BMDFieldDominance = u32;
-pub const _BMDFieldDominance_bmdUnknownFieldDominance: _BMDFieldDominance = 0;
-pub const _BMDFieldDominance_bmdLowerFieldFirst: _BMDFieldDominance = 1819244402;
-pub const _BMDFieldDominance_bmdUpperFieldFirst: _BMDFieldDominance = 1970303090;
-pub const _BMDFieldDominance_bmdProgressiveFrame: _BMDFieldDominance = 1886547815;
-pub const _BMDFieldDominance_bmdProgressiveSegmentedFrame: _BMDFieldDominance = 1886610976;
-pub type _BMDFieldDominance = u32;
-pub type BMDPixelFormat = u32;
-pub const _BMDPixelFormat_bmdFormat8BitYUV: _BMDPixelFormat = 846624121;
-pub const _BMDPixelFormat_bmdFormat10BitYUV: _BMDPixelFormat = 1983000880;
-pub const _BMDPixelFormat_bmdFormat8BitARGB: _BMDPixelFormat = 32;
-pub const _BMDPixelFormat_bmdFormat8BitBGRA: _BMDPixelFormat = 1111970369;
-pub const _BMDPixelFormat_bmdFormat10BitRGB: _BMDPixelFormat = 1915892016;
-pub const _BMDPixelFormat_bmdFormat12BitRGB: _BMDPixelFormat = 1378955842;
-pub const _BMDPixelFormat_bmdFormat12BitRGBLE: _BMDPixelFormat = 1378955852;
-pub const _BMDPixelFormat_bmdFormat10BitRGBXLE: _BMDPixelFormat = 1378955372;
-pub const _BMDPixelFormat_bmdFormat10BitRGBX: _BMDPixelFormat = 1378955362;
-pub const _BMDPixelFormat_bmdFormatH265: _BMDPixelFormat = 1751479857;
-pub const _BMDPixelFormat_bmdFormatDNxHR: _BMDPixelFormat = 1096180840;
-pub const _BMDPixelFormat_bmdFormat12BitRAWGRBG: _BMDPixelFormat = 1915826800;
-pub const _BMDPixelFormat_bmdFormat12BitRAWJPEG: _BMDPixelFormat = 1915827824;
-pub type _BMDPixelFormat = u32;
-pub type BMDDisplayModeFlags = u32;
-pub const _BMDDisplayModeFlags_bmdDisplayModeSupports3D: _BMDDisplayModeFlags = 1;
-pub const _BMDDisplayModeFlags_bmdDisplayModeColorspaceRec601: _BMDDisplayModeFlags = 2;
-pub const _BMDDisplayModeFlags_bmdDisplayModeColorspaceRec709: _BMDDisplayModeFlags = 4;
-pub type _BMDDisplayModeFlags = u32;
-pub type BMDVideoOutputFlags = u32;
-pub const _BMDVideoOutputFlags_bmdVideoOutputFlagDefault: _BMDVideoOutputFlags = 0;
-pub const _BMDVideoOutputFlags_bmdVideoOutputVANC: _BMDVideoOutputFlags = 1;
-pub const _BMDVideoOutputFlags_bmdVideoOutputVITC: _BMDVideoOutputFlags = 2;
-pub const _BMDVideoOutputFlags_bmdVideoOutputRP188: _BMDVideoOutputFlags = 4;
-pub const _BMDVideoOutputFlags_bmdVideoOutputDualStream3D: _BMDVideoOutputFlags = 16;
-pub type _BMDVideoOutputFlags = u32;
-pub type BMDPacketType = u32;
-pub const _BMDPacketType_bmdPacketTypeStreamInterruptedMarker: _BMDPacketType = 1936289396;
-pub const _BMDPacketType_bmdPacketTypeStreamData: _BMDPacketType = 1935958388;
-pub type _BMDPacketType = u32;
-pub type BMDFrameFlags = u32;
-pub const _BMDFrameFlags_bmdFrameFlagDefault: _BMDFrameFlags = 0;
-pub const _BMDFrameFlags_bmdFrameFlagFlipVertical: _BMDFrameFlags = 1;
-pub const _BMDFrameFlags_bmdFrameContainsHDRMetadata: _BMDFrameFlags = 2;
-pub const _BMDFrameFlags_bmdFrameContainsCintelMetadata: _BMDFrameFlags = 4;
-pub const _BMDFrameFlags_bmdFrameHasNoInputSource: _BMDFrameFlags = -2147483648;
-pub type _BMDFrameFlags = i32;
-pub type BMDVideoInputFlags = u32;
-pub const _BMDVideoInputFlags_bmdVideoInputFlagDefault: _BMDVideoInputFlags = 0;
-pub const _BMDVideoInputFlags_bmdVideoInputEnableFormatDetection: _BMDVideoInputFlags = 1;
-pub const _BMDVideoInputFlags_bmdVideoInputDualStream3D: _BMDVideoInputFlags = 2;
-pub type _BMDVideoInputFlags = u32;
-pub type BMDVideoInputFormatChangedEvents = u32;
-pub const _BMDVideoInputFormatChangedEvents_bmdVideoInputDisplayModeChanged:
-    _BMDVideoInputFormatChangedEvents = 1;
-pub const _BMDVideoInputFormatChangedEvents_bmdVideoInputFieldDominanceChanged:
-    _BMDVideoInputFormatChangedEvents = 2;
-pub const _BMDVideoInputFormatChangedEvents_bmdVideoInputColorspaceChanged:
-    _BMDVideoInputFormatChangedEvents = 4;
-pub type _BMDVideoInputFormatChangedEvents = u32;
-pub type BMDDetectedVideoInputFormatFlags = u32;
-pub const _BMDDetectedVideoInputFormatFlags_bmdDetectedVideoInputYCbCr422:
-    _BMDDetectedVideoInputFormatFlags = 1;
-pub const _BMDDetectedVideoInputFormatFlags_bmdDetectedVideoInputRGB444:
-    _BMDDetectedVideoInputFormatFlags = 2;
-pub const _BMDDetectedVideoInputFormatFlags_bmdDetectedVideoInputDualStream3D:
-    _BMDDetectedVideoInputFormatFlags = 4;
-pub type _BMDDetectedVideoInputFormatFlags = u32;
-pub type BMDDeckLinkCapturePassthroughMode = u32;
-pub const _BMDDeckLinkCapturePassthroughMode_bmdDeckLinkCapturePassthroughModeDisabled:
-    _BMDDeckLinkCapturePassthroughMode = 1885628787;
-pub const _BMDDeckLinkCapturePassthroughMode_bmdDeckLinkCapturePassthroughModeDirect:
-    _BMDDeckLinkCapturePassthroughMode = 1885628786;
-pub const _BMDDeckLinkCapturePassthroughMode_bmdDeckLinkCapturePassthroughModeCleanSwitch:
-    _BMDDeckLinkCapturePassthroughMode = 1885564014;
-pub type _BMDDeckLinkCapturePassthroughMode = u32;
-pub type BMDOutputFrameCompletionResult = u32;
-pub const _BMDOutputFrameCompletionResult_bmdOutputFrameCompleted: _BMDOutputFrameCompletionResult =
-    0;
-pub const _BMDOutputFrameCompletionResult_bmdOutputFrameDisplayedLate:
-    _BMDOutputFrameCompletionResult = 1;
-pub const _BMDOutputFrameCompletionResult_bmdOutputFrameDropped: _BMDOutputFrameCompletionResult =
-    2;
-pub const _BMDOutputFrameCompletionResult_bmdOutputFrameFlushed: _BMDOutputFrameCompletionResult =
-    3;
-pub type _BMDOutputFrameCompletionResult = u32;
-pub type BMDReferenceStatus = u32;
-pub const _BMDReferenceStatus_bmdReferenceNotSupportedByHardware: _BMDReferenceStatus = 1;
-pub const _BMDReferenceStatus_bmdReferenceLocked: _BMDReferenceStatus = 2;
-pub type _BMDReferenceStatus = u32;
-pub type BMDAudioFormat = u32;
-pub const _BMDAudioFormat_bmdAudioFormatPCM: _BMDAudioFormat = 1819304813;
-pub type _BMDAudioFormat = u32;
-pub type BMDAudioSampleRate = u32;
-pub const _BMDAudioSampleRate_bmdAudioSampleRate48kHz: _BMDAudioSampleRate = 48000;
-pub type _BMDAudioSampleRate = u32;
-pub type BMDAudioSampleType = u32;
-pub const _BMDAudioSampleType_bmdAudioSampleType16bitInteger: _BMDAudioSampleType = 16;
-pub const _BMDAudioSampleType_bmdAudioSampleType32bitInteger: _BMDAudioSampleType = 32;
-pub type _BMDAudioSampleType = u32;
-pub type BMDAudioOutputStreamType = u32;
-pub const _BMDAudioOutputStreamType_bmdAudioOutputStreamContinuous: _BMDAudioOutputStreamType = 0;
-pub const _BMDAudioOutputStreamType_bmdAudioOutputStreamContinuousDontResample:
-    _BMDAudioOutputStreamType = 1;
-pub const _BMDAudioOutputStreamType_bmdAudioOutputStreamTimestamped: _BMDAudioOutputStreamType = 2;
-pub type _BMDAudioOutputStreamType = u32;
-pub type BMDDisplayModeSupport = u32;
-pub const _BMDDisplayModeSupport_bmdDisplayModeNotSupported: _BMDDisplayModeSupport = 0;
-pub const _BMDDisplayModeSupport_bmdDisplayModeSupported: _BMDDisplayModeSupport = 1;
-pub const _BMDDisplayModeSupport_bmdDisplayModeSupportedWithConversion: _BMDDisplayModeSupport = 2;
-pub type _BMDDisplayModeSupport = u32;
-pub type BMDTimecodeFormat = u32;
-pub const _BMDTimecodeFormat_bmdTimecodeRP188VITC1: _BMDTimecodeFormat = 1919972913;
-pub const _BMDTimecodeFormat_bmdTimecodeRP188VITC2: _BMDTimecodeFormat = 1919955250;
-pub const _BMDTimecodeFormat_bmdTimecodeRP188LTC: _BMDTimecodeFormat = 1919970420;
-pub const _BMDTimecodeFormat_bmdTimecodeRP188Any: _BMDTimecodeFormat = 1919955256;
-pub const _BMDTimecodeFormat_bmdTimecodeVITC: _BMDTimecodeFormat = 1986622563;
-pub const _BMDTimecodeFormat_bmdTimecodeVITCField2: _BMDTimecodeFormat = 1986622514;
-pub const _BMDTimecodeFormat_bmdTimecodeSerial: _BMDTimecodeFormat = 1936028265;
-pub type _BMDTimecodeFormat = u32;
-pub type BMDAnalogVideoFlags = u32;
-pub const _BMDAnalogVideoFlags_bmdAnalogVideoFlagCompositeSetup75: _BMDAnalogVideoFlags = 1;
-pub const _BMDAnalogVideoFlags_bmdAnalogVideoFlagComponentBetacamLevels: _BMDAnalogVideoFlags = 2;
-pub type _BMDAnalogVideoFlags = u32;
-pub type BMDAudioOutputAnalogAESSwitch = u32;
-pub const _BMDAudioOutputAnalogAESSwitch_bmdAudioOutputSwitchAESEBU:
-    _BMDAudioOutputAnalogAESSwitch = 1634038560;
-pub const _BMDAudioOutputAnalogAESSwitch_bmdAudioOutputSwitchAnalog:
-    _BMDAudioOutputAnalogAESSwitch = 1634626663;
-pub type _BMDAudioOutputAnalogAESSwitch = u32;
-pub type BMDVideoOutputConversionMode = u32;
-pub const _BMDVideoOutputConversionMode_bmdNoVideoOutputConversion: _BMDVideoOutputConversionMode =
-    1852796517;
-pub const _BMDVideoOutputConversionMode_bmdVideoOutputLetterboxDownconversion:
-    _BMDVideoOutputConversionMode = 1819566712;
-pub const _BMDVideoOutputConversionMode_bmdVideoOutputAnamorphicDownconversion:
-    _BMDVideoOutputConversionMode = 1634562152;
-pub const _BMDVideoOutputConversionMode_bmdVideoOutputHD720toHD1080Conversion:
-    _BMDVideoOutputConversionMode = 926036067;
-pub const _BMDVideoOutputConversionMode_bmdVideoOutputHardwareLetterboxDownconversion:
-    _BMDVideoOutputConversionMode = 1213688930;
-pub const _BMDVideoOutputConversionMode_bmdVideoOutputHardwareAnamorphicDownconversion:
-    _BMDVideoOutputConversionMode = 1213686125;
-pub const _BMDVideoOutputConversionMode_bmdVideoOutputHardwareCenterCutDownconversion:
-    _BMDVideoOutputConversionMode = 1213686627;
-pub const _BMDVideoOutputConversionMode_bmdVideoOutputHardware720p1080pCrossconversion:
-    _BMDVideoOutputConversionMode = 2019778928;
-pub const _BMDVideoOutputConversionMode_bmdVideoOutputHardwareAnamorphic720pUpconversion:
-    _BMDVideoOutputConversionMode = 1969305456;
-pub const _BMDVideoOutputConversionMode_bmdVideoOutputHardwareAnamorphic1080iUpconversion:
-    _BMDVideoOutputConversionMode = 1969303913;
-pub const _BMDVideoOutputConversionMode_bmdVideoOutputHardwareAnamorphic149To720pUpconversion:
-    _BMDVideoOutputConversionMode = 1966356336;
-pub const _BMDVideoOutputConversionMode_bmdVideoOutputHardwareAnamorphic149To1080iUpconversion:
-    _BMDVideoOutputConversionMode = 1966354793;
-pub const _BMDVideoOutputConversionMode_bmdVideoOutputHardwarePillarbox720pUpconversion:
-    _BMDVideoOutputConversionMode = 1970288496;
-pub const _BMDVideoOutputConversionMode_bmdVideoOutputHardwarePillarbox1080iUpconversion:
-    _BMDVideoOutputConversionMode = 1970286953;
-pub type _BMDVideoOutputConversionMode = u32;
-pub type BMDVideoInputConversionMode = u32;
-pub const _BMDVideoInputConversionMode_bmdNoVideoInputConversion: _BMDVideoInputConversionMode =
-    1852796517;
-pub const _BMDVideoInputConversionMode_bmdVideoInputLetterboxDownconversionFromHD1080:
-    _BMDVideoInputConversionMode = 825257058;
-pub const _BMDVideoInputConversionMode_bmdVideoInputAnamorphicDownconversionFromHD1080:
-    _BMDVideoInputConversionMode = 825254253;
-pub const _BMDVideoInputConversionMode_bmdVideoInputLetterboxDownconversionFromHD720:
-    _BMDVideoInputConversionMode = 926051426;
-pub const _BMDVideoInputConversionMode_bmdVideoInputAnamorphicDownconversionFromHD720:
-    _BMDVideoInputConversionMode = 926048621;
-pub const _BMDVideoInputConversionMode_bmdVideoInputLetterboxUpconversion:
-    _BMDVideoInputConversionMode = 1818391920;
-pub const _BMDVideoInputConversionMode_bmdVideoInputAnamorphicUpconversion:
-    _BMDVideoInputConversionMode = 1634563440;
-pub type _BMDVideoInputConversionMode = u32;
-pub type BMDVideo3DPackingFormat = u32;
-pub const _BMDVideo3DPackingFormat_bmdVideo3DPackingSidebySideHalf: _BMDVideo3DPackingFormat =
-    1935831912;
-pub const _BMDVideo3DPackingFormat_bmdVideo3DPackingLinebyLine: _BMDVideo3DPackingFormat =
-    1818392940;
-pub const _BMDVideo3DPackingFormat_bmdVideo3DPackingTopAndBottom: _BMDVideo3DPackingFormat =
-    1952539247;
-pub const _BMDVideo3DPackingFormat_bmdVideo3DPackingFramePacking: _BMDVideo3DPackingFormat =
-    1718775915;
-pub const _BMDVideo3DPackingFormat_bmdVideo3DPackingLeftOnly: _BMDVideo3DPackingFormat = 1818584692;
-pub const _BMDVideo3DPackingFormat_bmdVideo3DPackingRightOnly: _BMDVideo3DPackingFormat =
-    1919510376;
-pub type _BMDVideo3DPackingFormat = u32;
-pub type BMDIdleVideoOutputOperation = u32;
-pub const _BMDIdleVideoOutputOperation_bmdIdleVideoOutputBlack: _BMDIdleVideoOutputOperation =
-    1651269987;
-pub const _BMDIdleVideoOutputOperation_bmdIdleVideoOutputLastFrame: _BMDIdleVideoOutputOperation =
-    1818322529;
-pub type _BMDIdleVideoOutputOperation = u32;
-pub type BMDVideoEncoderFrameCodingMode = u32;
-pub const _BMDVideoEncoderFrameCodingMode_bmdVideoEncoderFrameCodingModeInter:
-    _BMDVideoEncoderFrameCodingMode = 1768846437;
-pub const _BMDVideoEncoderFrameCodingMode_bmdVideoEncoderFrameCodingModeIntra:
-    _BMDVideoEncoderFrameCodingMode = 1768846450;
-pub type _BMDVideoEncoderFrameCodingMode = u32;
-pub type BMDDNxHRLevel = u32;
-pub const _BMDDNxHRLevel_bmdDNxHRLevelSQ: _BMDDNxHRLevel = 1684960113;
-pub const _BMDDNxHRLevel_bmdDNxHRLevelLB: _BMDDNxHRLevel = 1684958306;
-pub const _BMDDNxHRLevel_bmdDNxHRLevelHQ: _BMDDNxHRLevel = 1684957297;
-pub const _BMDDNxHRLevel_bmdDNxHRLevelHQX: _BMDDNxHRLevel = 1684566392;
-pub const _BMDDNxHRLevel_bmdDNxHRLevel444: _BMDDNxHRLevel = 1681142836;
-pub type _BMDDNxHRLevel = u32;
-pub type BMDLinkConfiguration = u32;
-pub const _BMDLinkConfiguration_bmdLinkConfigurationSingleLink: _BMDLinkConfiguration = 1818456940;
-pub const _BMDLinkConfiguration_bmdLinkConfigurationDualLink: _BMDLinkConfiguration = 1818453100;
-pub const _BMDLinkConfiguration_bmdLinkConfigurationQuadLink: _BMDLinkConfiguration = 1818456428;
-pub type _BMDLinkConfiguration = u32;
-pub type BMDDeviceInterface = u32;
-pub const _BMDDeviceInterface_bmdDeviceInterfacePCI: _BMDDeviceInterface = 1885563168;
-pub const _BMDDeviceInterface_bmdDeviceInterfaceUSB: _BMDDeviceInterface = 1970496032;
-pub const _BMDDeviceInterface_bmdDeviceInterfaceThunderbolt: _BMDDeviceInterface = 1953002862;
-pub type _BMDDeviceInterface = u32;
-pub type BMDDeckLinkFrameMetadataID = u32;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRElectroOpticalTransferFunc:
-    _BMDDeckLinkFrameMetadataID = 1701803110;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelFilmType:
-    _BMDDeckLinkFrameMetadataID = 1667658873;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelFilmGauge:
-    _BMDDeckLinkFrameMetadataID = 1667655521;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelOffsetDetectedHorizontal:
-    _BMDDeckLinkFrameMetadataID = 1868850792;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelOffsetDetectedVertical:
-    _BMDDeckLinkFrameMetadataID = 1868850806;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelKeykodeLow:
-    _BMDDeckLinkFrameMetadataID = 1667984236;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelKeykodeHigh:
-    _BMDDeckLinkFrameMetadataID = 1667984232;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelTile1Size:
-    _BMDDeckLinkFrameMetadataID = 1668559219;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelTile2Size:
-    _BMDDeckLinkFrameMetadataID = 1668559475;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelTile3Size:
-    _BMDDeckLinkFrameMetadataID = 1668559731;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelTile4Size:
-    _BMDDeckLinkFrameMetadataID = 1668559987;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelImageWidth:
-    _BMDDeckLinkFrameMetadataID = 1230459000;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelImageHeight:
-    _BMDDeckLinkFrameMetadataID = 1229475960;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLinearMaskingRedInRed:
-    _BMDDeckLinkFrameMetadataID = 1836214642;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLinearMaskingGreenInRed:
-    _BMDDeckLinkFrameMetadataID = 1835493746;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLinearMaskingBlueInRed:
-    _BMDDeckLinkFrameMetadataID = 1835166066;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLinearMaskingRedInGreen:
-    _BMDDeckLinkFrameMetadataID = 1836214631;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLinearMaskingGreenInGreen:
-    _BMDDeckLinkFrameMetadataID = 1835493735;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLinearMaskingBlueInGreen:
-    _BMDDeckLinkFrameMetadataID = 1835166055;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLinearMaskingRedInBlue:
-    _BMDDeckLinkFrameMetadataID = 1836214626;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLinearMaskingGreenInBlue:
-    _BMDDeckLinkFrameMetadataID = 1835493730;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLinearMaskingBlueInBlue:
-    _BMDDeckLinkFrameMetadataID = 1835166050;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLogMaskingRedInRed:
-    _BMDDeckLinkFrameMetadataID = 1835823730;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLogMaskingGreenInRed:
-    _BMDDeckLinkFrameMetadataID = 1835820914;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLogMaskingBlueInRed:
-    _BMDDeckLinkFrameMetadataID = 1835819634;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLogMaskingRedInGreen:
-    _BMDDeckLinkFrameMetadataID = 1835823719;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLogMaskingGreenInGreen:
-    _BMDDeckLinkFrameMetadataID = 1835820903;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLogMaskingBlueInGreen:
-    _BMDDeckLinkFrameMetadataID = 1835819623;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLogMaskingRedInBlue:
-    _BMDDeckLinkFrameMetadataID = 1835823714;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLogMaskingGreenInBlue:
-    _BMDDeckLinkFrameMetadataID = 1835820898;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLogMaskingBlueInBlue:
-    _BMDDeckLinkFrameMetadataID = 1835819618;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelFilmFrameRate:
-    _BMDDeckLinkFrameMetadataID = 1667655282;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRDisplayPrimariesRedX:
-    _BMDDeckLinkFrameMetadataID = 1751413368;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRDisplayPrimariesRedY:
-    _BMDDeckLinkFrameMetadataID = 1751413369;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRDisplayPrimariesGreenX:
-    _BMDDeckLinkFrameMetadataID = 1751410552;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRDisplayPrimariesGreenY:
-    _BMDDeckLinkFrameMetadataID = 1751410553;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRDisplayPrimariesBlueX:
-    _BMDDeckLinkFrameMetadataID = 1751409272;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRDisplayPrimariesBlueY:
-    _BMDDeckLinkFrameMetadataID = 1751409273;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRWhitePointX:
-    _BMDDeckLinkFrameMetadataID = 1751414648;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRWhitePointY:
-    _BMDDeckLinkFrameMetadataID = 1751414649;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRMaxDisplayMasteringLuminance:
-    _BMDDeckLinkFrameMetadataID = 1751412076;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRMinDisplayMasteringLuminance:
-    _BMDDeckLinkFrameMetadataID = 1752000876;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRMaximumContentLightLevel:
-    _BMDDeckLinkFrameMetadataID = 1835232364;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataHDRMaximumFrameAverageLightLevel:
-    _BMDDeckLinkFrameMetadataID = 1717660780;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelOffsetToApplyHorizontal:
-    _BMDDeckLinkFrameMetadataID = 1869898088;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelOffsetToApplyVertical:
-    _BMDDeckLinkFrameMetadataID = 1869898102;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelGainRed:
-    _BMDDeckLinkFrameMetadataID = 1281774180;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelGainGreen:
-    _BMDDeckLinkFrameMetadataID = 1281771378;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelGainBlue:
-    _BMDDeckLinkFrameMetadataID = 1281770092;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLiftRed:
-    _BMDDeckLinkFrameMetadataID = 1198412388;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLiftGreen:
-    _BMDDeckLinkFrameMetadataID = 1198409586;
-pub const _BMDDeckLinkFrameMetadataID_bmdDeckLinkFrameMetadataCintelLiftBlue:
-    _BMDDeckLinkFrameMetadataID = 1198408300;
-pub type _BMDDeckLinkFrameMetadataID = u32;
-pub type BMDDuplexMode = u32;
-pub const _BMDDuplexMode_bmdDuplexModeFull: _BMDDuplexMode = 1717859696;
-pub const _BMDDuplexMode_bmdDuplexModeHalf: _BMDDuplexMode = 1751414128;
-pub type _BMDDuplexMode = u32;
-pub type BMDDeckLinkAttributeID = u32;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsInternalKeying: _BMDDeckLinkAttributeID =
-    1801812329;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsExternalKeying: _BMDDeckLinkAttributeID =
-    1801812325;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsHDKeying: _BMDDeckLinkAttributeID = 1801812328;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsInputFormatDetection: _BMDDeckLinkAttributeID =
-    1768842852;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkHasReferenceInput: _BMDDeckLinkAttributeID =
-    1752328558;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkHasSerialPort: _BMDDeckLinkAttributeID = 1752395892;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkHasAnalogVideoOutputGain: _BMDDeckLinkAttributeID =
-    1635151719;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkCanOnlyAdjustOverallVideoOutputGain:
-    _BMDDeckLinkAttributeID = 1870032743;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkHasVideoInputAntiAliasingFilter:
-    _BMDDeckLinkAttributeID = 1633773164;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkHasBypass: _BMDDeckLinkAttributeID = 1652125811;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsClockTimingAdjustment:
-    _BMDDeckLinkAttributeID = 1668571492;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsFullDuplex: _BMDDeckLinkAttributeID =
-    1717859696;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsFullFrameReferenceInputTimingOffset:
-    _BMDDeckLinkAttributeID = 1718774126;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsSMPTELevelAOutput: _BMDDeckLinkAttributeID =
-    1819700321;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsDualLinkSDI: _BMDDeckLinkAttributeID =
-    1935961203;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsQuadLinkSDI: _BMDDeckLinkAttributeID =
-    1936813171;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsIdleOutput: _BMDDeckLinkAttributeID =
-    1768189813;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkHasLTCTimecodeInput: _BMDDeckLinkAttributeID =
-    1751938147;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsDuplexModeConfiguration:
-    _BMDDeckLinkAttributeID = 1685418104;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkSupportsHDRMetadata: _BMDDeckLinkAttributeID =
-    1751413357;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkMaximumAudioChannels: _BMDDeckLinkAttributeID =
-    1835098984;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkMaximumAnalogAudioInputChannels:
-    _BMDDeckLinkAttributeID = 1767990120;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkMaximumAnalogAudioOutputChannels:
-    _BMDDeckLinkAttributeID = 1633772392;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkNumberOfSubDevices: _BMDDeckLinkAttributeID =
-    1853055588;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkSubDeviceIndex: _BMDDeckLinkAttributeID = 1937072745;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkPersistentID: _BMDDeckLinkAttributeID = 1885694308;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkDeviceGroupID: _BMDDeckLinkAttributeID = 1684498788;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkTopologicalID: _BMDDeckLinkAttributeID = 1953458532;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkVideoOutputConnections: _BMDDeckLinkAttributeID =
-    1987011438;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkVideoInputConnections: _BMDDeckLinkAttributeID =
-    1986618222;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkAudioOutputConnections: _BMDDeckLinkAttributeID =
-    1634689902;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkAudioInputConnections: _BMDDeckLinkAttributeID =
-    1634296686;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkVideoIOSupport: _BMDDeckLinkAttributeID = 1986621299;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkDeckControlConnections: _BMDDeckLinkAttributeID =
-    1684235118;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkDeviceInterface: _BMDDeckLinkAttributeID = 1684174195;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkAudioInputRCAChannelCount: _BMDDeckLinkAttributeID =
-    1634300515;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkAudioInputXLRChannelCount: _BMDDeckLinkAttributeID =
-    1634302051;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkAudioOutputRCAChannelCount: _BMDDeckLinkAttributeID =
-    1634693731;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkAudioOutputXLRChannelCount: _BMDDeckLinkAttributeID =
-    1634695267;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkPairedDevicePersistentID: _BMDDeckLinkAttributeID =
-    1886415204;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkVideoInputGainMinimum: _BMDDeckLinkAttributeID =
-    1986619245;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkVideoInputGainMaximum: _BMDDeckLinkAttributeID =
-    1986619256;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkVideoOutputGainMinimum: _BMDDeckLinkAttributeID =
-    1987012461;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkVideoOutputGainMaximum: _BMDDeckLinkAttributeID =
-    1987012472;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkMicrophoneInputGainMinimum: _BMDDeckLinkAttributeID =
-    1835624301;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkMicrophoneInputGainMaximum: _BMDDeckLinkAttributeID =
-    1835624312;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkSerialPortDeviceName: _BMDDeckLinkAttributeID =
-    1936486510;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkVendorName: _BMDDeckLinkAttributeID = 1986946162;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkDisplayName: _BMDDeckLinkAttributeID = 1685287022;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkModelName: _BMDDeckLinkAttributeID = 1835297902;
-pub const _BMDDeckLinkAttributeID_BMDDeckLinkDeviceHandle: _BMDDeckLinkAttributeID = 1684371048;
-pub type _BMDDeckLinkAttributeID = u32;
-pub type BMDDeckLinkAPIInformationID = u32;
-pub const _BMDDeckLinkAPIInformationID_BMDDeckLinkAPIVersion: _BMDDeckLinkAPIInformationID =
-    1986359923;
-pub type _BMDDeckLinkAPIInformationID = u32;
-pub type BMDDeckLinkStatusID = u32;
-pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusDetectedVideoInputMode: _BMDDeckLinkStatusID =
-    1685481837;
-pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusDetectedVideoInputFlags: _BMDDeckLinkStatusID =
-    1685481830;
-pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusCurrentVideoInputMode: _BMDDeckLinkStatusID =
-    1668704621;
-pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusCurrentVideoInputPixelFormat: _BMDDeckLinkStatusID =
-    1668704624;
-pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusCurrentVideoInputFlags: _BMDDeckLinkStatusID =
-    1668704614;
-pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusCurrentVideoOutputMode: _BMDDeckLinkStatusID =
-    1668706157;
-pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusCurrentVideoOutputFlags: _BMDDeckLinkStatusID =
-    1668706150;
-pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusPCIExpressLinkWidth: _BMDDeckLinkStatusID =
-    1886873956;
-pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusPCIExpressLinkSpeed: _BMDDeckLinkStatusID =
-    1886154347;
-pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusLastVideoOutputPixelFormat: _BMDDeckLinkStatusID =
-    1869638008;
-pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusReferenceSignalMode: _BMDDeckLinkStatusID =
-    1919247981;
-pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusReferenceSignalFlags: _BMDDeckLinkStatusID =
-    1919247974;
-pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusDuplexMode: _BMDDeckLinkStatusID = 1685418104;
-pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusBusy: _BMDDeckLinkStatusID = 1651864441;
-pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusInterchangeablePanelType: _BMDDeckLinkStatusID =
-    1768124532;
-pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusVideoInputSignalLocked: _BMDDeckLinkStatusID =
-    1986622316;
-pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusReferenceSignalLocked: _BMDDeckLinkStatusID =
-    1919247980;
-pub const _BMDDeckLinkStatusID_bmdDeckLinkStatusReceivedEDID: _BMDDeckLinkStatusID = 1701079396;
-pub type _BMDDeckLinkStatusID = u32;
-pub type BMDDeckLinkVideoStatusFlags = u32;
-pub const _BMDDeckLinkVideoStatusFlags_bmdDeckLinkVideoStatusPsF: _BMDDeckLinkVideoStatusFlags = 1;
-pub const _BMDDeckLinkVideoStatusFlags_bmdDeckLinkVideoStatusDualStream3D:
-    _BMDDeckLinkVideoStatusFlags = 2;
-pub type _BMDDeckLinkVideoStatusFlags = u32;
-pub type BMDDuplexStatus = u32;
-pub const _BMDDuplexStatus_bmdDuplexStatusFullDuplex: _BMDDuplexStatus = 1717859696;
-pub const _BMDDuplexStatus_bmdDuplexStatusHalfDuplex: _BMDDuplexStatus = 1751414128;
-pub const _BMDDuplexStatus_bmdDuplexStatusSimplex: _BMDDuplexStatus = 1936747640;
-pub const _BMDDuplexStatus_bmdDuplexStatusInactive: _BMDDuplexStatus = 1768841571;
-pub type _BMDDuplexStatus = u32;
-pub type BMDPanelType = u32;
-pub const _BMDPanelType_bmdPanelNotDetected: _BMDPanelType = 1852862060;
-pub const _BMDPanelType_bmdPanelTeranexMiniSmartPanel: _BMDPanelType = 1953330029;
-pub type _BMDPanelType = u32;
-pub type BMDDeviceBusyState = u32;
-pub const _BMDDeviceBusyState_bmdDeviceCaptureBusy: _BMDDeviceBusyState = 1;
-pub const _BMDDeviceBusyState_bmdDevicePlaybackBusy: _BMDDeviceBusyState = 2;
-pub const _BMDDeviceBusyState_bmdDeviceSerialPortBusy: _BMDDeviceBusyState = 4;
-pub type _BMDDeviceBusyState = u32;
-pub type BMDVideoIOSupport = u32;
-pub const _BMDVideoIOSupport_bmdDeviceSupportsCapture: _BMDVideoIOSupport = 1;
-pub const _BMDVideoIOSupport_bmdDeviceSupportsPlayback: _BMDVideoIOSupport = 2;
-pub type _BMDVideoIOSupport = u32;
-pub type BMD3DPreviewFormat = u32;
-pub const _BMD3DPreviewFormat_bmd3DPreviewFormatDefault: _BMD3DPreviewFormat = 1684366945;
-pub const _BMD3DPreviewFormat_bmd3DPreviewFormatLeftOnly: _BMD3DPreviewFormat = 1818584692;
-pub const _BMD3DPreviewFormat_bmd3DPreviewFormatRightOnly: _BMD3DPreviewFormat = 1919510376;
-pub const _BMD3DPreviewFormat_bmd3DPreviewFormatSideBySide: _BMD3DPreviewFormat = 1936286821;
-pub const _BMD3DPreviewFormat_bmd3DPreviewFormatTopBottom: _BMD3DPreviewFormat = 1953460322;
-pub type _BMD3DPreviewFormat = u32;
-pub type BMDNotifications = u32;
-pub const _BMDNotifications_bmdPreferencesChanged: _BMDNotifications = 1886545254;
-pub const _BMDNotifications_bmdStatusChanged: _BMDNotifications = 1937006964;
-pub type _BMDNotifications = u32;
-pub type cdecklink_iterator_t = ::std::os::raw::c_void;
+pub type cdecklink_timecode_t = ::std::os::raw::c_void;
 pub type cdecklink_display_mode_iterator_t = ::std::os::raw::c_void;
 pub type cdecklink_display_mode_t = ::std::os::raw::c_void;
 pub type cdecklink_device_t = ::std::os::raw::c_void;
-pub type cdecklink_device_output_t = ::std::os::raw::c_void;
-pub type cdecklink_device_input_t = ::std::os::raw::c_void;
+pub type cdecklink_configuration_t = ::std::os::raw::c_void;
+pub type cdecklink_encoder_configuration_t = ::std::os::raw::c_void;
+pub type cdecklink_deck_control_t = ::std::os::raw::c_void;
+pub type cdecklink_memory_allocator_t = ::std::os::raw::c_void;
+pub type cdecklink_iterator_t = ::std::os::raw::c_void;
+pub type cdecklink_api_information_t = ::std::os::raw::c_void;
+pub type cdecklink_output_t = ::std::os::raw::c_void;
+pub type cdecklink_input_t = ::std::os::raw::c_void;
+pub type cdecklink_encoder_input_t = ::std::os::raw::c_void;
 pub type cdecklink_video_frame_t = ::std::os::raw::c_void;
 pub type cdecklink_mutable_video_frame_t = ::std::os::raw::c_void;
+pub type cdecklink_video_frame3_d_extensions_t = ::std::os::raw::c_void;
+pub type cdecklink_video_frame_metadata_extensions_t = ::std::os::raw::c_void;
 pub type cdecklink_video_input_frame_t = ::std::os::raw::c_void;
-pub type cdecklink_audio_input_packet_t = ::std::os::raw::c_void;
-pub type cdecklink_timecode_t = ::std::os::raw::c_void;
 pub type cdecklink_video_frame_ancillary_t = ::std::os::raw::c_void;
+pub type cdecklink_encoder_packet_t = ::std::os::raw::c_void;
+pub type cdecklink_encoder_video_packet_t = ::std::os::raw::c_void;
+pub type cdecklink_encoder_audio_packet_t = ::std::os::raw::c_void;
+pub type cdecklink_h265nal_packet_t = ::std::os::raw::c_void;
+pub type cdecklink_audio_input_packet_t = ::std::os::raw::c_void;
+pub type cdecklink_gl_screen_preview_helper_t = ::std::os::raw::c_void;
+pub type cdecklink_notification_t = ::std::os::raw::c_void;
+pub type cdecklink_attributes_t = ::std::os::raw::c_void;
+pub type cdecklink_status_t = ::std::os::raw::c_void;
+pub type cdecklink_keyer_t = ::std::os::raw::c_void;
+pub type cdecklink_video_conversion_t = ::std::os::raw::c_void;
+pub type cdecklink_discovery_t = ::std::os::raw::c_void;
 extern "C" {
-    pub fn cdecklink_release_display_mode_iterator(it: *mut cdecklink_display_mode_iterator_t);
+    pub fn cdecklink_free_string(str: *const ::std::os::raw::c_char);
 }
 extern "C" {
-    pub fn cdecklink_next_display_mode(
-        it: *mut cdecklink_display_mode_iterator_t,
-        mode: *mut *mut cdecklink_display_mode_t,
+    pub fn cdecklink_api_version(
+        it: *mut cdecklink_iterator_t,
+        str: *mut *const ::std::os::raw::c_char,
+    ) -> HRESULT;
+}
+pub type DecklinkTimeValue = i64;
+pub type DecklinkTimeScale = i64;
+pub type DecklinkTimecodeBCD = u32;
+pub type DecklinkTimecodeUserBits = u32;
+pub type DecklinkTimecodeFlags = u32;
+pub type DecklinkVideoConnection = u32;
+pub type DecklinkAudioConnection = u32;
+pub type DecklinkDeckControlConnection = u32;
+pub type DecklinkDisplayMode = u32;
+pub type DecklinkFieldDominance = u32;
+pub type DecklinkPixelFormat = u32;
+pub type DecklinkDisplayModeFlags = u32;
+pub type DecklinkConfigurationID = u32;
+pub type DecklinkEncoderConfigurationID = u32;
+pub type DecklinkDeckControlMode = u32;
+pub type DecklinkDeckControlEvent = u32;
+pub type DecklinkDeckControlVTRControlState = u32;
+pub type DecklinkDeckControlStatusFlags = u32;
+pub type DecklinkDeckControlExportModeOpsFlags = u32;
+pub type DecklinkDeckControlError = u32;
+pub type DecklinkVideoOutputFlags = u32;
+pub type DecklinkPacketType = u32;
+pub type DecklinkFrameFlags = u32;
+pub type DecklinkVideoInputFlags = u32;
+pub type DecklinkVideoInputFormatChangedEvents = u32;
+pub type DecklinkDetectedVideoInputFormatFlags = u32;
+pub type DecklinkCapturePassthroughMode = u32;
+pub type DecklinkOutputFrameCompletionResult = u32;
+pub type DecklinkReferenceStatus = u32;
+pub type DecklinkAudioFormat = u32;
+pub type DecklinkAudioSampleRate = u32;
+pub type DecklinkAudioSampleType = u32;
+pub type DecklinkAudioOutputStreamType = u32;
+pub type DecklinkDisplayModeSupport = u32;
+pub type DecklinkTimecodeFormat = u32;
+pub type DecklinkAnalogVideoFlags = u32;
+pub type DecklinkAudioOutputAnalogAESSwitch = u32;
+pub type DecklinkVideoOutputConversionMode = u32;
+pub type DecklinkVideoInputConversionMode = u32;
+pub type DecklinkVideo3DPackingFormat = u32;
+pub type DecklinkIdleVideoOutputOperation = u32;
+pub type DecklinkVideoEncoderFrameCodingMode = u32;
+pub type DecklinkDNxHRLevel = u32;
+pub type DecklinkLinkConfiguration = u32;
+pub type DecklinkDeviceInterface = u32;
+pub type DecklinkFrameMetadataID = u32;
+pub type DecklinkDuplexMode = u32;
+pub type DecklinkAttributeID = u32;
+pub type DecklinkAPIInformationID = u32;
+pub type DecklinkStatusID = u32;
+pub type DecklinkVideoStatusFlags = u32;
+pub type DecklinkDuplexStatus = u32;
+pub type DecklinkPanelType = u32;
+pub type DecklinkDeviceBusyState = u32;
+pub type DecklinkVideoIOSupport = u32;
+pub type Decklink3DPreviewFormat = u32;
+pub type DecklinkNotifications = u32;
+pub const _DecklinkTimecodeFlags_decklinkTimecodeFlagDefault: _DecklinkTimecodeFlags = 0;
+pub const _DecklinkTimecodeFlags_decklinkTimecodeIsDropFrame: _DecklinkTimecodeFlags = 1;
+pub const _DecklinkTimecodeFlags_decklinkTimecodeFieldMark: _DecklinkTimecodeFlags = 2;
+pub const _DecklinkTimecodeFlags_decklinkTimecodeColorFrame: _DecklinkTimecodeFlags = 4;
+pub type _DecklinkTimecodeFlags = u32;
+pub const _DecklinkVideoConnection_decklinkVideoConnectionSDI: _DecklinkVideoConnection = 1;
+pub const _DecklinkVideoConnection_decklinkVideoConnectionHDMI: _DecklinkVideoConnection = 2;
+pub const _DecklinkVideoConnection_decklinkVideoConnectionOpticalSDI: _DecklinkVideoConnection = 4;
+pub const _DecklinkVideoConnection_decklinkVideoConnectionComponent: _DecklinkVideoConnection = 8;
+pub const _DecklinkVideoConnection_decklinkVideoConnectionComposite: _DecklinkVideoConnection = 16;
+pub const _DecklinkVideoConnection_decklinkVideoConnectionSVideo: _DecklinkVideoConnection = 32;
+pub type _DecklinkVideoConnection = u32;
+pub const _DecklinkAudioConnection_decklinkAudioConnectionEmbedded: _DecklinkAudioConnection = 1;
+pub const _DecklinkAudioConnection_decklinkAudioConnectionAESEBU: _DecklinkAudioConnection = 2;
+pub const _DecklinkAudioConnection_decklinkAudioConnectionAnalog: _DecklinkAudioConnection = 4;
+pub const _DecklinkAudioConnection_decklinkAudioConnectionAnalogXLR: _DecklinkAudioConnection = 8;
+pub const _DecklinkAudioConnection_decklinkAudioConnectionAnalogRCA: _DecklinkAudioConnection = 16;
+pub const _DecklinkAudioConnection_decklinkAudioConnectionMicrophone: _DecklinkAudioConnection = 32;
+pub const _DecklinkAudioConnection_decklinkAudioConnectionHeadphones: _DecklinkAudioConnection = 64;
+pub type _DecklinkAudioConnection = u32;
+pub const _DecklinkDeckControlConnection_decklinkDeckControlConnectionRS422Remote1:
+    _DecklinkDeckControlConnection = 1;
+pub const _DecklinkDeckControlConnection_decklinkDeckControlConnectionRS422Remote2:
+    _DecklinkDeckControlConnection = 2;
+pub type _DecklinkDeckControlConnection = u32;
+pub const _DecklinkDisplayMode_decklinkModeNTSC: _DecklinkDisplayMode = 1853125475;
+pub const _DecklinkDisplayMode_decklinkModeNTSC2398: _DecklinkDisplayMode = 1853108787;
+pub const _DecklinkDisplayMode_decklinkModePAL: _DecklinkDisplayMode = 1885432864;
+pub const _DecklinkDisplayMode_decklinkModeNTSCp: _DecklinkDisplayMode = 1853125488;
+pub const _DecklinkDisplayMode_decklinkModePALp: _DecklinkDisplayMode = 1885432944;
+pub const _DecklinkDisplayMode_decklinkModeHD1080p2398: _DecklinkDisplayMode = 842231923;
+pub const _DecklinkDisplayMode_decklinkModeHD1080p24: _DecklinkDisplayMode = 842297459;
+pub const _DecklinkDisplayMode_decklinkModeHD1080p25: _DecklinkDisplayMode = 1215312437;
+pub const _DecklinkDisplayMode_decklinkModeHD1080p2997: _DecklinkDisplayMode = 1215312441;
+pub const _DecklinkDisplayMode_decklinkModeHD1080p30: _DecklinkDisplayMode = 1215312688;
+pub const _DecklinkDisplayMode_decklinkModeHD1080i50: _DecklinkDisplayMode = 1214854448;
+pub const _DecklinkDisplayMode_decklinkModeHD1080i5994: _DecklinkDisplayMode = 1214854457;
+pub const _DecklinkDisplayMode_decklinkModeHD1080i6000: _DecklinkDisplayMode = 1214854704;
+pub const _DecklinkDisplayMode_decklinkModeHD1080p50: _DecklinkDisplayMode = 1215313200;
+pub const _DecklinkDisplayMode_decklinkModeHD1080p5994: _DecklinkDisplayMode = 1215313209;
+pub const _DecklinkDisplayMode_decklinkModeHD1080p6000: _DecklinkDisplayMode = 1215313456;
+pub const _DecklinkDisplayMode_decklinkModeHD720p50: _DecklinkDisplayMode = 1752184112;
+pub const _DecklinkDisplayMode_decklinkModeHD720p5994: _DecklinkDisplayMode = 1752184121;
+pub const _DecklinkDisplayMode_decklinkModeHD720p60: _DecklinkDisplayMode = 1752184368;
+pub const _DecklinkDisplayMode_decklinkMode2k2398: _DecklinkDisplayMode = 845886003;
+pub const _DecklinkDisplayMode_decklinkMode2k24: _DecklinkDisplayMode = 845886004;
+pub const _DecklinkDisplayMode_decklinkMode2k25: _DecklinkDisplayMode = 845886005;
+pub const _DecklinkDisplayMode_decklinkMode2kDCI2398: _DecklinkDisplayMode = 845427251;
+pub const _DecklinkDisplayMode_decklinkMode2kDCI24: _DecklinkDisplayMode = 845427252;
+pub const _DecklinkDisplayMode_decklinkMode2kDCI25: _DecklinkDisplayMode = 845427253;
+pub const _DecklinkDisplayMode_decklinkMode4K2160p2398: _DecklinkDisplayMode = 879440435;
+pub const _DecklinkDisplayMode_decklinkMode4K2160p24: _DecklinkDisplayMode = 879440436;
+pub const _DecklinkDisplayMode_decklinkMode4K2160p25: _DecklinkDisplayMode = 879440437;
+pub const _DecklinkDisplayMode_decklinkMode4K2160p2997: _DecklinkDisplayMode = 879440441;
+pub const _DecklinkDisplayMode_decklinkMode4K2160p30: _DecklinkDisplayMode = 879440688;
+pub const _DecklinkDisplayMode_decklinkMode4K2160p50: _DecklinkDisplayMode = 879441200;
+pub const _DecklinkDisplayMode_decklinkMode4K2160p5994: _DecklinkDisplayMode = 879441209;
+pub const _DecklinkDisplayMode_decklinkMode4K2160p60: _DecklinkDisplayMode = 879441456;
+pub const _DecklinkDisplayMode_decklinkMode4kDCI2398: _DecklinkDisplayMode = 878981683;
+pub const _DecklinkDisplayMode_decklinkMode4kDCI24: _DecklinkDisplayMode = 878981684;
+pub const _DecklinkDisplayMode_decklinkMode4kDCI25: _DecklinkDisplayMode = 878981685;
+pub const _DecklinkDisplayMode_decklinkModeCintelRAW: _DecklinkDisplayMode = 1920426857;
+pub const _DecklinkDisplayMode_decklinkModeCintelCompressedRAW: _DecklinkDisplayMode = 1920426851;
+pub const _DecklinkDisplayMode_decklinkModeUnknown: _DecklinkDisplayMode = 1769303659;
+pub type _DecklinkDisplayMode = u32;
+pub const _DecklinkFieldDominance_decklinkUnknownFieldDominance: _DecklinkFieldDominance = 0;
+pub const _DecklinkFieldDominance_decklinkLowerFieldFirst: _DecklinkFieldDominance = 1819244402;
+pub const _DecklinkFieldDominance_decklinkUpperFieldFirst: _DecklinkFieldDominance = 1970303090;
+pub const _DecklinkFieldDominance_decklinkProgressiveFrame: _DecklinkFieldDominance = 1886547815;
+pub const _DecklinkFieldDominance_decklinkProgressiveSegmentedFrame: _DecklinkFieldDominance =
+    1886610976;
+pub type _DecklinkFieldDominance = u32;
+pub const _DecklinkPixelFormat_decklinkFormat8BitYUV: _DecklinkPixelFormat = 846624121;
+pub const _DecklinkPixelFormat_decklinkFormat10BitYUV: _DecklinkPixelFormat = 1983000880;
+pub const _DecklinkPixelFormat_decklinkFormat8BitARGB: _DecklinkPixelFormat = 32;
+pub const _DecklinkPixelFormat_decklinkFormat8BitBGRA: _DecklinkPixelFormat = 1111970369;
+pub const _DecklinkPixelFormat_decklinkFormat10BitRGB: _DecklinkPixelFormat = 1915892016;
+pub const _DecklinkPixelFormat_decklinkFormat12BitRGB: _DecklinkPixelFormat = 1378955842;
+pub const _DecklinkPixelFormat_decklinkFormat12BitRGBLE: _DecklinkPixelFormat = 1378955852;
+pub const _DecklinkPixelFormat_decklinkFormat10BitRGBXLE: _DecklinkPixelFormat = 1378955372;
+pub const _DecklinkPixelFormat_decklinkFormat10BitRGBX: _DecklinkPixelFormat = 1378955362;
+pub const _DecklinkPixelFormat_decklinkFormatH265: _DecklinkPixelFormat = 1751479857;
+pub const _DecklinkPixelFormat_decklinkFormatDNxHR: _DecklinkPixelFormat = 1096180840;
+pub const _DecklinkPixelFormat_decklinkFormat12BitRAWGRBG: _DecklinkPixelFormat = 1915826800;
+pub const _DecklinkPixelFormat_decklinkFormat12BitRAWJPEG: _DecklinkPixelFormat = 1915827824;
+pub type _DecklinkPixelFormat = u32;
+pub const _DecklinkDisplayModeFlags_decklinkDisplayModeSupports3D: _DecklinkDisplayModeFlags = 1;
+pub const _DecklinkDisplayModeFlags_decklinkDisplayModeColorspaceRec601: _DecklinkDisplayModeFlags =
+    2;
+pub const _DecklinkDisplayModeFlags_decklinkDisplayModeColorspaceRec709: _DecklinkDisplayModeFlags =
+    4;
+pub type _DecklinkDisplayModeFlags = u32;
+pub const _DecklinkConfigurationID_decklinkConfigSwapSerialRxTx: _DecklinkConfigurationID =
+    1936945780;
+pub const _DecklinkConfigurationID_decklinkConfigHDMI3DPackingFormat: _DecklinkConfigurationID =
+    862220390;
+pub const _DecklinkConfigurationID_decklinkConfigBypass: _DecklinkConfigurationID = 1652125811;
+pub const _DecklinkConfigurationID_decklinkConfigClockTimingAdjustment: _DecklinkConfigurationID =
+    1668571492;
+pub const _DecklinkConfigurationID_decklinkConfigDuplexMode: _DecklinkConfigurationID = 1685418104;
+pub const _DecklinkConfigurationID_decklinkConfigAnalogAudioConsumerLevels:
+    _DecklinkConfigurationID = 1633772396;
+pub const _DecklinkConfigurationID_decklinkConfigFieldFlickerRemoval: _DecklinkConfigurationID =
+    1717855858;
+pub const _DecklinkConfigurationID_decklinkConfigHD1080p24ToHD1080i5994Conversion:
+    _DecklinkConfigurationID = 1953445177;
+pub const _DecklinkConfigurationID_decklinkConfig444SDIVideoOutput: _DecklinkConfigurationID =
+    875836527;
+pub const _DecklinkConfigurationID_decklinkConfigBlackVideoOutputDuringCapture:
+    _DecklinkConfigurationID = 1651928931;
+pub const _DecklinkConfigurationID_decklinkConfigLowLatencyVideoOutput: _DecklinkConfigurationID =
+    1819047535;
+pub const _DecklinkConfigurationID_decklinkConfigDownConversionOnAllAnalogOutput:
+    _DecklinkConfigurationID = 1667326319;
+pub const _DecklinkConfigurationID_decklinkConfigSMPTELevelAOutput: _DecklinkConfigurationID =
+    1936553057;
+pub const _DecklinkConfigurationID_decklinkConfigOutput1080pAsPsF: _DecklinkConfigurationID =
+    1885761650;
+pub const _DecklinkConfigurationID_decklinkConfigVideoOutputConnection: _DecklinkConfigurationID =
+    1987011438;
+pub const _DecklinkConfigurationID_decklinkConfigVideoOutputConversionMode:
+    _DecklinkConfigurationID = 1987011437;
+pub const _DecklinkConfigurationID_decklinkConfigAnalogVideoOutputFlags: _DecklinkConfigurationID =
+    1635151718;
+pub const _DecklinkConfigurationID_decklinkConfigReferenceInputTimingOffset:
+    _DecklinkConfigurationID = 1735159668;
+pub const _DecklinkConfigurationID_decklinkConfigVideoOutputIdleOperation:
+    _DecklinkConfigurationID = 1987012975;
+pub const _DecklinkConfigurationID_decklinkConfigDefaultVideoOutputMode: _DecklinkConfigurationID =
+    1685483373;
+pub const _DecklinkConfigurationID_decklinkConfigDefaultVideoOutputModeFlags:
+    _DecklinkConfigurationID = 1685483366;
+pub const _DecklinkConfigurationID_decklinkConfigSDIOutputLinkConfiguration:
+    _DecklinkConfigurationID = 1936682083;
+pub const _DecklinkConfigurationID_decklinkConfigVideoOutputComponentLumaGain:
+    _DecklinkConfigurationID = 1868786791;
+pub const _DecklinkConfigurationID_decklinkConfigVideoOutputComponentChromaBlueGain:
+    _DecklinkConfigurationID = 1868784482;
+pub const _DecklinkConfigurationID_decklinkConfigVideoOutputComponentChromaRedGain:
+    _DecklinkConfigurationID = 1868784498;
+pub const _DecklinkConfigurationID_decklinkConfigVideoOutputCompositeLumaGain:
+    _DecklinkConfigurationID = 1869180007;
+pub const _DecklinkConfigurationID_decklinkConfigVideoOutputCompositeChromaGain:
+    _DecklinkConfigurationID = 1869177703;
+pub const _DecklinkConfigurationID_decklinkConfigVideoOutputSVideoLumaGain:
+    _DecklinkConfigurationID = 1869835367;
+pub const _DecklinkConfigurationID_decklinkConfigVideoOutputSVideoChromaGain:
+    _DecklinkConfigurationID = 1869833063;
+pub const _DecklinkConfigurationID_decklinkConfigVideoInputScanning: _DecklinkConfigurationID =
+    1986622307;
+pub const _DecklinkConfigurationID_decklinkConfigUseDedicatedLTCInput: _DecklinkConfigurationID =
+    1684829283;
+pub const _DecklinkConfigurationID_decklinkConfigSDIInput3DPayloadOverride:
+    _DecklinkConfigurationID = 862217331;
+pub const _DecklinkConfigurationID_decklinkConfigCapture1080pAsPsF: _DecklinkConfigurationID =
+    1667657842;
+pub const _DecklinkConfigurationID_decklinkConfigVideoInputConnection: _DecklinkConfigurationID =
+    1986618222;
+pub const _DecklinkConfigurationID_decklinkConfigAnalogVideoInputFlags: _DecklinkConfigurationID =
+    1635150182;
+pub const _DecklinkConfigurationID_decklinkConfigVideoInputConversionMode:
+    _DecklinkConfigurationID = 1986618221;
+pub const _DecklinkConfigurationID_decklinkConfig32PulldownSequenceInitialTimecodeFrame:
+    _DecklinkConfigurationID = 1885628774;
+pub const _DecklinkConfigurationID_decklinkConfigVANCSourceLine1Mapping: _DecklinkConfigurationID =
+    1987275825;
+pub const _DecklinkConfigurationID_decklinkConfigVANCSourceLine2Mapping: _DecklinkConfigurationID =
+    1987275826;
+pub const _DecklinkConfigurationID_decklinkConfigVANCSourceLine3Mapping: _DecklinkConfigurationID =
+    1987275827;
+pub const _DecklinkConfigurationID_decklinkConfigCapturePassThroughMode: _DecklinkConfigurationID =
+    1668314221;
+pub const _DecklinkConfigurationID_decklinkConfigVideoInputComponentLumaGain:
+    _DecklinkConfigurationID = 1768123495;
+pub const _DecklinkConfigurationID_decklinkConfigVideoInputComponentChromaBlueGain:
+    _DecklinkConfigurationID = 1768121186;
+pub const _DecklinkConfigurationID_decklinkConfigVideoInputComponentChromaRedGain:
+    _DecklinkConfigurationID = 1768121202;
+pub const _DecklinkConfigurationID_decklinkConfigVideoInputCompositeLumaGain:
+    _DecklinkConfigurationID = 1768516711;
+pub const _DecklinkConfigurationID_decklinkConfigVideoInputCompositeChromaGain:
+    _DecklinkConfigurationID = 1768514407;
+pub const _DecklinkConfigurationID_decklinkConfigVideoInputSVideoLumaGain:
+    _DecklinkConfigurationID = 1769172071;
+pub const _DecklinkConfigurationID_decklinkConfigVideoInputSVideoChromaGain:
+    _DecklinkConfigurationID = 1769169767;
+pub const _DecklinkConfigurationID_decklinkConfigMicrophonePhantomPower: _DecklinkConfigurationID =
+    1836083312;
+pub const _DecklinkConfigurationID_decklinkConfigAudioInputConnection: _DecklinkConfigurationID =
+    1634296686;
+pub const _DecklinkConfigurationID_decklinkConfigAnalogAudioInputScaleChannel1:
+    _DecklinkConfigurationID = 1634300721;
+pub const _DecklinkConfigurationID_decklinkConfigAnalogAudioInputScaleChannel2:
+    _DecklinkConfigurationID = 1634300722;
+pub const _DecklinkConfigurationID_decklinkConfigAnalogAudioInputScaleChannel3:
+    _DecklinkConfigurationID = 1634300723;
+pub const _DecklinkConfigurationID_decklinkConfigAnalogAudioInputScaleChannel4:
+    _DecklinkConfigurationID = 1634300724;
+pub const _DecklinkConfigurationID_decklinkConfigDigitalAudioInputScale: _DecklinkConfigurationID =
+    1684105587;
+pub const _DecklinkConfigurationID_decklinkConfigMicrophoneInputGain: _DecklinkConfigurationID =
+    1835623271;
+pub const _DecklinkConfigurationID_decklinkConfigAudioOutputAESAnalogSwitch:
+    _DecklinkConfigurationID = 1634689377;
+pub const _DecklinkConfigurationID_decklinkConfigAnalogAudioOutputScaleChannel1:
+    _DecklinkConfigurationID = 1634693937;
+pub const _DecklinkConfigurationID_decklinkConfigAnalogAudioOutputScaleChannel2:
+    _DecklinkConfigurationID = 1634693938;
+pub const _DecklinkConfigurationID_decklinkConfigAnalogAudioOutputScaleChannel3:
+    _DecklinkConfigurationID = 1634693939;
+pub const _DecklinkConfigurationID_decklinkConfigAnalogAudioOutputScaleChannel4:
+    _DecklinkConfigurationID = 1634693940;
+pub const _DecklinkConfigurationID_decklinkConfigDigitalAudioOutputScale: _DecklinkConfigurationID =
+    1684107123;
+pub const _DecklinkConfigurationID_decklinkConfigHeadphoneVolume: _DecklinkConfigurationID =
+    1752592236;
+pub const _DecklinkConfigurationID_decklinkConfigDeviceInformationLabel: _DecklinkConfigurationID =
+    1684630625;
+pub const _DecklinkConfigurationID_decklinkConfigDeviceInformationSerialNumber:
+    _DecklinkConfigurationID = 1684632430;
+pub const _DecklinkConfigurationID_decklinkConfigDeviceInformationCompany:
+    _DecklinkConfigurationID = 1684628335;
+pub const _DecklinkConfigurationID_decklinkConfigDeviceInformationPhone: _DecklinkConfigurationID =
+    1684631656;
+pub const _DecklinkConfigurationID_decklinkConfigDeviceInformationEmail: _DecklinkConfigurationID =
+    1684628845;
+pub const _DecklinkConfigurationID_decklinkConfigDeviceInformationDate: _DecklinkConfigurationID =
+    1684628577;
+pub const _DecklinkConfigurationID_decklinkConfigDeckControlConnection: _DecklinkConfigurationID =
+    1684235119;
+pub type _DecklinkConfigurationID = u32;
+pub const _DecklinkEncoderConfigurationID_decklinkEncoderConfigPreferredBitDepth:
+    _DecklinkEncoderConfigurationID = 1701864050;
+pub const _DecklinkEncoderConfigurationID_decklinkEncoderConfigFrameCodingMode:
+    _DecklinkEncoderConfigurationID = 1701208941;
+pub const _DecklinkEncoderConfigurationID_decklinkEncoderConfigH265TargetBitrate:
+    _DecklinkEncoderConfigurationID = 1752457842;
+pub const _DecklinkEncoderConfigurationID_decklinkEncoderConfigDNxHRCompressionID:
+    _DecklinkEncoderConfigurationID = 1684236644;
+pub const _DecklinkEncoderConfigurationID_decklinkEncoderConfigDNxHRLevel:
+    _DecklinkEncoderConfigurationID = 1684825462;
+pub const _DecklinkEncoderConfigurationID_decklinkEncoderConfigMPEG4SampleDescription:
+    _DecklinkEncoderConfigurationID = 1937011525;
+pub const _DecklinkEncoderConfigurationID_decklinkEncoderConfigMPEG4CodecSpecificDesc:
+    _DecklinkEncoderConfigurationID = 1702061171;
+pub type _DecklinkEncoderConfigurationID = u32;
+pub const _DecklinkDeckControlMode_decklinkDeckControlNotOpened: _DecklinkDeckControlMode =
+    1853124464;
+pub const _DecklinkDeckControlMode_decklinkDeckControlVTRControlMode: _DecklinkDeckControlMode =
+    1987342947;
+pub const _DecklinkDeckControlMode_decklinkDeckControlExportMode: _DecklinkDeckControlMode =
+    1702391917;
+pub const _DecklinkDeckControlMode_decklinkDeckControlCaptureMode: _DecklinkDeckControlMode =
+    1667330157;
+pub type _DecklinkDeckControlMode = u32;
+pub const _DecklinkDeckControlEvent_decklinkDeckControlAbortedEvent: _DecklinkDeckControlEvent =
+    1633842277;
+pub const _DecklinkDeckControlEvent_decklinkDeckControlPrepareForExportEvent:
+    _DecklinkDeckControlEvent = 1885758821;
+pub const _DecklinkDeckControlEvent_decklinkDeckControlExportCompleteEvent:
+    _DecklinkDeckControlEvent = 1702388581;
+pub const _DecklinkDeckControlEvent_decklinkDeckControlPrepareForCaptureEvent:
+    _DecklinkDeckControlEvent = 1885758309;
+pub const _DecklinkDeckControlEvent_decklinkDeckControlCaptureCompleteEvent:
+    _DecklinkDeckControlEvent = 1667458422;
+pub type _DecklinkDeckControlEvent = u32;
+pub const _DecklinkDeckControlVTRControlState_decklinkDeckControlNotInVTRControlMode:
+    _DecklinkDeckControlVTRControlState = 1853252461;
+pub const _DecklinkDeckControlVTRControlState_decklinkDeckControlVTRControlPlaying:
+    _DecklinkDeckControlVTRControlState = 1987342960;
+pub const _DecklinkDeckControlVTRControlState_decklinkDeckControlVTRControlRecording:
+    _DecklinkDeckControlVTRControlState = 1987342962;
+pub const _DecklinkDeckControlVTRControlState_decklinkDeckControlVTRControlStill:
+    _DecklinkDeckControlVTRControlState = 1987342945;
+pub const _DecklinkDeckControlVTRControlState_decklinkDeckControlVTRControlShuttleForward:
+    _DecklinkDeckControlVTRControlState = 1987343206;
+pub const _DecklinkDeckControlVTRControlState_decklinkDeckControlVTRControlShuttleReverse:
+    _DecklinkDeckControlVTRControlState = 1987343218;
+pub const _DecklinkDeckControlVTRControlState_decklinkDeckControlVTRControlJogForward:
+    _DecklinkDeckControlVTRControlState = 1987340902;
+pub const _DecklinkDeckControlVTRControlState_decklinkDeckControlVTRControlJogReverse:
+    _DecklinkDeckControlVTRControlState = 1987340914;
+pub const _DecklinkDeckControlVTRControlState_decklinkDeckControlVTRControlStopped:
+    _DecklinkDeckControlVTRControlState = 1987342959;
+pub type _DecklinkDeckControlVTRControlState = u32;
+pub const _DecklinkDeckControlStatusFlags_decklinkDeckControlStatusDeckConnected:
+    _DecklinkDeckControlStatusFlags = 1;
+pub const _DecklinkDeckControlStatusFlags_decklinkDeckControlStatusRemoteMode:
+    _DecklinkDeckControlStatusFlags = 2;
+pub const _DecklinkDeckControlStatusFlags_decklinkDeckControlStatusRecordInhibited:
+    _DecklinkDeckControlStatusFlags = 4;
+pub const _DecklinkDeckControlStatusFlags_decklinkDeckControlStatusCassetteOut:
+    _DecklinkDeckControlStatusFlags = 8;
+pub type _DecklinkDeckControlStatusFlags = u32;
+pub const _DecklinkDeckControlExportModeOpsFlags_decklinkDeckControlExportModeInsertVideo:
+    _DecklinkDeckControlExportModeOpsFlags = 1;
+pub const _DecklinkDeckControlExportModeOpsFlags_decklinkDeckControlExportModeInsertAudio1:
+    _DecklinkDeckControlExportModeOpsFlags = 2;
+pub const _DecklinkDeckControlExportModeOpsFlags_decklinkDeckControlExportModeInsertAudio2:
+    _DecklinkDeckControlExportModeOpsFlags = 4;
+pub const _DecklinkDeckControlExportModeOpsFlags_decklinkDeckControlExportModeInsertAudio3:
+    _DecklinkDeckControlExportModeOpsFlags = 8;
+pub const _DecklinkDeckControlExportModeOpsFlags_decklinkDeckControlExportModeInsertAudio4:
+    _DecklinkDeckControlExportModeOpsFlags = 16;
+pub const _DecklinkDeckControlExportModeOpsFlags_decklinkDeckControlExportModeInsertAudio5:
+    _DecklinkDeckControlExportModeOpsFlags = 32;
+pub const _DecklinkDeckControlExportModeOpsFlags_decklinkDeckControlExportModeInsertAudio6:
+    _DecklinkDeckControlExportModeOpsFlags = 64;
+pub const _DecklinkDeckControlExportModeOpsFlags_decklinkDeckControlExportModeInsertAudio7:
+    _DecklinkDeckControlExportModeOpsFlags = 128;
+pub const _DecklinkDeckControlExportModeOpsFlags_decklinkDeckControlExportModeInsertAudio8:
+    _DecklinkDeckControlExportModeOpsFlags = 256;
+pub const _DecklinkDeckControlExportModeOpsFlags_decklinkDeckControlExportModeInsertAudio9:
+    _DecklinkDeckControlExportModeOpsFlags = 512;
+pub const _DecklinkDeckControlExportModeOpsFlags_decklinkDeckControlExportModeInsertAudio10:
+    _DecklinkDeckControlExportModeOpsFlags = 1024;
+pub const _DecklinkDeckControlExportModeOpsFlags_decklinkDeckControlExportModeInsertAudio11:
+    _DecklinkDeckControlExportModeOpsFlags = 2048;
+pub const _DecklinkDeckControlExportModeOpsFlags_decklinkDeckControlExportModeInsertAudio12:
+    _DecklinkDeckControlExportModeOpsFlags = 4096;
+pub const _DecklinkDeckControlExportModeOpsFlags_decklinkDeckControlExportModeInsertTimeCode:
+    _DecklinkDeckControlExportModeOpsFlags = 8192;
+pub const _DecklinkDeckControlExportModeOpsFlags_decklinkDeckControlExportModeInsertAssemble:
+    _DecklinkDeckControlExportModeOpsFlags = 16384;
+pub const _DecklinkDeckControlExportModeOpsFlags_decklinkDeckControlExportModeInsertPreview:
+    _DecklinkDeckControlExportModeOpsFlags = 32768;
+pub const _DecklinkDeckControlExportModeOpsFlags_decklinkDeckControlUseManualExport:
+    _DecklinkDeckControlExportModeOpsFlags = 65536;
+pub type _DecklinkDeckControlExportModeOpsFlags = u32;
+pub const _DecklinkDeckControlError_decklinkDeckControlNoError: _DecklinkDeckControlError =
+    1852794226;
+pub const _DecklinkDeckControlError_decklinkDeckControlModeError: _DecklinkDeckControlError =
+    1836017010;
+pub const _DecklinkDeckControlError_decklinkDeckControlMissedInPointError:
+    _DecklinkDeckControlError = 1835623794;
+pub const _DecklinkDeckControlError_decklinkDeckControlDeckTimeoutError: _DecklinkDeckControlError =
+    1685349746;
+pub const _DecklinkDeckControlError_decklinkDeckControlCommandFailedError:
+    _DecklinkDeckControlError = 1667655026;
+pub const _DecklinkDeckControlError_decklinkDeckControlDeviceAlreadyOpenedError:
+    _DecklinkDeckControlError = 1684106351;
+pub const _DecklinkDeckControlError_decklinkDeckControlFailedToOpenDeviceError:
+    _DecklinkDeckControlError = 1717855602;
+pub const _DecklinkDeckControlError_decklinkDeckControlInLocalModeError: _DecklinkDeckControlError =
+    1819108722;
+pub const _DecklinkDeckControlError_decklinkDeckControlEndOfTapeError: _DecklinkDeckControlError =
+    1702126962;
+pub const _DecklinkDeckControlError_decklinkDeckControlUserAbortError: _DecklinkDeckControlError =
+    1969317234;
+pub const _DecklinkDeckControlError_decklinkDeckControlNoTapeInDeckError:
+    _DecklinkDeckControlError = 1853121906;
+pub const _DecklinkDeckControlError_decklinkDeckControlNoVideoFromCardError:
+    _DecklinkDeckControlError = 1853253219;
+pub const _DecklinkDeckControlError_decklinkDeckControlNoCommunicationError:
+    _DecklinkDeckControlError = 1852010349;
+pub const _DecklinkDeckControlError_decklinkDeckControlBufferTooSmallError:
+    _DecklinkDeckControlError = 1651798893;
+pub const _DecklinkDeckControlError_decklinkDeckControlBadChecksumError: _DecklinkDeckControlError =
+    1667787635;
+pub const _DecklinkDeckControlError_decklinkDeckControlUnknownError: _DecklinkDeckControlError =
+    1970169202;
+pub type _DecklinkDeckControlError = u32;
+pub const _DecklinkVideoOutputFlags_decklinkVideoOutputFlagDefault: _DecklinkVideoOutputFlags = 0;
+pub const _DecklinkVideoOutputFlags_decklinkVideoOutputVANC: _DecklinkVideoOutputFlags = 1;
+pub const _DecklinkVideoOutputFlags_decklinkVideoOutputVITC: _DecklinkVideoOutputFlags = 2;
+pub const _DecklinkVideoOutputFlags_decklinkVideoOutputRP188: _DecklinkVideoOutputFlags = 4;
+pub const _DecklinkVideoOutputFlags_decklinkVideoOutputDualStream3D: _DecklinkVideoOutputFlags = 16;
+pub type _DecklinkVideoOutputFlags = u32;
+pub const _DecklinkPacketType_decklinkPacketTypeStreamInterruptedMarker: _DecklinkPacketType =
+    1936289396;
+pub const _DecklinkPacketType_decklinkPacketTypeStreamData: _DecklinkPacketType = 1935958388;
+pub type _DecklinkPacketType = u32;
+pub const _DecklinkFrameFlags_decklinkFrameFlagDefault: _DecklinkFrameFlags = 0;
+pub const _DecklinkFrameFlags_decklinkFrameFlagFlipVertical: _DecklinkFrameFlags = 1;
+pub const _DecklinkFrameFlags_decklinkFrameContainsHDRMetadata: _DecklinkFrameFlags = 2;
+pub const _DecklinkFrameFlags_decklinkFrameContainsCintelMetadata: _DecklinkFrameFlags = 4;
+pub const _DecklinkFrameFlags_decklinkFrameHasNoInputSource: _DecklinkFrameFlags = 2147483648;
+pub type _DecklinkFrameFlags = u32;
+pub const _DecklinkVideoInputFlags_decklinkVideoInputFlagDefault: _DecklinkVideoInputFlags = 0;
+pub const _DecklinkVideoInputFlags_decklinkVideoInputEnableFormatDetection:
+    _DecklinkVideoInputFlags = 1;
+pub const _DecklinkVideoInputFlags_decklinkVideoInputDualStream3D: _DecklinkVideoInputFlags = 2;
+pub type _DecklinkVideoInputFlags = u32;
+pub const _DecklinkVideoInputFormatChangedEvents_decklinkVideoInputDisplayModeChanged:
+    _DecklinkVideoInputFormatChangedEvents = 1;
+pub const _DecklinkVideoInputFormatChangedEvents_decklinkVideoInputFieldDominanceChanged:
+    _DecklinkVideoInputFormatChangedEvents = 2;
+pub const _DecklinkVideoInputFormatChangedEvents_decklinkVideoInputColorspaceChanged:
+    _DecklinkVideoInputFormatChangedEvents = 4;
+pub type _DecklinkVideoInputFormatChangedEvents = u32;
+pub const _DecklinkDetectedVideoInputFormatFlags_decklinkDetectedVideoInputYCbCr422:
+    _DecklinkDetectedVideoInputFormatFlags = 1;
+pub const _DecklinkDetectedVideoInputFormatFlags_decklinkDetectedVideoInputRGB444:
+    _DecklinkDetectedVideoInputFormatFlags = 2;
+pub const _DecklinkDetectedVideoInputFormatFlags_decklinkDetectedVideoInputDualStream3D:
+    _DecklinkDetectedVideoInputFormatFlags = 4;
+pub type _DecklinkDetectedVideoInputFormatFlags = u32;
+pub const _DecklinkCapturePassthroughMode_decklinkCapturePassthroughModeDisabled:
+    _DecklinkCapturePassthroughMode = 1885628787;
+pub const _DecklinkCapturePassthroughMode_decklinkCapturePassthroughModeDirect:
+    _DecklinkCapturePassthroughMode = 1885628786;
+pub const _DecklinkCapturePassthroughMode_decklinkCapturePassthroughModeCleanSwitch:
+    _DecklinkCapturePassthroughMode = 1885564014;
+pub type _DecklinkCapturePassthroughMode = u32;
+pub const _DecklinkOutputFrameCompletionResult_decklinkOutputFrameCompleted:
+    _DecklinkOutputFrameCompletionResult = 0;
+pub const _DecklinkOutputFrameCompletionResult_decklinkOutputFrameDisplayedLate:
+    _DecklinkOutputFrameCompletionResult = 1;
+pub const _DecklinkOutputFrameCompletionResult_decklinkOutputFrameDropped:
+    _DecklinkOutputFrameCompletionResult = 2;
+pub const _DecklinkOutputFrameCompletionResult_decklinkOutputFrameFlushed:
+    _DecklinkOutputFrameCompletionResult = 3;
+pub type _DecklinkOutputFrameCompletionResult = u32;
+pub const _DecklinkReferenceStatus_decklinkReferenceNotSupportedByHardware:
+    _DecklinkReferenceStatus = 1;
+pub const _DecklinkReferenceStatus_decklinkReferenceLocked: _DecklinkReferenceStatus = 2;
+pub type _DecklinkReferenceStatus = u32;
+pub const _DecklinkAudioFormat_decklinkAudioFormatPCM: _DecklinkAudioFormat = 1819304813;
+pub type _DecklinkAudioFormat = u32;
+pub const _DecklinkAudioSampleRate_decklinkAudioSampleRate48kHz: _DecklinkAudioSampleRate = 48000;
+pub type _DecklinkAudioSampleRate = u32;
+pub const _DecklinkAudioSampleType_decklinkAudioSampleType16bitInteger: _DecklinkAudioSampleType =
+    16;
+pub const _DecklinkAudioSampleType_decklinkAudioSampleType32bitInteger: _DecklinkAudioSampleType =
+    32;
+pub type _DecklinkAudioSampleType = u32;
+pub const _DecklinkAudioOutputStreamType_decklinkAudioOutputStreamContinuous:
+    _DecklinkAudioOutputStreamType = 0;
+pub const _DecklinkAudioOutputStreamType_decklinkAudioOutputStreamContinuousDontResample:
+    _DecklinkAudioOutputStreamType = 1;
+pub const _DecklinkAudioOutputStreamType_decklinkAudioOutputStreamTimestamped:
+    _DecklinkAudioOutputStreamType = 2;
+pub type _DecklinkAudioOutputStreamType = u32;
+pub const _DecklinkDisplayModeSupport_decklinkDisplayModeNotSupported: _DecklinkDisplayModeSupport =
+    0;
+pub const _DecklinkDisplayModeSupport_decklinkDisplayModeSupported: _DecklinkDisplayModeSupport = 1;
+pub const _DecklinkDisplayModeSupport_decklinkDisplayModeSupportedWithConversion:
+    _DecklinkDisplayModeSupport = 2;
+pub type _DecklinkDisplayModeSupport = u32;
+pub const _DecklinkTimecodeFormat_decklinkTimecodeRP188VITC1: _DecklinkTimecodeFormat = 1919972913;
+pub const _DecklinkTimecodeFormat_decklinkTimecodeRP188VITC2: _DecklinkTimecodeFormat = 1919955250;
+pub const _DecklinkTimecodeFormat_decklinkTimecodeRP188LTC: _DecklinkTimecodeFormat = 1919970420;
+pub const _DecklinkTimecodeFormat_decklinkTimecodeRP188Any: _DecklinkTimecodeFormat = 1919955256;
+pub const _DecklinkTimecodeFormat_decklinkTimecodeVITC: _DecklinkTimecodeFormat = 1986622563;
+pub const _DecklinkTimecodeFormat_decklinkTimecodeVITCField2: _DecklinkTimecodeFormat = 1986622514;
+pub const _DecklinkTimecodeFormat_decklinkTimecodeSerial: _DecklinkTimecodeFormat = 1936028265;
+pub type _DecklinkTimecodeFormat = u32;
+pub const _DecklinkAnalogVideoFlags_decklinkAnalogVideoFlagCompositeSetup75:
+    _DecklinkAnalogVideoFlags = 1;
+pub const _DecklinkAnalogVideoFlags_decklinkAnalogVideoFlagComponentBetacamLevels:
+    _DecklinkAnalogVideoFlags = 2;
+pub type _DecklinkAnalogVideoFlags = u32;
+pub const _DecklinkAudioOutputAnalogAESSwitch_decklinkAudioOutputSwitchAESEBU:
+    _DecklinkAudioOutputAnalogAESSwitch = 1634038560;
+pub const _DecklinkAudioOutputAnalogAESSwitch_decklinkAudioOutputSwitchAnalog:
+    _DecklinkAudioOutputAnalogAESSwitch = 1634626663;
+pub type _DecklinkAudioOutputAnalogAESSwitch = u32;
+pub const _DecklinkVideoOutputConversionMode_decklinkNoVideoOutputConversion:
+    _DecklinkVideoOutputConversionMode = 1852796517;
+pub const _DecklinkVideoOutputConversionMode_decklinkVideoOutputLetterboxDownconversion:
+    _DecklinkVideoOutputConversionMode = 1819566712;
+pub const _DecklinkVideoOutputConversionMode_decklinkVideoOutputAnamorphicDownconversion:
+    _DecklinkVideoOutputConversionMode = 1634562152;
+pub const _DecklinkVideoOutputConversionMode_decklinkVideoOutputHD720toHD1080Conversion:
+    _DecklinkVideoOutputConversionMode = 926036067;
+pub const _DecklinkVideoOutputConversionMode_decklinkVideoOutputHardwareLetterboxDownconversion:
+    _DecklinkVideoOutputConversionMode = 1213688930;
+pub const _DecklinkVideoOutputConversionMode_decklinkVideoOutputHardwareAnamorphicDownconversion:
+    _DecklinkVideoOutputConversionMode = 1213686125;
+pub const _DecklinkVideoOutputConversionMode_decklinkVideoOutputHardwareCenterCutDownconversion:
+    _DecklinkVideoOutputConversionMode = 1213686627;
+pub const _DecklinkVideoOutputConversionMode_decklinkVideoOutputHardware720p1080pCrossconversion:
+    _DecklinkVideoOutputConversionMode = 2019778928;
+pub const _DecklinkVideoOutputConversionMode_decklinkVideoOutputHardwareAnamorphic720pUpconversion : _DecklinkVideoOutputConversionMode = 1969305456 ;
+pub const _DecklinkVideoOutputConversionMode_decklinkVideoOutputHardwareAnamorphic1080iUpconversion : _DecklinkVideoOutputConversionMode = 1969303913 ;
+pub const _DecklinkVideoOutputConversionMode_decklinkVideoOutputHardwareAnamorphic149To720pUpconversion : _DecklinkVideoOutputConversionMode = 1966356336 ;
+pub const _DecklinkVideoOutputConversionMode_decklinkVideoOutputHardwareAnamorphic149To1080iUpconversion : _DecklinkVideoOutputConversionMode = 1966354793 ;
+pub const _DecklinkVideoOutputConversionMode_decklinkVideoOutputHardwarePillarbox720pUpconversion : _DecklinkVideoOutputConversionMode = 1970288496 ;
+pub const _DecklinkVideoOutputConversionMode_decklinkVideoOutputHardwarePillarbox1080iUpconversion : _DecklinkVideoOutputConversionMode = 1970286953 ;
+pub type _DecklinkVideoOutputConversionMode = u32;
+pub const _DecklinkVideoInputConversionMode_decklinkNoVideoInputConversion:
+    _DecklinkVideoInputConversionMode = 1852796517;
+pub const _DecklinkVideoInputConversionMode_decklinkVideoInputLetterboxDownconversionFromHD1080:
+    _DecklinkVideoInputConversionMode = 825257058;
+pub const _DecklinkVideoInputConversionMode_decklinkVideoInputAnamorphicDownconversionFromHD1080:
+    _DecklinkVideoInputConversionMode = 825254253;
+pub const _DecklinkVideoInputConversionMode_decklinkVideoInputLetterboxDownconversionFromHD720:
+    _DecklinkVideoInputConversionMode = 926051426;
+pub const _DecklinkVideoInputConversionMode_decklinkVideoInputAnamorphicDownconversionFromHD720:
+    _DecklinkVideoInputConversionMode = 926048621;
+pub const _DecklinkVideoInputConversionMode_decklinkVideoInputLetterboxUpconversion:
+    _DecklinkVideoInputConversionMode = 1818391920;
+pub const _DecklinkVideoInputConversionMode_decklinkVideoInputAnamorphicUpconversion:
+    _DecklinkVideoInputConversionMode = 1634563440;
+pub type _DecklinkVideoInputConversionMode = u32;
+pub const _DecklinkVideo3DPackingFormat_decklinkVideo3DPackingSidebySideHalf:
+    _DecklinkVideo3DPackingFormat = 1935831912;
+pub const _DecklinkVideo3DPackingFormat_decklinkVideo3DPackingLinebyLine:
+    _DecklinkVideo3DPackingFormat = 1818392940;
+pub const _DecklinkVideo3DPackingFormat_decklinkVideo3DPackingTopAndBottom:
+    _DecklinkVideo3DPackingFormat = 1952539247;
+pub const _DecklinkVideo3DPackingFormat_decklinkVideo3DPackingFramePacking:
+    _DecklinkVideo3DPackingFormat = 1718775915;
+pub const _DecklinkVideo3DPackingFormat_decklinkVideo3DPackingLeftOnly:
+    _DecklinkVideo3DPackingFormat = 1818584692;
+pub const _DecklinkVideo3DPackingFormat_decklinkVideo3DPackingRightOnly:
+    _DecklinkVideo3DPackingFormat = 1919510376;
+pub type _DecklinkVideo3DPackingFormat = u32;
+pub const _DecklinkIdleVideoOutputOperation_decklinkIdleVideoOutputBlack:
+    _DecklinkIdleVideoOutputOperation = 1651269987;
+pub const _DecklinkIdleVideoOutputOperation_decklinkIdleVideoOutputLastFrame:
+    _DecklinkIdleVideoOutputOperation = 1818322529;
+pub type _DecklinkIdleVideoOutputOperation = u32;
+pub const _DecklinkVideoEncoderFrameCodingMode_decklinkVideoEncoderFrameCodingModeInter:
+    _DecklinkVideoEncoderFrameCodingMode = 1768846437;
+pub const _DecklinkVideoEncoderFrameCodingMode_decklinkVideoEncoderFrameCodingModeIntra:
+    _DecklinkVideoEncoderFrameCodingMode = 1768846450;
+pub type _DecklinkVideoEncoderFrameCodingMode = u32;
+pub const _DecklinkDNxHRLevel_decklinkDNxHRLevelSQ: _DecklinkDNxHRLevel = 1684960113;
+pub const _DecklinkDNxHRLevel_decklinkDNxHRLevelLB: _DecklinkDNxHRLevel = 1684958306;
+pub const _DecklinkDNxHRLevel_decklinkDNxHRLevelHQ: _DecklinkDNxHRLevel = 1684957297;
+pub const _DecklinkDNxHRLevel_decklinkDNxHRLevelHQX: _DecklinkDNxHRLevel = 1684566392;
+pub const _DecklinkDNxHRLevel_decklinkDNxHRLevel444: _DecklinkDNxHRLevel = 1681142836;
+pub type _DecklinkDNxHRLevel = u32;
+pub const _DecklinkLinkConfiguration_decklinkLinkConfigurationSingleLink:
+    _DecklinkLinkConfiguration = 1818456940;
+pub const _DecklinkLinkConfiguration_decklinkLinkConfigurationDualLink: _DecklinkLinkConfiguration =
+    1818453100;
+pub const _DecklinkLinkConfiguration_decklinkLinkConfigurationQuadLink: _DecklinkLinkConfiguration =
+    1818456428;
+pub type _DecklinkLinkConfiguration = u32;
+pub const _DecklinkDeviceInterface_decklinkDeviceInterfacePCI: _DecklinkDeviceInterface =
+    1885563168;
+pub const _DecklinkDeviceInterface_decklinkDeviceInterfaceUSB: _DecklinkDeviceInterface =
+    1970496032;
+pub const _DecklinkDeviceInterface_decklinkDeviceInterfaceThunderbolt: _DecklinkDeviceInterface =
+    1953002862;
+pub type _DecklinkDeviceInterface = u32;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataHDRElectroOpticalTransferFunc:
+    _DecklinkFrameMetadataID = 1701803110;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelFilmType: _DecklinkFrameMetadataID =
+    1667658873;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelFilmGauge: _DecklinkFrameMetadataID =
+    1667655521;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelOffsetDetectedHorizontal:
+    _DecklinkFrameMetadataID = 1868850792;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelOffsetDetectedVertical:
+    _DecklinkFrameMetadataID = 1868850806;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelKeykodeLow: _DecklinkFrameMetadataID =
+    1667984236;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelKeykodeHigh:
+    _DecklinkFrameMetadataID = 1667984232;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelTile1Size: _DecklinkFrameMetadataID =
+    1668559219;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelTile2Size: _DecklinkFrameMetadataID =
+    1668559475;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelTile3Size: _DecklinkFrameMetadataID =
+    1668559731;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelTile4Size: _DecklinkFrameMetadataID =
+    1668559987;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelImageWidth: _DecklinkFrameMetadataID =
+    1230459000;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelImageHeight:
+    _DecklinkFrameMetadataID = 1229475960;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLinearMaskingRedInRed:
+    _DecklinkFrameMetadataID = 1836214642;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLinearMaskingGreenInRed:
+    _DecklinkFrameMetadataID = 1835493746;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLinearMaskingBlueInRed:
+    _DecklinkFrameMetadataID = 1835166066;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLinearMaskingRedInGreen:
+    _DecklinkFrameMetadataID = 1836214631;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLinearMaskingGreenInGreen:
+    _DecklinkFrameMetadataID = 1835493735;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLinearMaskingBlueInGreen:
+    _DecklinkFrameMetadataID = 1835166055;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLinearMaskingRedInBlue:
+    _DecklinkFrameMetadataID = 1836214626;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLinearMaskingGreenInBlue:
+    _DecklinkFrameMetadataID = 1835493730;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLinearMaskingBlueInBlue:
+    _DecklinkFrameMetadataID = 1835166050;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLogMaskingRedInRed:
+    _DecklinkFrameMetadataID = 1835823730;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLogMaskingGreenInRed:
+    _DecklinkFrameMetadataID = 1835820914;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLogMaskingBlueInRed:
+    _DecklinkFrameMetadataID = 1835819634;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLogMaskingRedInGreen:
+    _DecklinkFrameMetadataID = 1835823719;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLogMaskingGreenInGreen:
+    _DecklinkFrameMetadataID = 1835820903;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLogMaskingBlueInGreen:
+    _DecklinkFrameMetadataID = 1835819623;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLogMaskingRedInBlue:
+    _DecklinkFrameMetadataID = 1835823714;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLogMaskingGreenInBlue:
+    _DecklinkFrameMetadataID = 1835820898;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLogMaskingBlueInBlue:
+    _DecklinkFrameMetadataID = 1835819618;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelFilmFrameRate:
+    _DecklinkFrameMetadataID = 1667655282;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataHDRDisplayPrimariesRedX:
+    _DecklinkFrameMetadataID = 1751413368;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataHDRDisplayPrimariesRedY:
+    _DecklinkFrameMetadataID = 1751413369;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataHDRDisplayPrimariesGreenX:
+    _DecklinkFrameMetadataID = 1751410552;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataHDRDisplayPrimariesGreenY:
+    _DecklinkFrameMetadataID = 1751410553;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataHDRDisplayPrimariesBlueX:
+    _DecklinkFrameMetadataID = 1751409272;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataHDRDisplayPrimariesBlueY:
+    _DecklinkFrameMetadataID = 1751409273;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataHDRWhitePointX: _DecklinkFrameMetadataID =
+    1751414648;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataHDRWhitePointY: _DecklinkFrameMetadataID =
+    1751414649;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataHDRMaxDisplayMasteringLuminance:
+    _DecklinkFrameMetadataID = 1751412076;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataHDRMinDisplayMasteringLuminance:
+    _DecklinkFrameMetadataID = 1752000876;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataHDRMaximumContentLightLevel:
+    _DecklinkFrameMetadataID = 1835232364;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataHDRMaximumFrameAverageLightLevel:
+    _DecklinkFrameMetadataID = 1717660780;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelOffsetToApplyHorizontal:
+    _DecklinkFrameMetadataID = 1869898088;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelOffsetToApplyVertical:
+    _DecklinkFrameMetadataID = 1869898102;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelGainRed: _DecklinkFrameMetadataID =
+    1281774180;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelGainGreen: _DecklinkFrameMetadataID =
+    1281771378;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelGainBlue: _DecklinkFrameMetadataID =
+    1281770092;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLiftRed: _DecklinkFrameMetadataID =
+    1198412388;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLiftGreen: _DecklinkFrameMetadataID =
+    1198409586;
+pub const _DecklinkFrameMetadataID_decklinkFrameMetadataCintelLiftBlue: _DecklinkFrameMetadataID =
+    1198408300;
+pub type _DecklinkFrameMetadataID = u32;
+pub const _DecklinkDuplexMode_decklinkDuplexModeFull: _DecklinkDuplexMode = 1717859696;
+pub const _DecklinkDuplexMode_decklinkDuplexModeHalf: _DecklinkDuplexMode = 1751414128;
+pub type _DecklinkDuplexMode = u32;
+pub const _DecklinkAttributeID_decklinkSupportsInternalKeying: _DecklinkAttributeID = 1801812329;
+pub const _DecklinkAttributeID_decklinkSupportsExternalKeying: _DecklinkAttributeID = 1801812325;
+pub const _DecklinkAttributeID_decklinkSupportsHDKeying: _DecklinkAttributeID = 1801812328;
+pub const _DecklinkAttributeID_decklinkSupportsInputFormatDetection: _DecklinkAttributeID =
+    1768842852;
+pub const _DecklinkAttributeID_decklinkHasReferenceInput: _DecklinkAttributeID = 1752328558;
+pub const _DecklinkAttributeID_decklinkHasSerialPort: _DecklinkAttributeID = 1752395892;
+pub const _DecklinkAttributeID_decklinkHasAnalogVideoOutputGain: _DecklinkAttributeID = 1635151719;
+pub const _DecklinkAttributeID_decklinkCanOnlyAdjustOverallVideoOutputGain: _DecklinkAttributeID =
+    1870032743;
+pub const _DecklinkAttributeID_decklinkHasVideoInputAntiAliasingFilter: _DecklinkAttributeID =
+    1633773164;
+pub const _DecklinkAttributeID_decklinkHasBypass: _DecklinkAttributeID = 1652125811;
+pub const _DecklinkAttributeID_decklinkSupportsClockTimingAdjustment: _DecklinkAttributeID =
+    1668571492;
+pub const _DecklinkAttributeID_decklinkSupportsFullDuplex: _DecklinkAttributeID = 1717859696;
+pub const _DecklinkAttributeID_decklinkSupportsFullFrameReferenceInputTimingOffset:
+    _DecklinkAttributeID = 1718774126;
+pub const _DecklinkAttributeID_decklinkSupportsSMPTELevelAOutput: _DecklinkAttributeID = 1819700321;
+pub const _DecklinkAttributeID_decklinkSupportsDualLinkSDI: _DecklinkAttributeID = 1935961203;
+pub const _DecklinkAttributeID_decklinkSupportsQuadLinkSDI: _DecklinkAttributeID = 1936813171;
+pub const _DecklinkAttributeID_decklinkSupportsIdleOutput: _DecklinkAttributeID = 1768189813;
+pub const _DecklinkAttributeID_decklinkHasLTCTimecodeInput: _DecklinkAttributeID = 1751938147;
+pub const _DecklinkAttributeID_decklinkSupportsDuplexModeConfiguration: _DecklinkAttributeID =
+    1685418104;
+pub const _DecklinkAttributeID_decklinkSupportsHDRMetadata: _DecklinkAttributeID = 1751413357;
+pub const _DecklinkAttributeID_decklinkMaximumAudioChannels: _DecklinkAttributeID = 1835098984;
+pub const _DecklinkAttributeID_decklinkMaximumAnalogAudioInputChannels: _DecklinkAttributeID =
+    1767990120;
+pub const _DecklinkAttributeID_decklinkMaximumAnalogAudioOutputChannels: _DecklinkAttributeID =
+    1633772392;
+pub const _DecklinkAttributeID_decklinkNumberOfSubDevices: _DecklinkAttributeID = 1853055588;
+pub const _DecklinkAttributeID_decklinkSubDeviceIndex: _DecklinkAttributeID = 1937072745;
+pub const _DecklinkAttributeID_decklinkPersistentID: _DecklinkAttributeID = 1885694308;
+pub const _DecklinkAttributeID_decklinkDeviceGroupID: _DecklinkAttributeID = 1684498788;
+pub const _DecklinkAttributeID_decklinkTopologicalID: _DecklinkAttributeID = 1953458532;
+pub const _DecklinkAttributeID_decklinkVideoOutputConnections: _DecklinkAttributeID = 1987011438;
+pub const _DecklinkAttributeID_decklinkVideoInputConnections: _DecklinkAttributeID = 1986618222;
+pub const _DecklinkAttributeID_decklinkAudioOutputConnections: _DecklinkAttributeID = 1634689902;
+pub const _DecklinkAttributeID_decklinkAudioInputConnections: _DecklinkAttributeID = 1634296686;
+pub const _DecklinkAttributeID_decklinkVideoIOSupport: _DecklinkAttributeID = 1986621299;
+pub const _DecklinkAttributeID_decklinkDeckControlConnections: _DecklinkAttributeID = 1684235118;
+pub const _DecklinkAttributeID_decklinkDeviceInterface: _DecklinkAttributeID = 1684174195;
+pub const _DecklinkAttributeID_decklinkAudioInputRCAChannelCount: _DecklinkAttributeID = 1634300515;
+pub const _DecklinkAttributeID_decklinkAudioInputXLRChannelCount: _DecklinkAttributeID = 1634302051;
+pub const _DecklinkAttributeID_decklinkAudioOutputRCAChannelCount: _DecklinkAttributeID =
+    1634693731;
+pub const _DecklinkAttributeID_decklinkAudioOutputXLRChannelCount: _DecklinkAttributeID =
+    1634695267;
+pub const _DecklinkAttributeID_decklinkPairedDevicePersistentID: _DecklinkAttributeID = 1886415204;
+pub const _DecklinkAttributeID_decklinkVideoInputGainMinimum: _DecklinkAttributeID = 1986619245;
+pub const _DecklinkAttributeID_decklinkVideoInputGainMaximum: _DecklinkAttributeID = 1986619256;
+pub const _DecklinkAttributeID_decklinkVideoOutputGainMinimum: _DecklinkAttributeID = 1987012461;
+pub const _DecklinkAttributeID_decklinkVideoOutputGainMaximum: _DecklinkAttributeID = 1987012472;
+pub const _DecklinkAttributeID_decklinkMicrophoneInputGainMinimum: _DecklinkAttributeID =
+    1835624301;
+pub const _DecklinkAttributeID_decklinkMicrophoneInputGainMaximum: _DecklinkAttributeID =
+    1835624312;
+pub const _DecklinkAttributeID_decklinkSerialPortDeviceName: _DecklinkAttributeID = 1936486510;
+pub const _DecklinkAttributeID_decklinkVendorName: _DecklinkAttributeID = 1986946162;
+pub const _DecklinkAttributeID_decklinkDisplayName: _DecklinkAttributeID = 1685287022;
+pub const _DecklinkAttributeID_decklinkModelName: _DecklinkAttributeID = 1835297902;
+pub const _DecklinkAttributeID_decklinkDeviceHandle: _DecklinkAttributeID = 1684371048;
+pub type _DecklinkAttributeID = u32;
+pub const _DecklinkAPIInformationID_decklinkAPIVersion: _DecklinkAPIInformationID = 1986359923;
+pub type _DecklinkAPIInformationID = u32;
+pub const _DecklinkStatusID_decklinkStatusDetectedVideoInputMode: _DecklinkStatusID = 1685481837;
+pub const _DecklinkStatusID_decklinkStatusDetectedVideoInputFlags: _DecklinkStatusID = 1685481830;
+pub const _DecklinkStatusID_decklinkStatusCurrentVideoInputMode: _DecklinkStatusID = 1668704621;
+pub const _DecklinkStatusID_decklinkStatusCurrentVideoInputPixelFormat: _DecklinkStatusID =
+    1668704624;
+pub const _DecklinkStatusID_decklinkStatusCurrentVideoInputFlags: _DecklinkStatusID = 1668704614;
+pub const _DecklinkStatusID_decklinkStatusCurrentVideoOutputMode: _DecklinkStatusID = 1668706157;
+pub const _DecklinkStatusID_decklinkStatusCurrentVideoOutputFlags: _DecklinkStatusID = 1668706150;
+pub const _DecklinkStatusID_decklinkStatusPCIExpressLinkWidth: _DecklinkStatusID = 1886873956;
+pub const _DecklinkStatusID_decklinkStatusPCIExpressLinkSpeed: _DecklinkStatusID = 1886154347;
+pub const _DecklinkStatusID_decklinkStatusLastVideoOutputPixelFormat: _DecklinkStatusID =
+    1869638008;
+pub const _DecklinkStatusID_decklinkStatusReferenceSignalMode: _DecklinkStatusID = 1919247981;
+pub const _DecklinkStatusID_decklinkStatusReferenceSignalFlags: _DecklinkStatusID = 1919247974;
+pub const _DecklinkStatusID_decklinkStatusDuplexMode: _DecklinkStatusID = 1685418104;
+pub const _DecklinkStatusID_decklinkStatusBusy: _DecklinkStatusID = 1651864441;
+pub const _DecklinkStatusID_decklinkStatusInterchangeablePanelType: _DecklinkStatusID = 1768124532;
+pub const _DecklinkStatusID_decklinkStatusVideoInputSignalLocked: _DecklinkStatusID = 1986622316;
+pub const _DecklinkStatusID_decklinkStatusReferenceSignalLocked: _DecklinkStatusID = 1919247980;
+pub const _DecklinkStatusID_decklinkStatusReceivedEDID: _DecklinkStatusID = 1701079396;
+pub type _DecklinkStatusID = u32;
+pub const _DecklinkVideoStatusFlags_decklinkVideoStatusPsF: _DecklinkVideoStatusFlags = 1;
+pub const _DecklinkVideoStatusFlags_decklinkVideoStatusDualStream3D: _DecklinkVideoStatusFlags = 2;
+pub type _DecklinkVideoStatusFlags = u32;
+pub const _DecklinkDuplexStatus_decklinkDuplexStatusFullDuplex: _DecklinkDuplexStatus = 1717859696;
+pub const _DecklinkDuplexStatus_decklinkDuplexStatusHalfDuplex: _DecklinkDuplexStatus = 1751414128;
+pub const _DecklinkDuplexStatus_decklinkDuplexStatusSimplex: _DecklinkDuplexStatus = 1936747640;
+pub const _DecklinkDuplexStatus_decklinkDuplexStatusInactive: _DecklinkDuplexStatus = 1768841571;
+pub type _DecklinkDuplexStatus = u32;
+pub const _DecklinkPanelType_decklinkPanelNotDetected: _DecklinkPanelType = 1852862060;
+pub const _DecklinkPanelType_decklinkPanelTeranexMiniSmartPanel: _DecklinkPanelType = 1953330029;
+pub type _DecklinkPanelType = u32;
+pub const _DecklinkDeviceBusyState_decklinkDeviceCaptureBusy: _DecklinkDeviceBusyState = 1;
+pub const _DecklinkDeviceBusyState_decklinkDevicePlaybackBusy: _DecklinkDeviceBusyState = 2;
+pub const _DecklinkDeviceBusyState_decklinkDeviceSerialPortBusy: _DecklinkDeviceBusyState = 4;
+pub type _DecklinkDeviceBusyState = u32;
+pub const _DecklinkVideoIOSupport_decklinkDeviceSupportsCapture: _DecklinkVideoIOSupport = 1;
+pub const _DecklinkVideoIOSupport_decklinkDeviceSupportsPlayback: _DecklinkVideoIOSupport = 2;
+pub type _DecklinkVideoIOSupport = u32;
+pub const _Decklink3DPreviewFormat_decklink3DPreviewFormatDefault: _Decklink3DPreviewFormat =
+    1684366945;
+pub const _Decklink3DPreviewFormat_decklink3DPreviewFormatLeftOnly: _Decklink3DPreviewFormat =
+    1818584692;
+pub const _Decklink3DPreviewFormat_decklink3DPreviewFormatRightOnly: _Decklink3DPreviewFormat =
+    1919510376;
+pub const _Decklink3DPreviewFormat_decklink3DPreviewFormatSideBySide: _Decklink3DPreviewFormat =
+    1936286821;
+pub const _Decklink3DPreviewFormat_decklink3DPreviewFormatTopBottom: _Decklink3DPreviewFormat =
+    1953460322;
+pub type _Decklink3DPreviewFormat = u32;
+pub const _DecklinkNotifications_decklinkPreferencesChanged: _DecklinkNotifications = 1886545254;
+pub const _DecklinkNotifications_decklinkStatusChanged: _DecklinkNotifications = 1937006964;
+pub type _DecklinkNotifications = u32;
+pub type cdecklink_deck_control_status_callback_timecode_update = ::std::option::Option<
+    unsafe extern "C" fn(
+        obj: *mut ::std::os::raw::c_void,
+        currentTimecode: DecklinkTimecodeBCD,
+    ) -> HRESULT,
+>;
+pub type cdecklink_deck_control_status_callback_vtr_control_state_changed = ::std::option::Option<
+    unsafe extern "C" fn(
+        obj: *mut ::std::os::raw::c_void,
+        newState: DecklinkDeckControlVTRControlState,
+        error: DecklinkDeckControlError,
+    ) -> HRESULT,
+>;
+pub type cdecklink_deck_control_status_callback_deck_control_event_received = ::std::option::Option<
+    unsafe extern "C" fn(
+        obj: *mut ::std::os::raw::c_void,
+        event: DecklinkDeckControlEvent,
+        error: DecklinkDeckControlError,
+    ) -> HRESULT,
+>;
+pub type cdecklink_deck_control_status_callback_deck_control_status_changed = ::std::option::Option<
+    unsafe extern "C" fn(
+        obj: *mut ::std::os::raw::c_void,
+        flags: DecklinkDeckControlStatusFlags,
+        mask: u32,
+    ) -> HRESULT,
+>;
+pub type cdecklink_video_output_callback_scheduled_frame_completed = ::std::option::Option<
+    unsafe extern "C" fn(
+        obj: *mut ::std::os::raw::c_void,
+        completedFrame: *mut cdecklink_video_frame_t,
+        result: DecklinkOutputFrameCompletionResult,
+    ) -> HRESULT,
+>;
+pub type cdecklink_video_output_callback_scheduled_playback_has_stopped =
+    ::std::option::Option<unsafe extern "C" fn(obj: *mut ::std::os::raw::c_void) -> HRESULT>;
+pub type cdecklink_input_callback_video_input_format_changed = ::std::option::Option<
+    unsafe extern "C" fn(
+        obj: *mut ::std::os::raw::c_void,
+        notificationEvents: DecklinkVideoInputFormatChangedEvents,
+        newDisplayMode: *mut cdecklink_display_mode_t,
+        detectedSignalFlags: DecklinkDetectedVideoInputFormatFlags,
+    ) -> HRESULT,
+>;
+pub type cdecklink_input_callback_video_input_frame_arrived = ::std::option::Option<
+    unsafe extern "C" fn(
+        obj: *mut ::std::os::raw::c_void,
+        videoFrame: *mut cdecklink_video_input_frame_t,
+        audioPacket: *mut cdecklink_audio_input_packet_t,
+    ) -> HRESULT,
+>;
+pub type cdecklink_encoder_input_callback_video_input_signal_changed = ::std::option::Option<
+    unsafe extern "C" fn(
+        obj: *mut ::std::os::raw::c_void,
+        notificationEvents: DecklinkVideoInputFormatChangedEvents,
+        newDisplayMode: *mut cdecklink_display_mode_t,
+        detectedSignalFlags: DecklinkDetectedVideoInputFormatFlags,
+    ) -> HRESULT,
+>;
+pub type cdecklink_encoder_input_callback_video_packet_arrived = ::std::option::Option<
+    unsafe extern "C" fn(
+        obj: *mut ::std::os::raw::c_void,
+        videoPacket: *mut cdecklink_encoder_video_packet_t,
+    ) -> HRESULT,
+>;
+pub type cdecklink_encoder_input_callback_audio_packet_arrived = ::std::option::Option<
+    unsafe extern "C" fn(
+        obj: *mut ::std::os::raw::c_void,
+        audioPacket: *mut cdecklink_encoder_audio_packet_t,
+    ) -> HRESULT,
+>;
+pub type cdecklink_audio_output_callback_render_audio_samples = ::std::option::Option<
+    unsafe extern "C" fn(obj: *mut ::std::os::raw::c_void, preroll: bool) -> HRESULT,
+>;
+pub type cdecklink_screen_preview_callback_draw_frame = ::std::option::Option<
+    unsafe extern "C" fn(
+        obj: *mut ::std::os::raw::c_void,
+        theFrame: *mut cdecklink_video_frame_t,
+    ) -> HRESULT,
+>;
+pub type cdecklink_notification_callback_notify = ::std::option::Option<
+    unsafe extern "C" fn(
+        obj: *mut ::std::os::raw::c_void,
+        topic: DecklinkNotifications,
+        param1: u64,
+        param2: u64,
+    ) -> HRESULT,
+>;
+pub type cdecklink_device_notification_callback_deck_link_device_arrived = ::std::option::Option<
+    unsafe extern "C" fn(
+        obj: *mut ::std::os::raw::c_void,
+        deckLinkDevice: *mut cdecklink_device_t,
+    ) -> HRESULT,
+>;
+pub type cdecklink_device_notification_callback_deck_link_device_removed = ::std::option::Option<
+    unsafe extern "C" fn(
+        obj: *mut ::std::os::raw::c_void,
+        deckLinkDevice: *mut cdecklink_device_t,
+    ) -> HRESULT,
+>;
+extern "C" {
+    pub fn cdecklink_timecode_add_ref(obj: *mut cdecklink_timecode_t) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_timecode_release(obj: *mut cdecklink_timecode_t) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_timecode_get_bcd(obj: *mut cdecklink_timecode_t) -> DecklinkTimecodeBCD;
+}
+extern "C" {
+    pub fn cdecklink_timecode_get_components(
+        obj: *mut cdecklink_timecode_t,
+        hours: *mut u8,
+        minutes: *mut u8,
+        seconds: *mut u8,
+        frames: *mut u8,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_release_display_mode(mode: *mut cdecklink_display_mode_t);
+    pub fn cdecklink_timecode_get_string(
+        obj: *mut cdecklink_timecode_t,
+        timecode: *mut *const ::std::os::raw::c_char,
+    ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_display_mode_name(
-        mode: *mut cdecklink_display_mode_t,
+    pub fn cdecklink_timecode_get_flags(obj: *mut cdecklink_timecode_t) -> DecklinkTimecodeFlags;
+}
+extern "C" {
+    pub fn cdecklink_timecode_get_timecode_user_bits(
+        obj: *mut cdecklink_timecode_t,
+        userBits: *mut DecklinkTimecodeUserBits,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_display_mode_iterator_add_ref(
+        obj: *mut cdecklink_display_mode_iterator_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_display_mode_iterator_release(
+        obj: *mut cdecklink_display_mode_iterator_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_display_mode_iterator_next(
+        obj: *mut cdecklink_display_mode_iterator_t,
+        deckLinkDisplayMode: *mut *mut cdecklink_display_mode_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_display_mode_add_ref(
+        obj: *mut cdecklink_display_mode_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_display_mode_release(
+        obj: *mut cdecklink_display_mode_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_display_mode_get_name(
+        obj: *mut cdecklink_display_mode_t,
         name: *mut *const ::std::os::raw::c_char,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_display_mode_mode(mode: *mut cdecklink_display_mode_t) -> BMDDisplayMode;
+    pub fn cdecklink_display_mode_get_display_mode(
+        obj: *mut cdecklink_display_mode_t,
+    ) -> DecklinkDisplayMode;
 }
 extern "C" {
-    pub fn cdecklink_display_mode_width(
-        mode: *mut cdecklink_display_mode_t,
+    pub fn cdecklink_display_mode_get_width(
+        obj: *mut cdecklink_display_mode_t,
     ) -> ::std::os::raw::c_long;
 }
 extern "C" {
-    pub fn cdecklink_display_mode_height(
-        mode: *mut cdecklink_display_mode_t,
+    pub fn cdecklink_display_mode_get_height(
+        obj: *mut cdecklink_display_mode_t,
     ) -> ::std::os::raw::c_long;
 }
 extern "C" {
-    pub fn cdecklink_display_mode_framerate(
-        mode: *mut cdecklink_display_mode_t,
-        duration: *mut i64,
-        scale: *mut i64,
+    pub fn cdecklink_display_mode_get_frame_rate(
+        obj: *mut cdecklink_display_mode_t,
+        frameDuration: *mut DecklinkTimeValue,
+        timeScale: *mut DecklinkTimeScale,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_display_mode_field_dominance(
-        mode: *mut cdecklink_display_mode_t,
-    ) -> BMDFieldDominance;
+    pub fn cdecklink_display_mode_get_field_dominance(
+        obj: *mut cdecklink_display_mode_t,
+    ) -> DecklinkFieldDominance;
 }
 extern "C" {
-    pub fn cdecklink_display_mode_flags(mode: *mut cdecklink_display_mode_t)
-        -> BMDDisplayModeFlags;
+    pub fn cdecklink_display_mode_get_flags(
+        obj: *mut cdecklink_display_mode_t,
+    ) -> DecklinkDisplayModeFlags;
 }
 extern "C" {
-    pub fn cdecklink_release_frame(frame: *mut cdecklink_video_frame_t);
+    pub fn cdecklink_device_add_ref(obj: *mut cdecklink_device_t) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
-    pub fn cdecklink_video_frame_width(
-        frame: *mut cdecklink_video_frame_t,
+    pub fn cdecklink_device_release(obj: *mut cdecklink_device_t) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_device_get_model_name(
+        obj: *mut cdecklink_device_t,
+        modelName: *mut *const ::std::os::raw::c_char,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_device_get_display_name(
+        obj: *mut cdecklink_device_t,
+        displayName: *mut *const ::std::os::raw::c_char,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_configuration_add_ref(
+        obj: *mut cdecklink_configuration_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_configuration_release(
+        obj: *mut cdecklink_configuration_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_configuration_set_flag(
+        obj: *mut cdecklink_configuration_t,
+        cfgID: DecklinkConfigurationID,
+        value: bool,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_configuration_get_flag(
+        obj: *mut cdecklink_configuration_t,
+        cfgID: DecklinkConfigurationID,
+        value: *mut bool,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_configuration_set_int(
+        obj: *mut cdecklink_configuration_t,
+        cfgID: DecklinkConfigurationID,
+        value: i64,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_configuration_get_int(
+        obj: *mut cdecklink_configuration_t,
+        cfgID: DecklinkConfigurationID,
+        value: *mut i64,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_configuration_set_float(
+        obj: *mut cdecklink_configuration_t,
+        cfgID: DecklinkConfigurationID,
+        value: f64,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_configuration_get_float(
+        obj: *mut cdecklink_configuration_t,
+        cfgID: DecklinkConfigurationID,
+        value: *mut f64,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_configuration_set_string(
+        obj: *mut cdecklink_configuration_t,
+        cfgID: DecklinkConfigurationID,
+        value: *const ::std::os::raw::c_char,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_configuration_get_string(
+        obj: *mut cdecklink_configuration_t,
+        cfgID: DecklinkConfigurationID,
+        value: *mut *const ::std::os::raw::c_char,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_configuration_write_configuration_to_preferences(
+        obj: *mut cdecklink_configuration_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_configuration_add_ref(
+        obj: *mut cdecklink_encoder_configuration_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_encoder_configuration_release(
+        obj: *mut cdecklink_encoder_configuration_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_encoder_configuration_set_flag(
+        obj: *mut cdecklink_encoder_configuration_t,
+        cfgID: DecklinkEncoderConfigurationID,
+        value: bool,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_configuration_get_flag(
+        obj: *mut cdecklink_encoder_configuration_t,
+        cfgID: DecklinkEncoderConfigurationID,
+        value: *mut bool,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_configuration_set_int(
+        obj: *mut cdecklink_encoder_configuration_t,
+        cfgID: DecklinkEncoderConfigurationID,
+        value: i64,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_configuration_get_int(
+        obj: *mut cdecklink_encoder_configuration_t,
+        cfgID: DecklinkEncoderConfigurationID,
+        value: *mut i64,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_configuration_set_float(
+        obj: *mut cdecklink_encoder_configuration_t,
+        cfgID: DecklinkEncoderConfigurationID,
+        value: f64,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_configuration_get_float(
+        obj: *mut cdecklink_encoder_configuration_t,
+        cfgID: DecklinkEncoderConfigurationID,
+        value: *mut f64,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_configuration_set_string(
+        obj: *mut cdecklink_encoder_configuration_t,
+        cfgID: DecklinkEncoderConfigurationID,
+        value: *const ::std::os::raw::c_char,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_configuration_get_string(
+        obj: *mut cdecklink_encoder_configuration_t,
+        cfgID: DecklinkEncoderConfigurationID,
+        value: *mut *const ::std::os::raw::c_char,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_configuration_get_bytes(
+        obj: *mut cdecklink_encoder_configuration_t,
+        cfgID: DecklinkEncoderConfigurationID,
+        buffer: *mut ::std::os::raw::c_void,
+        bufferSize: *mut u32,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_add_ref(
+        obj: *mut cdecklink_deck_control_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_release(
+        obj: *mut cdecklink_deck_control_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_open(
+        obj: *mut cdecklink_deck_control_t,
+        timeScale: DecklinkTimeScale,
+        timeValue: DecklinkTimeValue,
+        timecodeIsDropFrame: bool,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_close(
+        obj: *mut cdecklink_deck_control_t,
+        standbyOn: bool,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_get_current_state(
+        obj: *mut cdecklink_deck_control_t,
+        mode: *mut DecklinkDeckControlMode,
+        vtrControlState: *mut DecklinkDeckControlVTRControlState,
+        flags: *mut DecklinkDeckControlStatusFlags,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_set_standby(
+        obj: *mut cdecklink_deck_control_t,
+        standbyOn: bool,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_send_command(
+        obj: *mut cdecklink_deck_control_t,
+        inBuffer: *mut u8,
+        inBufferSize: u32,
+        outBuffer: *mut u8,
+        outDataSize: *mut u32,
+        outBufferSize: u32,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_play(
+        obj: *mut cdecklink_deck_control_t,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_stop(
+        obj: *mut cdecklink_deck_control_t,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_toggle_play_stop(
+        obj: *mut cdecklink_deck_control_t,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_eject(
+        obj: *mut cdecklink_deck_control_t,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_go_to_timecode(
+        obj: *mut cdecklink_deck_control_t,
+        timecode: DecklinkTimecodeBCD,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_fast_forward(
+        obj: *mut cdecklink_deck_control_t,
+        viewTape: bool,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_rewind(
+        obj: *mut cdecklink_deck_control_t,
+        viewTape: bool,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_step_forward(
+        obj: *mut cdecklink_deck_control_t,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_step_back(
+        obj: *mut cdecklink_deck_control_t,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_jog(
+        obj: *mut cdecklink_deck_control_t,
+        rate: f64,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_shuttle(
+        obj: *mut cdecklink_deck_control_t,
+        rate: f64,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_get_timecode_string(
+        obj: *mut cdecklink_deck_control_t,
+        currentTimeCode: *mut *const ::std::os::raw::c_char,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_get_timecode(
+        obj: *mut cdecklink_deck_control_t,
+        currentTimecode: *mut *mut cdecklink_timecode_t,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_get_timecode_bcd(
+        obj: *mut cdecklink_deck_control_t,
+        currentTimecode: *mut DecklinkTimecodeBCD,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_set_preroll(
+        obj: *mut cdecklink_deck_control_t,
+        prerollSeconds: u32,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_get_preroll(
+        obj: *mut cdecklink_deck_control_t,
+        prerollSeconds: *mut u32,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_set_export_offset(
+        obj: *mut cdecklink_deck_control_t,
+        exportOffsetFields: i32,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_get_export_offset(
+        obj: *mut cdecklink_deck_control_t,
+        exportOffsetFields: *mut i32,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_get_manual_export_offset(
+        obj: *mut cdecklink_deck_control_t,
+        deckManualExportOffsetFields: *mut i32,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_set_capture_offset(
+        obj: *mut cdecklink_deck_control_t,
+        captureOffsetFields: i32,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_get_capture_offset(
+        obj: *mut cdecklink_deck_control_t,
+        captureOffsetFields: *mut i32,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_start_export(
+        obj: *mut cdecklink_deck_control_t,
+        inTimecode: DecklinkTimecodeBCD,
+        outTimecode: DecklinkTimecodeBCD,
+        exportModeOps: DecklinkDeckControlExportModeOpsFlags,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_start_capture(
+        obj: *mut cdecklink_deck_control_t,
+        useVITC: bool,
+        inTimecode: DecklinkTimecodeBCD,
+        outTimecode: DecklinkTimecodeBCD,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_get_device_id(
+        obj: *mut cdecklink_deck_control_t,
+        deviceId: *mut u16,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_abort(obj: *mut cdecklink_deck_control_t) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_crash_record_start(
+        obj: *mut cdecklink_deck_control_t,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_crash_record_stop(
+        obj: *mut cdecklink_deck_control_t,
+        error: *mut DecklinkDeckControlError,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_deck_control_set_callback(
+        obj: *mut cdecklink_deck_control_t,
+        ctx: *mut ::std::os::raw::c_void,
+        cb0: cdecklink_deck_control_status_callback_timecode_update,
+        cb1: cdecklink_deck_control_status_callback_vtr_control_state_changed,
+        cb2: cdecklink_deck_control_status_callback_deck_control_event_received,
+        cb3: cdecklink_deck_control_status_callback_deck_control_status_changed,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_memory_allocator_add_ref(
+        obj: *mut cdecklink_memory_allocator_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_memory_allocator_release(
+        obj: *mut cdecklink_memory_allocator_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_memory_allocator_allocate_buffer(
+        obj: *mut cdecklink_memory_allocator_t,
+        bufferSize: u32,
+        allocatedBuffer: *mut *mut ::std::os::raw::c_void,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_memory_allocator_release_buffer(
+        obj: *mut cdecklink_memory_allocator_t,
+        buffer: *mut ::std::os::raw::c_void,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_memory_allocator_commit(obj: *mut cdecklink_memory_allocator_t) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_memory_allocator_decommit(obj: *mut cdecklink_memory_allocator_t) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_iterator_add_ref(obj: *mut cdecklink_iterator_t) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_iterator_release(obj: *mut cdecklink_iterator_t) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_iterator_next(
+        obj: *mut cdecklink_iterator_t,
+        deckLinkInstance: *mut *mut cdecklink_device_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_api_information_add_ref(
+        obj: *mut cdecklink_api_information_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_api_information_release(
+        obj: *mut cdecklink_api_information_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_api_information_get_flag(
+        obj: *mut cdecklink_api_information_t,
+        cfgID: DecklinkAPIInformationID,
+        value: *mut bool,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_api_information_get_int(
+        obj: *mut cdecklink_api_information_t,
+        cfgID: DecklinkAPIInformationID,
+        value: *mut i64,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_api_information_get_float(
+        obj: *mut cdecklink_api_information_t,
+        cfgID: DecklinkAPIInformationID,
+        value: *mut f64,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_api_information_get_string(
+        obj: *mut cdecklink_api_information_t,
+        cfgID: DecklinkAPIInformationID,
+        value: *mut *const ::std::os::raw::c_char,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_add_ref(obj: *mut cdecklink_output_t) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_output_release(obj: *mut cdecklink_output_t) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_output_does_support_video_mode(
+        obj: *mut cdecklink_output_t,
+        displayMode: DecklinkDisplayMode,
+        pixelFormat: DecklinkPixelFormat,
+        flags: DecklinkVideoOutputFlags,
+        result: *mut DecklinkDisplayModeSupport,
+        resultDisplayMode: *mut *mut cdecklink_display_mode_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_get_display_mode_iterator(
+        obj: *mut cdecklink_output_t,
+        iterator: *mut *mut cdecklink_display_mode_iterator_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_set_screen_preview_callback(
+        obj: *mut cdecklink_output_t,
+        ctx: *mut ::std::os::raw::c_void,
+        cb0: cdecklink_screen_preview_callback_draw_frame,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_enable_video_output(
+        obj: *mut cdecklink_output_t,
+        displayMode: DecklinkDisplayMode,
+        flags: DecklinkVideoOutputFlags,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_disable_video_output(obj: *mut cdecklink_output_t) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_set_video_output_frame_memory_allocator(
+        obj: *mut cdecklink_output_t,
+        theAllocator: *mut cdecklink_memory_allocator_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_create_video_frame(
+        obj: *mut cdecklink_output_t,
+        width: i32,
+        height: i32,
+        rowBytes: i32,
+        pixelFormat: DecklinkPixelFormat,
+        flags: DecklinkFrameFlags,
+        outFrame: *mut *mut cdecklink_mutable_video_frame_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_create_ancillary_data(
+        obj: *mut cdecklink_output_t,
+        pixelFormat: DecklinkPixelFormat,
+        outBuffer: *mut *mut cdecklink_video_frame_ancillary_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_display_video_frame_sync(
+        obj: *mut cdecklink_output_t,
+        theFrame: *mut cdecklink_video_frame_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_schedule_video_frame(
+        obj: *mut cdecklink_output_t,
+        theFrame: *mut cdecklink_video_frame_t,
+        displayTime: DecklinkTimeValue,
+        displayDuration: DecklinkTimeValue,
+        timeScale: DecklinkTimeScale,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_set_scheduled_frame_completion_callback(
+        obj: *mut cdecklink_output_t,
+        ctx: *mut ::std::os::raw::c_void,
+        cb0: cdecklink_video_output_callback_scheduled_frame_completed,
+        cb1: cdecklink_video_output_callback_scheduled_playback_has_stopped,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_get_buffered_video_frame_count(
+        obj: *mut cdecklink_output_t,
+        bufferedFrameCount: *mut u32,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_enable_audio_output(
+        obj: *mut cdecklink_output_t,
+        sampleRate: DecklinkAudioSampleRate,
+        sampleType: DecklinkAudioSampleType,
+        channelCount: u32,
+        streamType: DecklinkAudioOutputStreamType,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_disable_audio_output(obj: *mut cdecklink_output_t) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_write_audio_samples_sync(
+        obj: *mut cdecklink_output_t,
+        buffer: *mut ::std::os::raw::c_void,
+        sampleFrameCount: u32,
+        sampleFramesWritten: *mut u32,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_begin_audio_preroll(obj: *mut cdecklink_output_t) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_end_audio_preroll(obj: *mut cdecklink_output_t) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_schedule_audio_samples(
+        obj: *mut cdecklink_output_t,
+        buffer: *mut ::std::os::raw::c_void,
+        sampleFrameCount: u32,
+        streamTime: DecklinkTimeValue,
+        timeScale: DecklinkTimeScale,
+        sampleFramesWritten: *mut u32,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_get_buffered_audio_sample_frame_count(
+        obj: *mut cdecklink_output_t,
+        bufferedSampleFrameCount: *mut u32,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_flush_buffered_audio_samples(obj: *mut cdecklink_output_t) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_set_audio_callback(
+        obj: *mut cdecklink_output_t,
+        ctx: *mut ::std::os::raw::c_void,
+        cb0: cdecklink_audio_output_callback_render_audio_samples,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_start_scheduled_playback(
+        obj: *mut cdecklink_output_t,
+        playbackStartTime: DecklinkTimeValue,
+        timeScale: DecklinkTimeScale,
+        playbackSpeed: f64,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_stop_scheduled_playback(
+        obj: *mut cdecklink_output_t,
+        stopPlaybackAtTime: DecklinkTimeValue,
+        actualStopTime: *mut DecklinkTimeValue,
+        timeScale: DecklinkTimeScale,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_is_scheduled_playback_running(
+        obj: *mut cdecklink_output_t,
+        active: *mut bool,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_get_scheduled_stream_time(
+        obj: *mut cdecklink_output_t,
+        desiredTimeScale: DecklinkTimeScale,
+        streamTime: *mut DecklinkTimeValue,
+        playbackSpeed: *mut f64,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_get_reference_status(
+        obj: *mut cdecklink_output_t,
+        referenceStatus: *mut DecklinkReferenceStatus,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_get_hardware_reference_clock(
+        obj: *mut cdecklink_output_t,
+        desiredTimeScale: DecklinkTimeScale,
+        hardwareTime: *mut DecklinkTimeValue,
+        timeInFrame: *mut DecklinkTimeValue,
+        ticksPerFrame: *mut DecklinkTimeValue,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_output_get_frame_completion_reference_timestamp(
+        obj: *mut cdecklink_output_t,
+        theFrame: *mut cdecklink_video_frame_t,
+        desiredTimeScale: DecklinkTimeScale,
+        frameCompletionTimestamp: *mut DecklinkTimeValue,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_input_add_ref(obj: *mut cdecklink_input_t) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_input_release(obj: *mut cdecklink_input_t) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_input_does_support_video_mode(
+        obj: *mut cdecklink_input_t,
+        displayMode: DecklinkDisplayMode,
+        pixelFormat: DecklinkPixelFormat,
+        flags: DecklinkVideoInputFlags,
+        result: *mut DecklinkDisplayModeSupport,
+        resultDisplayMode: *mut *mut cdecklink_display_mode_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_input_get_display_mode_iterator(
+        obj: *mut cdecklink_input_t,
+        iterator: *mut *mut cdecklink_display_mode_iterator_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_input_set_screen_preview_callback(
+        obj: *mut cdecklink_input_t,
+        ctx: *mut ::std::os::raw::c_void,
+        cb0: cdecklink_screen_preview_callback_draw_frame,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_input_enable_video_input(
+        obj: *mut cdecklink_input_t,
+        displayMode: DecklinkDisplayMode,
+        pixelFormat: DecklinkPixelFormat,
+        flags: DecklinkVideoInputFlags,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_input_disable_video_input(obj: *mut cdecklink_input_t) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_input_get_available_video_frame_count(
+        obj: *mut cdecklink_input_t,
+        availableFrameCount: *mut u32,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_input_set_video_input_frame_memory_allocator(
+        obj: *mut cdecklink_input_t,
+        theAllocator: *mut cdecklink_memory_allocator_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_input_enable_audio_input(
+        obj: *mut cdecklink_input_t,
+        sampleRate: DecklinkAudioSampleRate,
+        sampleType: DecklinkAudioSampleType,
+        channelCount: u32,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_input_disable_audio_input(obj: *mut cdecklink_input_t) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_input_get_available_audio_sample_frame_count(
+        obj: *mut cdecklink_input_t,
+        availableSampleFrameCount: *mut u32,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_input_start_streams(obj: *mut cdecklink_input_t) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_input_stop_streams(obj: *mut cdecklink_input_t) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_input_pause_streams(obj: *mut cdecklink_input_t) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_input_flush_streams(obj: *mut cdecklink_input_t) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_input_set_callback(
+        obj: *mut cdecklink_input_t,
+        ctx: *mut ::std::os::raw::c_void,
+        cb0: cdecklink_input_callback_video_input_format_changed,
+        cb1: cdecklink_input_callback_video_input_frame_arrived,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_input_get_hardware_reference_clock(
+        obj: *mut cdecklink_input_t,
+        desiredTimeScale: DecklinkTimeScale,
+        hardwareTime: *mut DecklinkTimeValue,
+        timeInFrame: *mut DecklinkTimeValue,
+        ticksPerFrame: *mut DecklinkTimeValue,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_input_add_ref(
+        obj: *mut cdecklink_encoder_input_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_encoder_input_release(
+        obj: *mut cdecklink_encoder_input_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_encoder_input_does_support_video_mode(
+        obj: *mut cdecklink_encoder_input_t,
+        displayMode: DecklinkDisplayMode,
+        pixelFormat: DecklinkPixelFormat,
+        flags: DecklinkVideoInputFlags,
+        result: *mut DecklinkDisplayModeSupport,
+        resultDisplayMode: *mut *mut cdecklink_display_mode_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_input_get_display_mode_iterator(
+        obj: *mut cdecklink_encoder_input_t,
+        iterator: *mut *mut cdecklink_display_mode_iterator_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_input_enable_video_input(
+        obj: *mut cdecklink_encoder_input_t,
+        displayMode: DecklinkDisplayMode,
+        pixelFormat: DecklinkPixelFormat,
+        flags: DecklinkVideoInputFlags,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_input_disable_video_input(
+        obj: *mut cdecklink_encoder_input_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_input_get_available_packets_count(
+        obj: *mut cdecklink_encoder_input_t,
+        availablePacketsCount: *mut u32,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_input_set_memory_allocator(
+        obj: *mut cdecklink_encoder_input_t,
+        theAllocator: *mut cdecklink_memory_allocator_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_input_enable_audio_input(
+        obj: *mut cdecklink_encoder_input_t,
+        audioFormat: DecklinkAudioFormat,
+        sampleRate: DecklinkAudioSampleRate,
+        sampleType: DecklinkAudioSampleType,
+        channelCount: u32,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_input_disable_audio_input(
+        obj: *mut cdecklink_encoder_input_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_input_get_available_audio_sample_frame_count(
+        obj: *mut cdecklink_encoder_input_t,
+        availableSampleFrameCount: *mut u32,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_input_start_streams(obj: *mut cdecklink_encoder_input_t) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_input_stop_streams(obj: *mut cdecklink_encoder_input_t) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_input_pause_streams(obj: *mut cdecklink_encoder_input_t) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_input_flush_streams(obj: *mut cdecklink_encoder_input_t) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_input_set_callback(
+        obj: *mut cdecklink_encoder_input_t,
+        ctx: *mut ::std::os::raw::c_void,
+        cb0: cdecklink_encoder_input_callback_video_input_signal_changed,
+        cb1: cdecklink_encoder_input_callback_video_packet_arrived,
+        cb2: cdecklink_encoder_input_callback_audio_packet_arrived,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_encoder_input_get_hardware_reference_clock(
+        obj: *mut cdecklink_encoder_input_t,
+        desiredTimeScale: DecklinkTimeScale,
+        hardwareTime: *mut DecklinkTimeValue,
+        timeInFrame: *mut DecklinkTimeValue,
+        ticksPerFrame: *mut DecklinkTimeValue,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_video_frame_add_ref(
+        obj: *mut cdecklink_video_frame_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_video_frame_release(
+        obj: *mut cdecklink_video_frame_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_video_frame_get_width(
+        obj: *mut cdecklink_video_frame_t,
     ) -> ::std::os::raw::c_long;
 }
 extern "C" {
-    pub fn cdecklink_video_frame_height(
-        frame: *mut cdecklink_video_frame_t,
+    pub fn cdecklink_video_frame_get_height(
+        obj: *mut cdecklink_video_frame_t,
     ) -> ::std::os::raw::c_long;
 }
 extern "C" {
-    pub fn cdecklink_video_frame_row_bytes(
-        frame: *mut cdecklink_video_frame_t,
+    pub fn cdecklink_video_frame_get_row_bytes(
+        obj: *mut cdecklink_video_frame_t,
     ) -> ::std::os::raw::c_long;
 }
 extern "C" {
-    pub fn cdecklink_video_frame_pixel_format(
-        frame: *mut cdecklink_video_frame_t,
-    ) -> BMDPixelFormat;
+    pub fn cdecklink_video_frame_get_pixel_format(
+        obj: *mut cdecklink_video_frame_t,
+    ) -> DecklinkPixelFormat;
 }
 extern "C" {
-    pub fn cdecklink_video_frame_flags(frame: *mut cdecklink_video_frame_t) -> BMDFrameFlags;
+    pub fn cdecklink_video_frame_get_flags(obj: *mut cdecklink_video_frame_t)
+        -> DecklinkFrameFlags;
 }
 extern "C" {
-    pub fn cdecklink_video_frame_bytes(
-        frame: *mut cdecklink_video_frame_t,
+    pub fn cdecklink_video_frame_get_bytes(
+        obj: *mut cdecklink_video_frame_t,
         buffer: *mut *mut ::std::os::raw::c_void,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_video_frame_timecode(
-        frame: *mut cdecklink_video_frame_t,
-        format: BMDTimecodeFormat,
+    pub fn cdecklink_video_frame_get_timecode(
+        obj: *mut cdecklink_video_frame_t,
+        format: DecklinkTimecodeFormat,
         timecode: *mut *mut cdecklink_timecode_t,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_video_frame_ancillary_data(
-        frame: *mut cdecklink_video_frame_t,
+    pub fn cdecklink_video_frame_get_ancillary_data(
+        obj: *mut cdecklink_video_frame_t,
         ancillary: *mut *mut cdecklink_video_frame_ancillary_t,
     ) -> HRESULT;
 }
 extern "C" {
-    #[doc = " Mutable frame"]
-    pub fn cdecklink_video_mutable_frame_get_frame(
-        frame: *mut cdecklink_mutable_video_frame_t,
+    pub fn cdecklink_mutable_video_frame_to_video_frame(
+        obj: *mut cdecklink_mutable_video_frame_t,
     ) -> *mut cdecklink_video_frame_t;
 }
 extern "C" {
-    pub fn cdecklink_release_mutable_frame(frame: *mut cdecklink_mutable_video_frame_t);
+    pub fn cdecklink_mutable_video_frame_add_ref(
+        obj: *mut cdecklink_mutable_video_frame_t,
+    ) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
-    pub fn cdecklink_video_mutable_frame_set_flags(
-        frame: *mut cdecklink_mutable_video_frame_t,
-        newFlags: BMDFrameFlags,
+    pub fn cdecklink_mutable_video_frame_release(
+        obj: *mut cdecklink_mutable_video_frame_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_mutable_video_frame_set_flags(
+        obj: *mut cdecklink_mutable_video_frame_t,
+        newFlags: DecklinkFrameFlags,
     ) -> HRESULT;
 }
 extern "C" {
-    #[doc = " Input frame"]
-    pub fn cdecklink_video_input_frame_get_frame(
-        frame: *mut cdecklink_video_input_frame_t,
-    ) -> *mut cdecklink_video_frame_t;
-}
-extern "C" {
-    pub fn cdecklink_video_input_frame_stream_time(
-        frame: *mut cdecklink_video_input_frame_t,
-        frameTime: *mut BMDTimeValue,
-        frameDuration: *mut BMDTimeValue,
-        timeScale: BMDTimeScale,
+    pub fn cdecklink_mutable_video_frame_set_timecode(
+        obj: *mut cdecklink_mutable_video_frame_t,
+        format: DecklinkTimecodeFormat,
+        timecode: *mut cdecklink_timecode_t,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_video_input_frame_hardware_reference_timestamp(
-        frame: *mut cdecklink_video_input_frame_t,
-        timeScale: BMDTimeScale,
-        frameTime: *mut BMDTimeValue,
-        frameDuration: *mut BMDTimeValue,
+    pub fn cdecklink_mutable_video_frame_set_timecode_from_components(
+        obj: *mut cdecklink_mutable_video_frame_t,
+        format: DecklinkTimecodeFormat,
+        hours: u8,
+        minutes: u8,
+        seconds: u8,
+        frames: u8,
+        flags: DecklinkTimecodeFlags,
     ) -> HRESULT;
 }
 extern "C" {
-    #[doc = " Ancillary data"]
-    pub fn cdecklink_video_frame_ancillary_buffer_for_vertical_blanking_line(
+    pub fn cdecklink_mutable_video_frame_set_ancillary_data(
+        obj: *mut cdecklink_mutable_video_frame_t,
         ancillary: *mut cdecklink_video_frame_ancillary_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_mutable_video_frame_set_timecode_user_bits(
+        obj: *mut cdecklink_mutable_video_frame_t,
+        format: DecklinkTimecodeFormat,
+        userBits: DecklinkTimecodeUserBits,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_video_frame3_d_extensions_add_ref(
+        obj: *mut cdecklink_video_frame3_d_extensions_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_video_frame3_d_extensions_release(
+        obj: *mut cdecklink_video_frame3_d_extensions_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_video_frame3_d_extensions_get3_d_packing_format(
+        obj: *mut cdecklink_video_frame3_d_extensions_t,
+    ) -> DecklinkVideo3DPackingFormat;
+}
+extern "C" {
+    pub fn cdecklink_video_frame3_d_extensions_get_frame_for_right_eye(
+        obj: *mut cdecklink_video_frame3_d_extensions_t,
+        rightEyeFrame: *mut *mut cdecklink_video_frame_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_video_frame_metadata_extensions_add_ref(
+        obj: *mut cdecklink_video_frame_metadata_extensions_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_video_frame_metadata_extensions_release(
+        obj: *mut cdecklink_video_frame_metadata_extensions_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_video_frame_metadata_extensions_get_int(
+        obj: *mut cdecklink_video_frame_metadata_extensions_t,
+        metadataID: DecklinkFrameMetadataID,
+        value: *mut i64,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_video_frame_metadata_extensions_get_float(
+        obj: *mut cdecklink_video_frame_metadata_extensions_t,
+        metadataID: DecklinkFrameMetadataID,
+        value: *mut f64,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_video_frame_metadata_extensions_get_flag(
+        obj: *mut cdecklink_video_frame_metadata_extensions_t,
+        metadataID: DecklinkFrameMetadataID,
+        value: *mut bool,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_video_frame_metadata_extensions_get_string(
+        obj: *mut cdecklink_video_frame_metadata_extensions_t,
+        metadataID: DecklinkFrameMetadataID,
+        value: *mut *const ::std::os::raw::c_char,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_video_input_frame_to_video_frame(
+        obj: *mut cdecklink_video_input_frame_t,
+    ) -> *mut cdecklink_video_frame_t;
+}
+extern "C" {
+    pub fn cdecklink_video_input_frame_add_ref(
+        obj: *mut cdecklink_video_input_frame_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_video_input_frame_release(
+        obj: *mut cdecklink_video_input_frame_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_video_input_frame_get_stream_time(
+        obj: *mut cdecklink_video_input_frame_t,
+        frameTime: *mut DecklinkTimeValue,
+        frameDuration: *mut DecklinkTimeValue,
+        timeScale: DecklinkTimeScale,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_video_input_frame_get_hardware_reference_timestamp(
+        obj: *mut cdecklink_video_input_frame_t,
+        timeScale: DecklinkTimeScale,
+        frameTime: *mut DecklinkTimeValue,
+        frameDuration: *mut DecklinkTimeValue,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_video_frame_ancillary_add_ref(
+        obj: *mut cdecklink_video_frame_ancillary_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_video_frame_ancillary_release(
+        obj: *mut cdecklink_video_frame_ancillary_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_video_frame_ancillary_get_buffer_for_vertical_blanking_line(
+        obj: *mut cdecklink_video_frame_ancillary_t,
         lineNumber: u32,
         buffer: *mut *mut ::std::os::raw::c_void,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_video_frame_ancillary_pixel_format(
-        ancillary: *mut cdecklink_video_frame_ancillary_t,
-    ) -> BMDPixelFormat;
+    pub fn cdecklink_video_frame_ancillary_get_pixel_format(
+        obj: *mut cdecklink_video_frame_ancillary_t,
+    ) -> DecklinkPixelFormat;
 }
 extern "C" {
-    pub fn cdecklink_video_frame_ancillary_display_mode(
-        ancillary: *mut cdecklink_video_frame_ancillary_t,
-    ) -> BMDDisplayMode;
+    pub fn cdecklink_video_frame_ancillary_get_display_mode(
+        obj: *mut cdecklink_video_frame_ancillary_t,
+    ) -> DecklinkDisplayMode;
 }
 extern "C" {
-    pub fn cdecklink_free_string(str: *const ::std::os::raw::c_char);
+    pub fn cdecklink_encoder_packet_add_ref(
+        obj: *mut cdecklink_encoder_packet_t,
+    ) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
-    pub fn cdecklink_create_iterator() -> *mut cdecklink_iterator_t;
+    pub fn cdecklink_encoder_packet_release(
+        obj: *mut cdecklink_encoder_packet_t,
+    ) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
-    pub fn cdecklink_release_iterator(it: *mut cdecklink_iterator_t);
-}
-extern "C" {
-    pub fn cdecklink_api_version(
-        it: *mut cdecklink_iterator_t,
-        version: *mut *const ::std::os::raw::c_char,
+    pub fn cdecklink_encoder_packet_get_bytes(
+        obj: *mut cdecklink_encoder_packet_t,
+        buffer: *mut *mut ::std::os::raw::c_void,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_next_device(
-        it: *mut cdecklink_iterator_t,
-        device: *mut *mut cdecklink_device_t,
+    pub fn cdecklink_encoder_packet_get_size(
+        obj: *mut cdecklink_encoder_packet_t,
+    ) -> ::std::os::raw::c_long;
+}
+extern "C" {
+    pub fn cdecklink_encoder_packet_get_stream_time(
+        obj: *mut cdecklink_encoder_packet_t,
+        frameTime: *mut DecklinkTimeValue,
+        timeScale: DecklinkTimeScale,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_release_device(device: *mut cdecklink_device_t);
+    pub fn cdecklink_encoder_packet_get_packet_type(
+        obj: *mut cdecklink_encoder_packet_t,
+    ) -> DecklinkPacketType;
 }
 extern "C" {
-    pub fn cdecklink_device_model_name(
-        device: *mut cdecklink_device_t,
-        name: *mut *const ::std::os::raw::c_char,
+    pub fn cdecklink_encoder_video_packet_to_encoder_packet(
+        obj: *mut cdecklink_encoder_video_packet_t,
+    ) -> *mut cdecklink_encoder_packet_t;
+}
+extern "C" {
+    pub fn cdecklink_encoder_video_packet_add_ref(
+        obj: *mut cdecklink_encoder_video_packet_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_encoder_video_packet_release(
+        obj: *mut cdecklink_encoder_video_packet_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_encoder_video_packet_get_pixel_format(
+        obj: *mut cdecklink_encoder_video_packet_t,
+    ) -> DecklinkPixelFormat;
+}
+extern "C" {
+    pub fn cdecklink_encoder_video_packet_get_hardware_reference_timestamp(
+        obj: *mut cdecklink_encoder_video_packet_t,
+        timeScale: DecklinkTimeScale,
+        frameTime: *mut DecklinkTimeValue,
+        frameDuration: *mut DecklinkTimeValue,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_device_display_name(
-        device: *mut cdecklink_device_t,
-        name: *mut *const ::std::os::raw::c_char,
+    pub fn cdecklink_encoder_video_packet_get_timecode(
+        obj: *mut cdecklink_encoder_video_packet_t,
+        format: DecklinkTimecodeFormat,
+        timecode: *mut *mut cdecklink_timecode_t,
     ) -> HRESULT;
 }
 extern "C" {
-    #[doc = " Output"]
-    pub fn cdecklink_device_output_cast(
-        device: *mut cdecklink_device_t,
-        output: *mut *mut cdecklink_device_output_t,
+    pub fn cdecklink_encoder_audio_packet_to_encoder_packet(
+        obj: *mut cdecklink_encoder_audio_packet_t,
+    ) -> *mut cdecklink_encoder_packet_t;
+}
+extern "C" {
+    pub fn cdecklink_encoder_audio_packet_add_ref(
+        obj: *mut cdecklink_encoder_audio_packet_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_encoder_audio_packet_release(
+        obj: *mut cdecklink_encoder_audio_packet_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_encoder_audio_packet_get_audio_format(
+        obj: *mut cdecklink_encoder_audio_packet_t,
+    ) -> DecklinkAudioFormat;
+}
+extern "C" {
+    pub fn cdecklink_h265nal_packet_to_encoder_video_packet(
+        obj: *mut cdecklink_h265nal_packet_t,
+    ) -> *mut cdecklink_encoder_video_packet_t;
+}
+extern "C" {
+    pub fn cdecklink_h265nal_packet_add_ref(
+        obj: *mut cdecklink_h265nal_packet_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_h265nal_packet_release(
+        obj: *mut cdecklink_h265nal_packet_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_h265nal_packet_get_unit_type(
+        obj: *mut cdecklink_h265nal_packet_t,
+        unitType: *mut u8,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_release_device_output(output: *mut cdecklink_device_output_t);
-}
-extern "C" {
-    pub fn cdecklink_device_output_does_support_video_mode(
-        output: *mut cdecklink_device_output_t,
-        displayMode: BMDDisplayMode,
-        pixelFormat: BMDPixelFormat,
-        flags: BMDVideoOutputFlags,
-        result: *mut BMDDisplayModeSupport,
-        resultDisplayMode: *mut *mut cdecklink_display_mode_t,
+    pub fn cdecklink_h265nal_packet_get_bytes_no_prefix(
+        obj: *mut cdecklink_h265nal_packet_t,
+        buffer: *mut *mut ::std::os::raw::c_void,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_device_output_display_mode_iterator(
-        output: *mut cdecklink_device_output_t,
-        iterator: *mut *mut cdecklink_display_mode_iterator_t,
+    pub fn cdecklink_h265nal_packet_get_size_no_prefix(
+        obj: *mut cdecklink_h265nal_packet_t,
+    ) -> ::std::os::raw::c_long;
+}
+extern "C" {
+    pub fn cdecklink_audio_input_packet_add_ref(
+        obj: *mut cdecklink_audio_input_packet_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_audio_input_packet_release(
+        obj: *mut cdecklink_audio_input_packet_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_audio_input_packet_get_sample_frame_count(
+        obj: *mut cdecklink_audio_input_packet_t,
+    ) -> ::std::os::raw::c_long;
+}
+extern "C" {
+    pub fn cdecklink_audio_input_packet_get_bytes(
+        obj: *mut cdecklink_audio_input_packet_t,
+        buffer: *mut *mut ::std::os::raw::c_void,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_device_output_enable_video_output(
-        output: *mut cdecklink_device_output_t,
-        displayMode: BMDDisplayMode,
-        flags: BMDVideoOutputFlags,
+    pub fn cdecklink_audio_input_packet_get_packet_time(
+        obj: *mut cdecklink_audio_input_packet_t,
+        packetTime: *mut DecklinkTimeValue,
+        timeScale: DecklinkTimeScale,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_device_output_disable_video_output(
-        output: *mut cdecklink_device_output_t,
+    pub fn cdecklink_gl_screen_preview_helper_add_ref(
+        obj: *mut cdecklink_gl_screen_preview_helper_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_gl_screen_preview_helper_release(
+        obj: *mut cdecklink_gl_screen_preview_helper_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_gl_screen_preview_helper_initialize_gl(
+        obj: *mut cdecklink_gl_screen_preview_helper_t,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_device_output_create_video_frame(
-        output: *mut cdecklink_device_output_t,
-        width: i32,
-        height: i32,
-        rowBytes: i32,
-        pixelFormat: BMDPixelFormat,
-        flags: BMDFrameFlags,
-        outFrame: *mut *mut cdecklink_mutable_video_frame_t,
+    pub fn cdecklink_gl_screen_preview_helper_paint_gl(
+        obj: *mut cdecklink_gl_screen_preview_helper_t,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_device_output_create_ancillary_data(
-        output: *mut cdecklink_device_output_t,
-        pixelFormat: BMDPixelFormat,
-        outBuffer: *mut *mut cdecklink_video_frame_ancillary_t,
-    ) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_device_output_display_video_frame_sync(
-        output: *mut cdecklink_device_output_t,
-        frame: *mut cdecklink_video_frame_t,
-    ) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_device_output_schedule_video_frame(
-        output: *mut cdecklink_device_output_t,
+    pub fn cdecklink_gl_screen_preview_helper_set_frame(
+        obj: *mut cdecklink_gl_screen_preview_helper_t,
         theFrame: *mut cdecklink_video_frame_t,
-        displayTime: BMDTimeValue,
-        displayDuration: BMDTimeValue,
-        timeScale: BMDTimeScale,
-    ) -> HRESULT;
-}
-pub type cdecklink_callback_schedule_frame_completed = ::std::option::Option<
-    unsafe extern "C" fn(
-        context: *mut ::std::os::raw::c_void,
-        frame: *mut cdecklink_video_frame_t,
-        result: BMDOutputFrameCompletionResult,
-    ) -> HRESULT,
->;
-pub type cdecklink_callback_playback_stopped =
-    ::std::option::Option<unsafe extern "C" fn(context: *mut ::std::os::raw::c_void) -> HRESULT>;
-extern "C" {
-    pub fn cdecklink_device_output_set_scheduled_frame_completion_callback(
-        output: *mut cdecklink_device_output_t,
-        context: *mut ::std::os::raw::c_void,
-        completed: cdecklink_callback_schedule_frame_completed,
-        playback_stopped: cdecklink_callback_playback_stopped,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_device_output_buffered_video_frame_count(
-        output: *mut cdecklink_device_output_t,
-        bufferedFrameCount: *mut u32,
+    pub fn cdecklink_gl_screen_preview_helper_set3_d_preview_format(
+        obj: *mut cdecklink_gl_screen_preview_helper_t,
+        previewFormat: Decklink3DPreviewFormat,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_device_output_enable_audio_output(
-        output: *mut cdecklink_device_output_t,
-        sampleRate: BMDAudioSampleRate,
-        sampleType: BMDAudioSampleType,
-        channelCount: u32,
-        streamType: BMDAudioOutputStreamType,
+    pub fn cdecklink_notification_add_ref(
+        obj: *mut cdecklink_notification_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_notification_release(
+        obj: *mut cdecklink_notification_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_notification_subscribe(
+        obj: *mut cdecklink_notification_t,
+        topic: DecklinkNotifications,
+        ctx: *mut ::std::os::raw::c_void,
+        cb0: cdecklink_notification_callback_notify,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_device_output_disable_audio_output(
-        output: *mut cdecklink_device_output_t,
+    pub fn cdecklink_notification_unsubscribe(
+        obj: *mut cdecklink_notification_t,
+        topic: DecklinkNotifications,
+        ctx: *mut ::std::os::raw::c_void,
+        cb0: cdecklink_notification_callback_notify,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_device_output_write_audio_samples_sync(
-        output: *mut cdecklink_device_output_t,
+    pub fn cdecklink_attributes_add_ref(
+        obj: *mut cdecklink_attributes_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_attributes_release(
+        obj: *mut cdecklink_attributes_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_attributes_get_flag(
+        obj: *mut cdecklink_attributes_t,
+        cfgID: DecklinkAttributeID,
+        value: *mut bool,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_attributes_get_int(
+        obj: *mut cdecklink_attributes_t,
+        cfgID: DecklinkAttributeID,
+        value: *mut i64,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_attributes_get_float(
+        obj: *mut cdecklink_attributes_t,
+        cfgID: DecklinkAttributeID,
+        value: *mut f64,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_attributes_get_string(
+        obj: *mut cdecklink_attributes_t,
+        cfgID: DecklinkAttributeID,
+        value: *mut *const ::std::os::raw::c_char,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_status_add_ref(obj: *mut cdecklink_status_t) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_status_release(obj: *mut cdecklink_status_t) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_status_get_flag(
+        obj: *mut cdecklink_status_t,
+        statusID: DecklinkStatusID,
+        value: *mut bool,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_status_get_int(
+        obj: *mut cdecklink_status_t,
+        statusID: DecklinkStatusID,
+        value: *mut i64,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_status_get_float(
+        obj: *mut cdecklink_status_t,
+        statusID: DecklinkStatusID,
+        value: *mut f64,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_status_get_string(
+        obj: *mut cdecklink_status_t,
+        statusID: DecklinkStatusID,
+        value: *mut *const ::std::os::raw::c_char,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_status_get_bytes(
+        obj: *mut cdecklink_status_t,
+        statusID: DecklinkStatusID,
         buffer: *mut ::std::os::raw::c_void,
-        sampleFrameCount: u32,
-        sampleFramesWritten: *mut u32,
+        bufferSize: *mut u32,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_device_output_begin_audio_preroll(
-        output: *mut cdecklink_device_output_t,
+    pub fn cdecklink_keyer_add_ref(obj: *mut cdecklink_keyer_t) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_keyer_release(obj: *mut cdecklink_keyer_t) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_keyer_enable(obj: *mut cdecklink_keyer_t, isExternal: bool) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_keyer_set_level(obj: *mut cdecklink_keyer_t, level: u8) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_keyer_ramp_up(obj: *mut cdecklink_keyer_t, numberOfFrames: u32) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_keyer_ramp_down(obj: *mut cdecklink_keyer_t, numberOfFrames: u32) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_keyer_disable(obj: *mut cdecklink_keyer_t) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_video_conversion_add_ref(
+        obj: *mut cdecklink_video_conversion_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_video_conversion_release(
+        obj: *mut cdecklink_video_conversion_t,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_video_conversion_convert_frame(
+        obj: *mut cdecklink_video_conversion_t,
+        srcFrame: *mut cdecklink_video_frame_t,
+        dstFrame: *mut cdecklink_video_frame_t,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_device_output_end_audio_preroll(
-        output: *mut cdecklink_device_output_t,
+    pub fn cdecklink_discovery_add_ref(obj: *mut cdecklink_discovery_t) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_discovery_release(obj: *mut cdecklink_discovery_t) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn cdecklink_discovery_install_device_notifications(
+        obj: *mut cdecklink_discovery_t,
+        ctx: *mut ::std::os::raw::c_void,
+        cb0: cdecklink_device_notification_callback_deck_link_device_arrived,
+        cb1: cdecklink_device_notification_callback_deck_link_device_removed,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_device_output_schedule_audio_samples(
-        output: *mut cdecklink_device_output_t,
-        buffer: *mut ::std::os::raw::c_void,
-        sampleFrameCount: u32,
-        streamTime: BMDTimeValue,
-        timeScale: BMDTimeScale,
-        sampleFramesWritten: *mut u32,
+    pub fn cdecklink_discovery_uninstall_device_notifications(
+        obj: *mut cdecklink_discovery_t,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_device_output_buffered_audio_sample_frame_count(
-        output: *mut cdecklink_device_output_t,
-        bufferedSampleFrameCount: *mut u32,
+    pub fn cdecklink_create_decklink_iterator_instance() -> *mut cdecklink_iterator_t;
+}
+extern "C" {
+    pub fn cdecklink_create_decklink_discovery_instance() -> *mut cdecklink_discovery_t;
+}
+extern "C" {
+    pub fn cdecklink_create_decklink_api_information_instance() -> *mut cdecklink_api_information_t;
+}
+extern "C" {
+    pub fn cdecklink_create_open_gl_screen_preview_helper(
+    ) -> *mut cdecklink_gl_screen_preview_helper_t;
+}
+extern "C" {
+    pub fn cdecklink_create_video_conversion_instance() -> *mut cdecklink_video_conversion_t;
+}
+extern "C" {
+    pub fn cdecklink_device_query_output(
+        obj: *mut cdecklink_device_t,
+        dst: *mut *mut cdecklink_output_t,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_device_output_flush_buffered_audio_samples(
-        output: *mut cdecklink_device_output_t,
+    pub fn cdecklink_device_query_input(
+        obj: *mut cdecklink_device_t,
+        dst: *mut *mut cdecklink_input_t,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_device_output_start_scheduled_playback(
-        output: *mut cdecklink_device_output_t,
-        playbackStartTime: BMDTimeValue,
-        timeScale: BMDTimeScale,
-        playbackSpeed: f64,
+    pub fn cdecklink_device_query_encoder_input(
+        obj: *mut cdecklink_device_t,
+        dst: *mut *mut cdecklink_encoder_input_t,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_device_output_stop_scheduled_playback(
-        output: *mut cdecklink_device_output_t,
-        stopPlaybackAtTime: BMDTimeValue,
-        actualStopTime: *mut BMDTimeValue,
-        timeScale: BMDTimeScale,
+    pub fn cdecklink_video_frame_query_video_frame_ancillary(
+        obj: *mut cdecklink_video_frame_t,
+        dst: *mut *mut cdecklink_video_frame_ancillary_t,
     ) -> HRESULT;
 }
 extern "C" {
-    pub fn cdecklink_device_output_is_scheduled_playback_running(
-        output: *mut cdecklink_device_output_t,
-        active: *mut bool,
-    ) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_device_output_scheduled_stream_time(
-        output: *mut cdecklink_device_output_t,
-        desiredTimeScale: BMDTimeScale,
-        streamTime: *mut BMDTimeValue,
-        playbackSpeed: *mut f64,
-    ) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_device_output_reference_status(
-        output: *mut cdecklink_device_output_t,
-        referenceStatus: *mut BMDReferenceStatus,
-    ) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_device_output_hardware_reference_clock(
-        output: *mut cdecklink_device_output_t,
-        desiredTimeScale: BMDTimeScale,
-        hardwareTime: *mut BMDTimeValue,
-        timeInFrame: *mut BMDTimeValue,
-        ticksPerFrame: *mut BMDTimeValue,
-    ) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_device_output_frame_completion_reference_timestamp(
-        output: *mut cdecklink_device_output_t,
-        theFrame: *mut cdecklink_video_frame_t,
-        desiredTimeScale: BMDTimeScale,
-        frameCompletionTimestamp: *mut BMDTimeValue,
-    ) -> HRESULT;
-}
-extern "C" {
-    #[doc = " Input"]
-    pub fn cdecklink_device_input_cast(
-        device: *mut cdecklink_device_t,
-        input: *mut *mut cdecklink_device_input_t,
-    ) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_release_device_input(input: *mut cdecklink_device_input_t);
-}
-extern "C" {
-    pub fn cdecklink_device_input_does_support_video_mode(
-        input: *mut cdecklink_device_input_t,
-        displayMode: BMDDisplayMode,
-        pixelFormat: BMDPixelFormat,
-        flags: BMDVideoOutputFlags,
-        result: *mut BMDDisplayModeSupport,
-        resultDisplayMode: *mut *mut cdecklink_display_mode_t,
-    ) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_device_input_display_mode_iterator(
-        input: *mut cdecklink_device_input_t,
-        iterator: *mut *mut cdecklink_display_mode_iterator_t,
-    ) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_device_input_enable_video_input(
-        input: *mut cdecklink_device_input_t,
-        displayMode: BMDDisplayMode,
-        pixelFormat: BMDPixelFormat,
-        flags: BMDVideoInputFlags,
-    ) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_device_input_disable_video_input(
-        input: *mut cdecklink_device_input_t,
-    ) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_device_input_available_video_frame_vount(
-        input: *mut cdecklink_device_input_t,
-        availableFrameCount: *mut u32,
-    ) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_device_input_enable_audio_input(
-        input: *mut cdecklink_device_input_t,
-        sampleRate: BMDAudioSampleRate,
-        sampleType: BMDAudioSampleType,
-        channelCount: u32,
-    ) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_device_input_disable_audio_input(
-        input: *mut cdecklink_device_input_t,
-    ) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_device_input_available_audio_sample_frame_count(
-        input: *mut cdecklink_device_input_t,
-        availableSampleFrameCount: *mut u32,
-    ) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_device_input_start_streams(input: *mut cdecklink_device_input_t) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_device_input_stop_streams(input: *mut cdecklink_device_input_t) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_device_input_pause_streams(input: *mut cdecklink_device_input_t) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_device_input_flush_streams(input: *mut cdecklink_device_input_t) -> HRESULT;
-}
-pub type cdecklink_callback_input_format_changed = ::std::option::Option<
-    unsafe extern "C" fn(
-        context: *mut ::std::os::raw::c_void,
-        notificationEvents: BMDVideoInputFormatChangedEvents,
-        newDisplayMode: *mut cdecklink_display_mode_t,
-        detectedSignalFlags: BMDDetectedVideoInputFormatFlags,
-    ) -> HRESULT,
->;
-pub type cdecklink_callback_input_frame_arrived = ::std::option::Option<
-    unsafe extern "C" fn(
-        context: *mut ::std::os::raw::c_void,
-        videoFrame: *mut cdecklink_video_input_frame_t,
-        audioPacket: *mut cdecklink_audio_input_packet_t,
-    ) -> HRESULT,
->;
-extern "C" {
-    pub fn cdecklink_device_input_set_callback(
-        input: *mut cdecklink_device_input_t,
-        context: *mut ::std::os::raw::c_void,
-        format_changed: cdecklink_callback_input_format_changed,
-        frame_arrived: cdecklink_callback_input_frame_arrived,
-    ) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_device_input_hardware_reference_clock(
-        input: *mut cdecklink_device_input_t,
-        desiredTimeScale: BMDTimeScale,
-        hardwareTime: *mut BMDTimeValue,
-        timeInFrame: *mut BMDTimeValue,
-        ticksPerFrame: *mut BMDTimeValue,
+    pub fn cdecklink_encoder_video_packet_query_h265nal_packet(
+        obj: *mut cdecklink_encoder_video_packet_t,
+        dst: *mut *mut cdecklink_h265nal_packet_t,
     ) -> HRESULT;
 }
