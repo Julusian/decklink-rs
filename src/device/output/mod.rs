@@ -10,7 +10,7 @@ use num_traits::FromPrimitive;
 use std::ptr::null_mut;
 use std::rc::Rc;
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::Arc;
+use std::sync::{Arc, RwLock};
 
 bitflags! {
     pub struct DecklinkVideoOutputFlags: u32 {
@@ -150,16 +150,40 @@ impl DecklinkOutputDevice {
         self,
         mode: DecklinkDisplayModeId,
         flags: DecklinkVideoOutputFlags,
-    ) -> Result<Rc<DecklinkOutputDeviceVideoScheduled>, SdkError> {
-        let result = unsafe { self.enable_video_output_inner(mode, flags) };
-        SdkError::result_or_else(result, || {
-            let r: Rc<DecklinkOutputDeviceVideoScheduled> =
-                Rc::new(DecklinkOutputDeviceVideoImpl {
-                    ptr: self.ptr.clone(),
-                    callback_handler: null_mut(),
+        timescale: i64,
+    ) -> Result<Box<DecklinkOutputDeviceVideoScheduled>, SdkError> {
+        // TODO - this leaks on an error
+        let callback_wrapper = Box::into_raw(Box::new(CallbackWrapper {
+            handler: RwLock::new(None),
+        }));
+
+        let result = unsafe {
+            sdk::cdecklink_output_set_scheduled_frame_completion_callback(
+                self.ptr.dev,
+                callback_wrapper as *mut std::ffi::c_void,
+                Some(schedule_frame_completed_callback),
+                Some(playback_stopped),
+            )
+        };
+        //        let result = 0;
+
+        match SdkError::result(result) {
+            Err(e) => return Err(e),
+            Ok(()) => {
+                let result = unsafe { self.enable_video_output_inner(mode, flags) };
+                return SdkError::result_or_else(result, || {
+                    let r: Box<DecklinkOutputDeviceVideoScheduled> =
+                        Box::new(DecklinkOutputDeviceVideoImpl {
+                            ptr: self.ptr.clone(),
+                            callback_wrapper,
+                            playback_running: AtomicBool::new(false),
+                            scheduled_running: false,
+                            scheduled_timescale: timescale,
+                        });
+                    r
                 });
-            r
-        })
+            }
+        }
     }
     pub fn enable_video_output_sync(
         &self,
@@ -170,7 +194,10 @@ impl DecklinkOutputDevice {
         SdkError::result_or_else(result, || {
             let r: Rc<DecklinkOutputDeviceVideoSync> = Rc::new(DecklinkOutputDeviceVideoImpl {
                 ptr: self.ptr.clone(),
-                callback_handler: null_mut(),
+                callback_wrapper: null_mut(),
+                playback_running: AtomicBool::new(false),
+                scheduled_running: false,
+                scheduled_timescale: 1000,
             });
             r
         })
@@ -241,37 +268,45 @@ pub trait DeckLinkVideoOutputCallback {
     fn playback_stopped(&self) -> bool;
 }
 
+struct CallbackWrapper {
+    handler: RwLock<Option<Arc<DeckLinkVideoOutputCallback>>>,
+}
 extern "C" fn schedule_frame_completed_callback(
     context: *mut ::std::os::raw::c_void,
     frame: *mut sdk::cdecklink_video_frame_t,
     result: sdk::DecklinkOutputFrameCompletionResult,
 ) -> sdk::HRESULT {
-    //    let handler = unsafe {
-    //      &mut *(context as *mut DeckLinkVideoOutputCallback)
-    //    };
-    //    let handler: Box<Box<dyn DeckLinkVideoOutputCallback>> =
-    //        unsafe { Box::from_raw(context as *mut _) };
+    let wrapper: &mut CallbackWrapper = unsafe { &mut *(context as *mut _) };
 
-    let handler: &mut Box<DeckLinkVideoOutputCallback> = unsafe { &mut *(context as *mut _) };
+    let mut res = true;
+    if let Some(handler) = &*wrapper.handler.read().unwrap() {
+        let frame_internal = if frame.is_null() {
+            None
+        } else {
+            unsafe { Some(wrap_frame(frame)) }
+        };
 
-    let frame2 = if frame.is_null() {
-        None
-    } else {
-        unsafe { Some(wrap_frame(frame)) }
-    };
-    let result2 = DecklinkOutputFrameCompletionResult::from_u32(result)
-        .unwrap_or(DecklinkOutputFrameCompletionResult::Completed);
+        let result_internal = DecklinkOutputFrameCompletionResult::from_u32(result)
+            .unwrap_or(DecklinkOutputFrameCompletionResult::Completed);
 
-    if handler.schedule_frame_completed_callback(frame2, result2) {
+        res = handler.schedule_frame_completed_callback(frame_internal, result_internal);
+    }
+
+    if res {
         0 // Ok
     } else {
         1 // False
     }
 }
 extern "C" fn playback_stopped(context: *mut ::std::os::raw::c_void) -> sdk::HRESULT {
-    let handler: &mut Box<DeckLinkVideoOutputCallback> = unsafe { &mut *(context as *mut _) };
+    let wrapper: &mut CallbackWrapper = unsafe { &mut *(context as *mut _) };
 
-    if handler.playback_stopped() {
+    let mut result = true;
+    if let Some(handler) = &*wrapper.handler.read().unwrap() {
+        result = handler.playback_stopped();
+    }
+
+    if result {
         0 // Ok
     } else {
         1 // False
@@ -289,10 +324,15 @@ pub trait DecklinkOutputDeviceVideoScheduled: DecklinkOutputDeviceVideo {
         frame: &DecklinkVideoFrame,
         display_time: i64,
         duration: i64,
-        scale: i64,
     ) -> Result<(), SdkError>;
 
-    fn set_callback(&mut self, handler: Box<DeckLinkVideoOutputCallback>) -> Result<(), SdkError>;
+    fn set_callback(
+        &mut self,
+        handler: Option<Arc<DeckLinkVideoOutputCallback>>,
+    ) -> Result<(), SdkError>;
+
+    fn start_playback(&mut self, start_time: i64, speed: f64) -> Result<(), SdkError>;
+    fn stop_playback(&mut self, stop_time: i64) -> Result<i64, SdkError>;
 }
 pub trait DecklinkOutputDeviceVideoSync: DecklinkOutputDeviceVideo {
     // TODO return type
@@ -301,14 +341,29 @@ pub trait DecklinkOutputDeviceVideoSync: DecklinkOutputDeviceVideo {
 
 struct DecklinkOutputDeviceVideoImpl {
     ptr: Arc<DecklinkOutputDevicePtr>,
-    callback_handler: *mut Box<DeckLinkVideoOutputCallback>,
+    callback_wrapper: *mut CallbackWrapper,
+    playback_running: AtomicBool,
+    scheduled_running: bool,
+    scheduled_timescale: i64,
 }
 impl Drop for DecklinkOutputDeviceVideoImpl {
     fn drop(&mut self) {
         unsafe {
+            if self.scheduled_running {
+                let mut actual_stop = 0;
+                sdk::cdecklink_output_stop_scheduled_playback(
+                    self.ptr.dev,
+                    0,
+                    &mut actual_stop,
+                    self.scheduled_timescale,
+                );
+            }
+
+            // This call blocks until all frame callbacks are complete
             sdk::cdecklink_output_disable_video_output(self.ptr.dev);
             self.ptr.video_active.store(false, Ordering::Relaxed);
-            Box::from_raw(self.callback_handler); // Reclaim the box so it gets freed
+
+            Box::from_raw(self.callback_wrapper); // Reclaim the box so it gets freed
         }
     }
 }
@@ -329,7 +384,6 @@ impl DecklinkOutputDeviceVideoScheduled for DecklinkOutputDeviceVideoImpl {
         frame: &DecklinkVideoFrame,
         display_time: i64,
         duration: i64,
-        scale: i64,
     ) -> Result<(), SdkError> {
         unsafe {
             let result = sdk::cdecklink_output_schedule_video_frame(
@@ -337,24 +391,62 @@ impl DecklinkOutputDeviceVideoScheduled for DecklinkOutputDeviceVideoImpl {
                 unwrap_frame(frame),
                 display_time,
                 duration,
-                scale,
+                self.scheduled_timescale,
             );
             SdkError::result(result)
         }
     }
 
-    fn set_callback(&mut self, handler: Box<DeckLinkVideoOutputCallback>) -> Result<(), SdkError> {
-        let context = Box::into_raw(Box::new(handler));
-        self.callback_handler = context; // TODO - free previous context after call to api below
+    fn set_callback(
+        &mut self,
+        handler: Option<Arc<DeckLinkVideoOutputCallback>>,
+    ) -> Result<(), SdkError> {
+        if self.callback_wrapper.is_null() {
+            Err(SdkError::HANDLE)
+        } else {
+            unsafe {
+                let wrapper = &(*self.callback_wrapper);
+                *wrapper.handler.write().unwrap() = handler;
+            }
+            Ok(())
+        }
+    }
 
-        unsafe {
-            let result = sdk::cdecklink_output_set_scheduled_frame_completion_callback(
-                self.ptr.dev,
-                context as *mut std::ffi::c_void,
-                Some(schedule_frame_completed_callback),
-                Some(playback_stopped),
-            );
-            SdkError::result(result)
+    fn start_playback(&mut self, start_time: i64, speed: f64) -> Result<(), SdkError> {
+        if self.scheduled_running {
+            Ok(())
+        } else {
+            self.scheduled_running = true;
+            self.playback_running.store(true, Ordering::Relaxed); // TODO - order
+
+            unsafe {
+                let result = sdk::cdecklink_output_start_scheduled_playback(
+                    self.ptr.dev,
+                    start_time,
+                    self.scheduled_timescale,
+                    speed,
+                );
+                SdkError::result(result)
+            }
+        }
+    }
+
+    fn stop_playback(&mut self, stop_time: i64) -> Result<i64, SdkError> {
+        if self.scheduled_running {
+            self.scheduled_running = false;
+
+            unsafe {
+                let mut actual_stop_time = 0;
+                let result = sdk::cdecklink_output_stop_scheduled_playback(
+                    self.ptr.dev,
+                    stop_time,
+                    &mut actual_stop_time,
+                    self.scheduled_timescale,
+                );
+                SdkError::result_or(result, actual_stop_time)
+            }
+        } else {
+            Err(SdkError::FALSE)
         }
     }
 }
