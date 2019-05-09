@@ -2,7 +2,7 @@ use crate::{sdk, SdkError};
 use num_traits::FromPrimitive;
 use std::ptr::null_mut;
 
-#[derive(FromPrimitive, PartialEq)]
+#[derive(EnumIter, FromPrimitive, PartialEq, Debug, Copy, Clone)]
 pub enum DecklinkPixelFormat {
     Format8BitYUV = sdk::_DecklinkPixelFormat_decklinkFormat8BitYUV as isize,
     Format10BitYUV = sdk::_DecklinkPixelFormat_decklinkFormat10BitYUV as isize,

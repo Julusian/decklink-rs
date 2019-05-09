@@ -3,7 +3,7 @@ use crate::{sdk, SdkError};
 use num_traits::FromPrimitive;
 use std::ptr::{null, null_mut};
 
-#[derive(FromPrimitive, PartialEq)]
+#[derive(FromPrimitive, PartialEq, Debug)]
 pub enum DecklinkDisplayModeId {
     NTSC = sdk::_DecklinkDisplayMode_decklinkModeNTSC as isize,
     NTSC2398 = sdk::_DecklinkDisplayMode_decklinkModeNTSC2398 as isize,

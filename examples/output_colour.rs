@@ -2,8 +2,8 @@ extern crate decklink_sdk;
 #[macro_use]
 extern crate text_io;
 
-use decklink_sdk::device::output::DecklinkOutputDevice;
-use decklink_sdk::device::output::DecklinkVideoOutputFlags;
+use decklink_sdk::device::output::{DecklinkOutputDevice, DecklinkVideoOutputFlags};
+use decklink_sdk::device::DecklinkDeviceDisplayModes;
 use decklink_sdk::device::{get_devices, DecklinkDevice};
 use decklink_sdk::display_mode::DecklinkDisplayMode;
 use decklink_sdk::frame::{DecklinkFrameFlags, DecklinkPixelFormat};

@@ -25,13 +25,6 @@ pub enum DecklinkAudioOutputStreamType {
         sdk::_DecklinkAudioOutputStreamType_decklinkAudioOutputStreamContinuousDontResample
             as isize,
 }
-#[derive(FromPrimitive, PartialEq)]
-pub enum DecklinkDisplayModeSupport {
-    NotSupported = sdk::_DecklinkDisplayModeSupport_decklinkDisplayModeNotSupported as isize,
-    Supported = sdk::_DecklinkDisplayModeSupport_decklinkDisplayModeSupported as isize,
-    SupportedWithConversion =
-        sdk::_DecklinkDisplayModeSupport_decklinkDisplayModeSupportedWithConversion as isize,
-}
 
 #[derive(FromPrimitive, PartialEq)]
 pub enum DecklinkOutputFrameCompletionResult {

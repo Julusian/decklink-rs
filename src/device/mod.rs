@@ -1,8 +1,12 @@
+use crate::device::attributes::{wrap_attributes, DecklinkDeviceAttributes};
 use crate::device::output::{wrap_device_output, DecklinkOutputDevice};
+use crate::display_mode::{DecklinkDisplayMode, DecklinkDisplayModeId};
+use crate::frame::DecklinkPixelFormat;
 use crate::sdk;
 use crate::util::{convert_string, SdkError};
 use std::ptr::{null, null_mut};
 
+pub mod attributes;
 pub mod output;
 
 pub struct DecklinkDevice {
@@ -18,6 +22,25 @@ impl Drop for DecklinkDevice {
     }
 }
 
+#[derive(FromPrimitive, PartialEq)]
+pub enum DecklinkDisplayModeSupport {
+    NotSupported = sdk::_DecklinkDisplayModeSupport_decklinkDisplayModeNotSupported as isize,
+    Supported = sdk::_DecklinkDisplayModeSupport_decklinkDisplayModeSupported as isize,
+    SupportedWithConversion =
+        sdk::_DecklinkDisplayModeSupport_decklinkDisplayModeSupportedWithConversion as isize,
+}
+
+pub trait DecklinkDeviceDisplayModes<T> {
+    fn does_support_video_mode(
+        &self,
+        mode: DecklinkDisplayModeId,
+        pixel_format: DecklinkPixelFormat,
+        flags: T,
+    ) -> Result<(DecklinkDisplayModeSupport, Option<DecklinkDisplayMode>), SdkError>;
+
+    fn display_modes(&self) -> Result<Vec<DecklinkDisplayMode>, SdkError>;
+}
+
 impl DecklinkDevice {
     pub fn model_name(&self) -> Option<String> {
         let mut s = null();
@@ -26,6 +49,12 @@ impl DecklinkDevice {
     pub fn display_name(&self) -> Option<String> {
         let mut s = null();
         unsafe { convert_string(sdk::cdecklink_device_get_display_name(self.dev, &mut s), s) }
+    }
+
+    pub fn get_attributes(&self) -> Result<DecklinkDeviceAttributes, SdkError> {
+        let mut s = null_mut();
+        let r = unsafe { sdk::cdecklink_device_query_attributes(self.dev, &mut s) };
+        SdkError::result_or_else(r, || wrap_attributes(s))
     }
 
     pub fn output(&self) -> Option<DecklinkOutputDevice> {

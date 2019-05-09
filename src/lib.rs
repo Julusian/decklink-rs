@@ -2,6 +2,9 @@
 extern crate num_derive;
 #[macro_use]
 extern crate bitflags;
+extern crate strum;
+#[macro_use]
+extern crate strum_macros;
 
 #[allow(
     non_snake_case,
@@ -13,6 +16,7 @@ extern crate bitflags;
 #[link(name = "decklink_c", kind = "static")]
 mod sdk;
 
+pub mod connectors;
 pub mod device;
 pub mod display_mode;
 pub mod frame;
@@ -23,7 +27,7 @@ use util::convert_string;
 pub use util::SdkError;
 
 pub fn api_version() -> Option<String> {
-    let it = unsafe { sdk::cdecklink_create_decklink_iterator_instance() };
+    let it = unsafe { sdk::cdecklink_create_decklink_api_information_instance() };
     if it.is_null() {
         None
     } else {

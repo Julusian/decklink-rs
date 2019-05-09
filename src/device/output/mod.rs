@@ -6,7 +6,6 @@ mod video_callback;
 
 use crate::device::output::audio::wrap_audio;
 use crate::device::output::device::DecklinkOutputDevicePtr;
-use crate::device::output::enums::DecklinkDisplayModeSupport;
 use crate::device::output::video::wrap_video;
 use crate::device::output::video_callback::register_callback;
 use crate::display_mode::{
@@ -28,6 +27,7 @@ pub use crate::device::output::video::{
     DecklinkOutputDeviceVideoScheduled, DecklinkOutputDeviceVideoSync,
 };
 pub use crate::device::output::video_callback::DeckLinkVideoOutputCallback;
+use crate::device::{DecklinkDeviceDisplayModes, DecklinkDisplayModeSupport};
 
 pub struct DecklinkOutputDevice {
     ptr: Arc<DecklinkOutputDevicePtr>,
@@ -43,9 +43,8 @@ pub fn wrap_device_output(ptr: *mut crate::sdk::cdecklink_output_t) -> DecklinkO
     }
 }
 
-// TODO - this is currently a bag of methods, and it could do with some more sanity checking (eg allow schedule when video not enabled etc)
-impl DecklinkOutputDevice {
-    pub fn does_support_video_mode(
+impl DecklinkDeviceDisplayModes<enums::DecklinkVideoOutputFlags> for DecklinkOutputDevice {
+    fn does_support_video_mode(
         &self,
         mode: DecklinkDisplayModeId,
         pixel_format: DecklinkPixelFormat,
@@ -78,7 +77,7 @@ impl DecklinkOutputDevice {
         )
     }
 
-    pub fn display_modes(&self) -> Result<Vec<DecklinkDisplayMode>, SdkError> {
+    fn display_modes(&self) -> Result<Vec<DecklinkDisplayMode>, SdkError> {
         unsafe {
             let mut it = null_mut();
             let ok = sdk::cdecklink_output_get_display_mode_iterator(self.ptr.dev, &mut it);
@@ -91,7 +90,9 @@ impl DecklinkOutputDevice {
             }
         }
     }
-
+}
+// TODO - this is currently a bag of methods, and it could do with some more sanity checking (eg allow schedule when video not enabled etc)
+impl DecklinkOutputDevice {
     /* Video Output */
 
     unsafe fn enable_video_output_inner(
@@ -107,13 +108,23 @@ impl DecklinkOutputDevice {
         }
     }
 
+    pub fn is_scheduled_playback_running(&self) -> Result<bool, SdkError> {
+        unsafe {
+            let mut running = false;
+            let result =
+                sdk::cdecklink_output_is_scheduled_playback_running(self.ptr.dev, &mut running);
+            SdkError::result_or(result, running)
+        }
+    }
+
     pub fn enable_video_output_scheduled(
-        self,
+        &self,
         mode: DecklinkDisplayModeId,
         flags: enums::DecklinkVideoOutputFlags,
         timescale: i64,
     ) -> Result<Box<DecklinkOutputDeviceVideoScheduled>, SdkError> {
         match register_callback(&self.ptr) {
+            // Don't do this if already running?
             Err(e) => Err(e),
             Ok(wrapper) => {
                 // TODO - this leaks on error

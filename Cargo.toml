@@ -10,6 +10,8 @@ build="build.rs"
 num-traits = "0.2"
 num-derive = "0.2"
 bitflags = "1.0"
+strum = "0.15.0"
+strum_macros = "0.15.0"
 
 [build-dependencies]
 cmake = "0.1.38"

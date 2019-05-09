@@ -6,6 +6,7 @@ use decklink_sdk::device::output::DecklinkVideoOutputFlags;
 use decklink_sdk::device::output::{
     DeckLinkVideoOutputCallback, DecklinkOutputDevice, DecklinkOutputFrameCompletionResult,
 };
+use decklink_sdk::device::DecklinkDeviceDisplayModes;
 use decklink_sdk::device::{get_devices, DecklinkDevice};
 use decklink_sdk::display_mode::DecklinkDisplayMode;
 use decklink_sdk::frame::{DecklinkFrameFlags, DecklinkPixelFormat, DecklinkVideoFrame};
@@ -137,17 +138,6 @@ fn main() {
             video_output
                 .schedule_frame(frame.base(), 400000000, 1000)
                 .expect("Failed to schedule frame");
-            //            video_output.schedule_frame(frame.base(), 500000000, 1000).expect("Failed to schedule frame");
-            //            video_output.schedule_frame(frame.base(), 600000000, 1000).expect("Failed to schedule frame");
-            //            video_output.schedule_frame(frame.base(), 700000000, 1000).expect("Failed to schedule frame");
-            //            video_output.schedule_frame(frame.base(), 800000000, 1000).expect("Failed to schedule frame");
-            //            video_output.schedule_frame(frame.base(), 900000000, 1000).expect("Failed to schedule frame");
-            //            video_output.schedule_frame(frame.base(), 990000000, 1000).expect("Failed to schedule frame");
-            //            video_output.schedule_frame(frame.base(), 980000000, 1000).expect("Failed to schedule frame");
-            //            video_output.schedule_frame(frame.base(), 970000000, 1000).expect("Failed to schedule frame");
-            //            video_output.schedule_frame(frame.base(), 960000000, 1000).expect("Failed to schedule frame");
-            //            video_output.schedule_frame(frame.base(), 950000000, 1000).expect("Failed to schedule frame");
-            //            video_output.schedule_frame(frame.base(), 840000000, 1000).expect("Failed to schedule frame");
 
             let handler = Arc::new(CompletionCallback {});
             video_output
@@ -158,16 +148,8 @@ fn main() {
                 .start_playback(0, 1.0)
                 .expect("Playback to start");
 
-            //        video_output
-            //            .display_frame(frame.base())
-            //            .expect("Failed to display frame");
-
             println!("Press enter to continue");
             let _s: String = read!();
-
-            video_output.stop_playback(0).expect("Playback to start");
-
-            //            sleep(Duration::from_millis(500));
 
             // All done
         }

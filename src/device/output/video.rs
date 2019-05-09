@@ -18,10 +18,7 @@ pub fn wrap_video(
     }
 }
 
-pub trait DecklinkOutputDeviceVideo {
-    // TODO - is this valid in sync context?
-    fn buffered_video_frame_count(&self) -> Result<u32, SdkError>;
-}
+pub trait DecklinkOutputDeviceVideo {}
 pub trait DecklinkOutputDeviceVideoSync: DecklinkOutputDeviceVideo {
     // TODO return type
     fn display_frame(&self, frame: &DecklinkVideoFrame) -> Result<(), SdkError>;
@@ -39,6 +36,8 @@ pub trait DecklinkOutputDeviceVideoScheduled: DecklinkOutputDeviceVideo {
         &mut self,
         handler: Option<Arc<DeckLinkVideoOutputCallback>>,
     ) -> Result<(), SdkError>;
+
+    fn buffered_video_frame_count(&self) -> Result<u32, SdkError>;
 
     fn start_playback(&mut self, start_time: i64, speed: f64) -> Result<(), SdkError>;
     fn stop_playback(&mut self, stop_time: i64) -> Result<i64, SdkError>;
@@ -72,16 +71,7 @@ impl Drop for DecklinkOutputDeviceVideoImpl {
     }
 }
 
-impl DecklinkOutputDeviceVideo for DecklinkOutputDeviceVideoImpl {
-    fn buffered_video_frame_count(&self) -> Result<u32, SdkError> {
-        unsafe {
-            let mut count = 0;
-            let result =
-                sdk::cdecklink_output_get_buffered_video_frame_count(self.ptr.dev, &mut count);
-            SdkError::result_or(result, count)
-        }
-    }
-}
+impl DecklinkOutputDeviceVideo for DecklinkOutputDeviceVideoImpl {}
 
 impl DecklinkOutputDeviceVideoSync for DecklinkOutputDeviceVideoImpl {
     fn display_frame(&self, frame: &DecklinkVideoFrame) -> Result<(), SdkError> {
@@ -124,6 +114,15 @@ impl DecklinkOutputDeviceVideoScheduled for DecklinkOutputDeviceVideoImpl {
                 *wrapper.handler.write().unwrap() = handler;
             }
             Ok(())
+        }
+    }
+
+    fn buffered_video_frame_count(&self) -> Result<u32, SdkError> {
+        unsafe {
+            let mut count = 0;
+            let result =
+                sdk::cdecklink_output_get_buffered_video_frame_count(self.ptr.dev, &mut count);
+            SdkError::result_or(result, count)
         }
     }
 
