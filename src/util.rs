@@ -5,17 +5,17 @@ use std::ffi::CStr;
 #[derive(Debug, FromPrimitive)]
 #[allow(overflowing_literals)]
 pub enum SdkError {
-    FALSE = 0x00000001,
-    UNEXPECTED = 0x8000FFFF,
-    NOTIMPL = 0x80000001,
-    OUTOFMEMORY = 0x80000002,
-    INVALIDARG = 0x80000003,
-    NOINTERFACE = 0x80000004,
-    POINTER = 0x80000005,
-    HANDLE = 0x80000006,
-    ABORT = 0x80000007,
-    FAIL = 0x80000008,
-    ACCESSDENIED = 0x80000009,
+    FALSE = 0x0000_0001,
+    UNEXPECTED = -0x0000_FFFF,
+    NOTIMPL = -0x0000_0001,
+    OUTOFMEMORY = -0x0000_0002,
+    INVALIDARG = -0x0000_0003,
+    NOINTERFACE = -0x0000_0004,
+    POINTER = -0x0000_0005,
+    HANDLE = -0x0000_0006,
+    ABORT = -0x0000_0007,
+    FAIL = -0x0000_0008,
+    ACCESSDENIED = -0x0009,
 }
 
 impl SdkError {
@@ -34,7 +34,7 @@ impl SdkError {
     where
         T: Default,
     {
-        Self::result_or_else(r, || Default::default())
+        Self::result_or_else(r, Default::default)
     }
     pub fn result_or<T>(r: i32, def: T) -> Result<T, SdkError> {
         if Self::is_ok(r) {
