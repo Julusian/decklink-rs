@@ -69,25 +69,6 @@ impl DecklinkVideoFrame {
         // TODO
         //        unsafe { sdk::cdecklink_video_frame_bytes()}
     }
-
-    pub fn set_bytes(&self, data: &[u8]) -> bool {
-        let expected_len = (self.row_bytes() * self.height()) as usize;
-        if data.len() != expected_len {
-            false
-        } else {
-            let mut bytes = null_mut();
-            unsafe {
-                let r = sdk::cdecklink_video_frame_get_bytes(self.frame, &mut bytes);
-                if !SdkError::is_ok(r) {
-                    // TODO - better
-                    false
-                } else {
-                    std::ptr::copy(data.as_ptr(), bytes as *mut u8, expected_len);
-                    true
-                }
-            }
-        }
-    }
 }
 
 pub struct DecklinkVideoMutableFrame {
@@ -109,8 +90,27 @@ impl DecklinkVideoMutableFrame {
         &self.base
     }
 
-    pub fn set_flags(&self, flags: DecklinkFrameFlags) {
+    pub fn set_flags(&mut self, flags: DecklinkFrameFlags) {
         unsafe { sdk::cdecklink_mutable_video_frame_set_flags(self.frame, flags.bits()) };
+    }
+
+    pub fn set_bytes(&mut self, data: &[u8]) -> bool {
+        let expected_len = (self.base.row_bytes() * self.base.height()) as usize;
+        if data.len() != expected_len {
+            false
+        } else {
+            let mut bytes = null_mut();
+            unsafe {
+                let r = sdk::cdecklink_video_frame_get_bytes(self.frame, &mut bytes);
+                if !SdkError::is_ok(r) {
+                    // TODO - better
+                    false
+                } else {
+                    std::ptr::copy(data.as_ptr(), bytes as *mut u8, expected_len);
+                    true
+                }
+            }
+        }
     }
 }
 

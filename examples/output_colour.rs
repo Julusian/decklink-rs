@@ -75,7 +75,7 @@ fn select_output_and_format() -> Option<(DecklinkDevice, DecklinkOutputDevice, D
 
 fn main() {
     if let Some((_device, output, mode)) = select_output_and_format() {
-        let frame = output
+        let mut frame = output
             .create_video_frame(
                 mode.width() as i32,
                 mode.height() as i32,
@@ -86,7 +86,7 @@ fn main() {
             .expect("Failed to create video frame");
 
         let bytes = vec![120u8; (mode.width() * mode.height() * 4) as usize];
-        if !frame.base().set_bytes(&bytes) {
+        if !frame.set_bytes(&bytes) {
             println!("Failed to set frame bytes");
             return;
         }

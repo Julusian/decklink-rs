@@ -235,6 +235,12 @@ extern "C" {
         dst: *mut *mut cdecklink_attributes_t,
     ) -> HRESULT;
 }
+extern "C" {
+    pub fn cdecklink_device_query_status(
+        obj: *mut cdecklink_device_t,
+        dst: *mut *mut cdecklink_status_t,
+    ) -> HRESULT;
+}
 pub type DecklinkTimeValue = i64;
 pub type DecklinkTimeScale = i64;
 pub type DecklinkTimecodeBCD = u32;

@@ -1,5 +1,6 @@
 use crate::device::attributes::{wrap_attributes, DecklinkDeviceAttributes};
 use crate::device::output::{wrap_device_output, DecklinkOutputDevice};
+use crate::device::status::{wrap_status, DecklinkDeviceStatus};
 use crate::display_mode::{DecklinkDisplayMode, DecklinkDisplayModeId};
 use crate::frame::DecklinkPixelFormat;
 use crate::sdk;
@@ -8,6 +9,7 @@ use std::ptr::{null, null_mut};
 
 pub mod attributes;
 pub mod output;
+pub mod status;
 
 pub struct DecklinkDevice {
     dev: *mut crate::sdk::cdecklink_device_t,
@@ -55,6 +57,11 @@ impl DecklinkDevice {
         let mut s = null_mut();
         let r = unsafe { sdk::cdecklink_device_query_attributes(self.dev, &mut s) };
         SdkError::result_or_else(r, || wrap_attributes(s))
+    }
+    pub fn get_status(&self) -> Result<DecklinkDeviceStatus, SdkError> {
+        let mut s = null_mut();
+        let r = unsafe { sdk::cdecklink_device_query_status(self.dev, &mut s) };
+        SdkError::result_or_else(r, || wrap_status(s))
     }
 
     pub fn output(&self) -> Option<DecklinkOutputDevice> {

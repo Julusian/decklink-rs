@@ -3,7 +3,7 @@ use crate::{sdk, SdkError};
 use num_traits::FromPrimitive;
 use std::ptr::{null, null_mut};
 
-#[derive(FromPrimitive, PartialEq, Debug)]
+#[derive(FromPrimitive, PartialEq, Debug, Copy, Clone)]
 pub enum DecklinkDisplayModeId {
     NTSC = sdk::_DecklinkDisplayMode_decklinkModeNTSC as isize,
     NTSC2398 = sdk::_DecklinkDisplayMode_decklinkModeNTSC2398 as isize,
@@ -46,7 +46,7 @@ pub enum DecklinkDisplayModeId {
     Unknown = sdk::_DecklinkDisplayMode_decklinkModeUnknown as isize,
 }
 
-#[derive(FromPrimitive, PartialEq)]
+#[derive(FromPrimitive, PartialEq, Debug, Copy, Clone)]
 pub enum DecklinkFieldDominance {
     Unknown = sdk::_DecklinkFieldDominance_decklinkUnknownFieldDominance as isize,
     LowerFieldFirst = sdk::_DecklinkFieldDominance_decklinkLowerFieldFirst as isize,
