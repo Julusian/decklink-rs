@@ -3,64 +3,21 @@ extern crate decklink_sdk;
 extern crate text_io;
 
 use decklink_sdk::device::get_devices;
+use decklink_sdk::device::notification::{
+    DeckLinkNotificationCallback, DecklinkDeviceNotificationExt, NotificationTopic,
+};
 use decklink_sdk::device::status::{DecklinkDeviceStatus, DecklinkStatusId};
-//
-//struct OutputCallback {
-//    output: Weak<Mutex<Box<DecklinkOutputDeviceVideoScheduled>>>,
-//    duration: i64,
-//    timescale: i64,
-//
-//    scheduled: AtomicI64,
-//}
-//
-//impl DeckLinkVideoOutputCallback for OutputCallback {
-//    fn schedule_frame_completed_callback(
-//        &self,
-//        frame: Option<DecklinkVideoFrame>,
-//        _result: DecklinkOutputFrameCompletionResult,
-//    ) -> bool {
-//        self.schedule_next_frame(&frame.unwrap()).is_ok()
-//    }
-//
-//    fn playback_stopped(&self) -> bool {
-//        true
-//    }
-//}
-//impl OutputCallback {
-//    fn convert_frame_number_to_timecode(&self, frame_count: i64) -> (i64, i64, i64, i64) {
-//        let max_fps = self.timescale / 1000;
-//        let mut remaining_frame_count = frame_count;
-//
-//        let is_drop_frame = false; // TODO
-//        if is_drop_frame && self.duration == 1001 {
-//            // TODO
-//        }
-//
-//        let frames = remaining_frame_count % max_fps;
-//        remaining_frame_count /= max_fps;
-//        let seconds = remaining_frame_count % 60;
-//        remaining_frame_count /= 60;
-//        let minutes = remaining_frame_count % 60;
-//        remaining_frame_count /= 60;
-//        let hours = remaining_frame_count % 24;
-//
-//        return (hours, minutes, seconds, frames);
-//    }
-//
-//    fn schedule_next_frame(&self, frame: &DecklinkVideoFrame) -> Result<(), SdkError> {
-//        if let Some(output) = self.output.upgrade() {
-//            let num = self.scheduled.fetch_add(1, Ordering::SeqCst);
-//            let _timecode = self.convert_frame_number_to_timecode(num);
-//
-//            output
-//                .lock()
-//                .unwrap()
-//                .schedule_frame(frame, num * self.duration, self.duration)
-//        } else {
-//            Err(SdkError::HANDLE)
-//        }
-//    }
-//}
+use std::sync::Arc;
+
+struct NotificationCallback {
+    status: Arc<DecklinkDeviceStatus>,
+}
+impl DeckLinkNotificationCallback for NotificationCallback {
+    fn notify_status(&self, id: DecklinkStatusId) -> bool {
+        print_status(&self.status, id);
+        true
+    }
+}
 
 fn print_status(status: &DecklinkDeviceStatus, id: DecklinkStatusId) {
     /*
@@ -175,9 +132,11 @@ fn main() {
     //    let device = devices.first().expect("Could not find any Decklink devices");
     let device = &devices[1];
 
-    let status = device
-        .get_status()
-        .expect("Could not obtain Decklink status object");
+    let status = Arc::new(
+        device
+            .get_status()
+            .expect("Could not obtain Decklink status object"),
+    );
 
     // Print general status values
     print_status(&status, DecklinkStatusId::Busy);
@@ -201,8 +160,19 @@ fn main() {
     print_status(&status, DecklinkStatusId::ReferenceSignalMode);
     print_status(&status, DecklinkStatusId::ReceivedEDID);
 
+    let notification = device
+        .get_notification()
+        .expect("Could not obtain Decklink notification object");
+
+    let callback = Arc::new(NotificationCallback {
+        status: status.clone(),
+    });
+
     // Register for notification changes
-    // TODO
+    // The registration is only valid for as long as handle is alive
+    let _handle = notification
+        .subscribe(NotificationTopic::StatusChanged, callback.clone())
+        .expect("Failed to subscribe to notifications");
 
     println!("Press enter to continue");
     let _s: String = read!();

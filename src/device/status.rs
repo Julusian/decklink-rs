@@ -171,31 +171,3 @@ impl DecklinkDeviceStatus {
         self.get_bytes(sdk::_DecklinkStatusID_decklinkStatusReceivedEDID)
     }
 }
-
-//pub struct DeckLinkNotificationCallbackLife {
-//
-//}
-//
-//pub trait DeckLinkNotificationCallback {
-//    // TODO - fill this out
-//    fn notify_int (&self) -> bool;
-//}
-//
-////pub struct NotificationCallbackWrapper {
-//////    pub handler: RwLock<Option<Arc<DeckLinkNotificationCallback>>>,
-////}
-//extern "C" fn notify_callback(context: *mut ::std::os::raw::c_void) -> sdk::HRESULT {
-//    let wrapper: &mut Arc<DeckLinkNotificationCallback> = unsafe { &mut *(context as *mut _) };
-//
-//    let mut result = true;
-//    if let Some(handler) = &*wrapper.handler.read().unwrap() {
-//        result = handler.playback_stopped();
-//    }
-//
-//    if result {
-//        0 // Ok
-//    } else {
-//        1 // False
-//    }
-//}
-//

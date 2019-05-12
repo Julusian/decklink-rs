@@ -1,4 +1,5 @@
 use crate::device::attributes::{wrap_attributes, DecklinkDeviceAttributes};
+use crate::device::notification::DecklinkDeviceNotification;
 use crate::device::output::{wrap_device_output, DecklinkOutputDevice};
 use crate::device::status::{wrap_status, DecklinkDeviceStatus};
 use crate::display_mode::{DecklinkDisplayMode, DecklinkDisplayModeId};
@@ -6,13 +7,17 @@ use crate::frame::DecklinkPixelFormat;
 use crate::sdk;
 use crate::util::{convert_string, SdkError};
 use std::ptr::{null, null_mut};
+use std::sync::{Arc, Mutex, Weak};
 
 pub mod attributes;
+pub mod notification;
 pub mod output;
 pub mod status;
 
 pub struct DecklinkDevice {
     dev: *mut crate::sdk::cdecklink_device_t,
+
+    notification: Mutex<Weak<DecklinkDeviceNotification>>,
 }
 
 impl Drop for DecklinkDevice {
@@ -63,6 +68,19 @@ impl DecklinkDevice {
         let r = unsafe { sdk::cdecklink_device_query_status(self.dev, &mut s) };
         SdkError::result_or_else(r, || wrap_status(s))
     }
+    pub fn get_notification(&self) -> Result<Arc<DecklinkDeviceNotification>, SdkError> {
+        if let Ok(locked) = self.notification.lock() {
+            if let Some(val) = locked.upgrade() {
+                Ok(val)
+            } else {
+                // TODO
+
+                Err(SdkError::FALSE)
+            }
+        } else {
+            Err(SdkError::HANDLE)
+        }
+    }
 
     pub fn output(&self) -> Option<DecklinkOutputDevice> {
         let mut output = null_mut();
@@ -88,7 +106,10 @@ pub fn get_devices() -> Result<Vec<DecklinkDevice>, SdkError> {
             if SdkError::is_false(ok) {
                 break;
             } else if SdkError::is_ok(ok) {
-                res.push(DecklinkDevice { dev });
+                res.push(DecklinkDevice {
+                    dev,
+                    notification: Mutex::new(Weak::new()),
+                });
             } else {
                 unsafe {
                     sdk::cdecklink_iterator_release(it);

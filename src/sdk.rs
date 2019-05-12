@@ -220,27 +220,6 @@ pub type cdecklink_status_t = ::std::os::raw::c_void;
 pub type cdecklink_keyer_t = ::std::os::raw::c_void;
 pub type cdecklink_video_conversion_t = ::std::os::raw::c_void;
 pub type cdecklink_discovery_t = ::std::os::raw::c_void;
-extern "C" {
-    pub fn cdecklink_free_string(str: *const ::std::os::raw::c_char);
-}
-extern "C" {
-    pub fn cdecklink_api_version(
-        it: *mut cdecklink_iterator_t,
-        str: *mut *const ::std::os::raw::c_char,
-    ) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_device_query_attributes(
-        obj: *mut cdecklink_device_t,
-        dst: *mut *mut cdecklink_attributes_t,
-    ) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_device_query_status(
-        obj: *mut cdecklink_device_t,
-        dst: *mut *mut cdecklink_status_t,
-    ) -> HRESULT;
-}
 pub type DecklinkTimeValue = i64;
 pub type DecklinkTimeScale = i64;
 pub type DecklinkTimecodeBCD = u32;
@@ -2545,22 +2524,6 @@ extern "C" {
     ) -> ::std::os::raw::c_ulong;
 }
 extern "C" {
-    pub fn cdecklink_notification_subscribe(
-        obj: *mut cdecklink_notification_t,
-        topic: DecklinkNotifications,
-        ctx: *mut ::std::os::raw::c_void,
-        cb0: cdecklink_notification_callback_notify,
-    ) -> HRESULT;
-}
-extern "C" {
-    pub fn cdecklink_notification_unsubscribe(
-        obj: *mut cdecklink_notification_t,
-        topic: DecklinkNotifications,
-        ctx: *mut ::std::os::raw::c_void,
-        cb0: cdecklink_notification_callback_notify,
-    ) -> HRESULT;
-}
-extern "C" {
     pub fn cdecklink_attributes_add_ref(
         obj: *mut cdecklink_attributes_t,
     ) -> ::std::os::raw::c_ulong;
@@ -2741,5 +2704,49 @@ extern "C" {
     pub fn cdecklink_encoder_video_packet_query_h265nal_packet(
         obj: *mut cdecklink_encoder_video_packet_t,
         dst: *mut *mut cdecklink_h265nal_packet_t,
+    ) -> HRESULT;
+}
+pub type cdecklink_notification_callback_notify_handle = ::std::os::raw::c_void;
+extern "C" {
+    pub fn cdecklink_free_string(str: *const ::std::os::raw::c_char);
+}
+extern "C" {
+    pub fn cdecklink_api_version(
+        it: *mut cdecklink_iterator_t,
+        str: *mut *const ::std::os::raw::c_char,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_device_query_attributes(
+        obj: *mut cdecklink_device_t,
+        dst: *mut *mut cdecklink_attributes_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_device_query_status(
+        obj: *mut cdecklink_device_t,
+        dst: *mut *mut cdecklink_status_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_device_query_notification(
+        obj: *mut cdecklink_device_t,
+        dst: *mut *mut cdecklink_notification_t,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_notification_subscribe(
+        obj: *mut cdecklink_notification_t,
+        topic: DecklinkNotifications,
+        ctx: *mut ::std::os::raw::c_void,
+        cb0: cdecklink_notification_callback_notify,
+        handle: *mut *mut cdecklink_notification_callback_notify_handle,
+    ) -> HRESULT;
+}
+extern "C" {
+    pub fn cdecklink_notification_unsubscribe(
+        obj: *mut cdecklink_notification_t,
+        topic: DecklinkNotifications,
+        handle: *mut cdecklink_notification_callback_notify_handle,
     ) -> HRESULT;
 }

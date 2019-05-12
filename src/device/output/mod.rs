@@ -62,19 +62,15 @@ impl DecklinkDeviceDisplayModes<enums::DecklinkVideoOutputFlags> for DecklinkOut
                 &mut display_mode,
             )
         };
-        SdkError::result_or_else(
-            result,
-            Box::new(move || {
-                let supported2 = DecklinkDisplayModeSupport::from_u32(supported)
-                    .unwrap_or(DecklinkDisplayModeSupport::NotSupported);
-                if display_mode.is_null() || supported2 == DecklinkDisplayModeSupport::NotSupported
-                {
-                    (DecklinkDisplayModeSupport::NotSupported, None)
-                } else {
-                    unsafe { (supported2, Some(wrap_display_mode(display_mode))) }
-                }
-            }),
-        )
+        SdkError::result_or_else(result, move || {
+            let supported2 = DecklinkDisplayModeSupport::from_u32(supported)
+                .unwrap_or(DecklinkDisplayModeSupport::NotSupported);
+            if display_mode.is_null() || supported2 == DecklinkDisplayModeSupport::NotSupported {
+                (DecklinkDisplayModeSupport::NotSupported, None)
+            } else {
+                unsafe { (supported2, Some(wrap_display_mode(display_mode))) }
+            }
+        })
     }
 
     fn display_modes(&self) -> Result<Vec<DecklinkDisplayMode>, SdkError> {
