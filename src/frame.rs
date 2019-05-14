@@ -126,7 +126,7 @@ pub unsafe fn wrap_mutable_frame(
     }
 }
 pub unsafe fn wrap_frame(ptr: *mut sdk::cdecklink_video_frame_t) -> DecklinkVideoFrame {
-    sdk::cdecklink_mutable_video_frame_add_ref(ptr); // TODO - all types should do this
+    sdk::cdecklink_video_frame_add_ref(ptr); // TODO - all types should do this
     DecklinkVideoFrame {
         frame: ptr,
         is_child: false,

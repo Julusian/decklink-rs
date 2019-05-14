@@ -4,10 +4,12 @@ mod enums;
 mod video;
 mod video_callback;
 
+use crate::device::common::{DecklinkAudioSampleRate, DecklinkAudioSampleType};
 use crate::device::output::audio::wrap_audio;
 use crate::device::output::device::DecklinkOutputDevicePtr;
 use crate::device::output::video::wrap_video;
 use crate::device::output::video_callback::register_callback;
+use crate::device::{DecklinkDeviceDisplayModes, DecklinkDisplayModeSupport};
 use crate::display_mode::{
     iterate_display_modes, wrap_display_mode, DecklinkDisplayMode, DecklinkDisplayModeId,
 };
@@ -27,7 +29,6 @@ pub use crate::device::output::video::{
     DecklinkOutputDeviceVideoScheduled, DecklinkOutputDeviceVideoSync,
 };
 pub use crate::device::output::video_callback::DeckLinkVideoOutputCallback;
-use crate::device::{DecklinkDeviceDisplayModes, DecklinkDisplayModeSupport};
 
 pub struct DecklinkOutputDevice {
     ptr: Arc<DecklinkOutputDevicePtr>,
@@ -87,7 +88,7 @@ impl DecklinkDeviceDisplayModes<enums::DecklinkVideoOutputFlags> for DecklinkOut
         }
     }
 }
-// TODO - this is currently a bag of methods, and it could do with some more sanity checking (eg allow schedule when video not enabled etc)
+
 impl DecklinkOutputDevice {
     /* Video Output */
 
@@ -177,8 +178,8 @@ impl DecklinkOutputDevice {
 
     pub fn enable_audio_output(
         &self,
-        sample_rate: enums::DecklinkAudioSampleRate,
-        sample_type: enums::DecklinkAudioSampleType,
+        sample_rate: DecklinkAudioSampleRate,
+        sample_type: DecklinkAudioSampleType,
         channels: u32,
         stream_type: enums::DecklinkAudioOutputStreamType,
     ) -> Result<DecklinkOutputDeviceAudio, SdkError> {

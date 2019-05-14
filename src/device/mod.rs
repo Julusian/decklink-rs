@@ -1,4 +1,5 @@
 use crate::device::attributes::{wrap_attributes, DecklinkDeviceAttributes};
+use crate::device::input::{wrap_device_input, DecklinkInputDevice};
 use crate::device::notification::{wrap_notification, DecklinkDeviceNotification};
 use crate::device::output::{wrap_device_output, DecklinkOutputDevice};
 use crate::device::status::{wrap_status, DecklinkDeviceStatus};
@@ -10,6 +11,8 @@ use std::ptr::{null, null_mut};
 use std::sync::{Arc, Mutex, Weak};
 
 pub mod attributes;
+pub mod common;
+pub mod input;
 pub mod notification;
 pub mod output;
 pub mod status;
@@ -95,6 +98,15 @@ impl DecklinkDevice {
             None
         } else {
             Some(wrap_device_output(output))
+        }
+    }
+    pub fn input(&self) -> Option<DecklinkInputDevice> {
+        let mut input = null_mut();
+        let res = unsafe { sdk::cdecklink_device_query_input(self.dev, &mut input) };
+        if !SdkError::is_ok(res) || input.is_null() {
+            None
+        } else {
+            Some(wrap_device_input(input))
         }
     }
 }
