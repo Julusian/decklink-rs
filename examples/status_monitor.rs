@@ -138,6 +138,8 @@ fn main() {
             .expect("Could not obtain Decklink status object"),
     );
 
+    println!("Device: {}", device.display_name().unwrap_or_default());
+
     // Print general status values
     print_status(&status, DecklinkStatusId::Busy);
     print_status(&status, DecklinkStatusId::DuplexMode);

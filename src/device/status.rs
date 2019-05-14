@@ -50,7 +50,7 @@ bitflags! {
 #[derive(FromPrimitive, PartialEq, Debug, Copy, Clone)]
 pub enum DecklinkDuplexStatus {
     FullDuplex = sdk::_DecklinkDuplexStatus_decklinkDuplexStatusFullDuplex as isize,
-    HaldDuplex = sdk::_DecklinkDuplexStatus_decklinkDuplexStatusHalfDuplex as isize,
+    HalfDuplex = sdk::_DecklinkDuplexStatus_decklinkDuplexStatusHalfDuplex as isize,
     Simplex = sdk::_DecklinkDuplexStatus_decklinkDuplexStatusSimplex as isize,
     Inactive = sdk::_DecklinkDuplexStatus_decklinkDuplexStatusInactive as isize,
 }

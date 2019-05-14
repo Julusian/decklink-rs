@@ -1,5 +1,5 @@
 use crate::device::attributes::{wrap_attributes, DecklinkDeviceAttributes};
-use crate::device::notification::DecklinkDeviceNotification;
+use crate::device::notification::{wrap_notification, DecklinkDeviceNotification};
 use crate::device::output::{wrap_device_output, DecklinkOutputDevice};
 use crate::device::status::{wrap_status, DecklinkDeviceStatus};
 use crate::display_mode::{DecklinkDisplayMode, DecklinkDisplayModeId};
@@ -69,13 +69,19 @@ impl DecklinkDevice {
         SdkError::result_or_else(r, || wrap_status(s))
     }
     pub fn get_notification(&self) -> Result<Arc<DecklinkDeviceNotification>, SdkError> {
-        if let Ok(locked) = self.notification.lock() {
+        if let Ok(mut locked) = self.notification.lock() {
             if let Some(val) = locked.upgrade() {
                 Ok(val)
             } else {
-                // TODO
-
-                Err(SdkError::FALSE)
+                unsafe {
+                    let mut s = null_mut();
+                    let result = sdk::cdecklink_device_query_notification(self.dev, &mut s);
+                    SdkError::result_or_else(result, || {
+                        let notification = wrap_notification(s);
+                        *locked = Arc::downgrade(&notification);
+                        notification
+                    })
+                }
             }
         } else {
             Err(SdkError::HANDLE)
