@@ -4,7 +4,7 @@ mod enums;
 mod video;
 mod video_callback;
 
-use crate::device::common::{DecklinkAudioSampleRate, DecklinkAudioSampleType};
+use crate::device::common::DecklinkAudioSampleType;
 use crate::device::output::audio::wrap_audio;
 use crate::device::output::device::DecklinkOutputDevicePtr;
 use crate::device::output::video::wrap_video;
@@ -178,7 +178,6 @@ impl DecklinkOutputDevice {
 
     pub fn enable_audio_output(
         &self,
-        sample_rate: DecklinkAudioSampleRate,
         sample_type: DecklinkAudioSampleType,
         channels: u32,
         stream_type: enums::DecklinkAudioOutputStreamType,
@@ -190,7 +189,7 @@ impl DecklinkOutputDevice {
             unsafe {
                 let result = sdk::cdecklink_output_enable_audio_output(
                     self.ptr.dev,
-                    sample_rate as u32,
+                    sdk::_DecklinkAudioSampleRate_decklinkAudioSampleRate48kHz,
                     sample_type as u32,
                     channels,
                     stream_type as u32,

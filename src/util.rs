@@ -15,7 +15,7 @@ pub enum SdkError {
     HANDLE = -0x0000_0006,
     ABORT = -0x0000_0007,
     FAIL = -0x0000_0008,
-    ACCESSDENIED = -0x0009,
+    ACCESSDENIED = -0x0000_0009,
 }
 
 impl SdkError {

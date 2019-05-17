@@ -22,6 +22,9 @@ pub mod display_mode;
 pub mod frame;
 mod util;
 
+#[cfg(test)]
+mod sdk_tests;
+
 use std::ptr::null;
 use util::convert_string;
 pub use util::SdkError;

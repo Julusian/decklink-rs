@@ -59,7 +59,7 @@ impl DeckLinkVideoInputCallback for InputCallback {
             }
 
             // Restart streams
-            let input = self.input.lock().unwrap();
+            let mut input = self.input.lock().unwrap();
             input.pause_streams().expect("Cannot pause streams");
             input
                 .enable_video_input(
