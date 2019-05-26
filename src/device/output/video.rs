@@ -18,7 +18,7 @@ pub fn wrap_video(
     }
 }
 
-pub trait DecklinkOutputDeviceVideo {}
+pub trait DecklinkOutputDeviceVideo: Send + Sync {}
 pub trait DecklinkOutputDeviceVideoSync: DecklinkOutputDeviceVideo {
     // TODO return type
     fn display_frame(&self, frame: &DecklinkVideoFrame) -> Result<(), SdkError>;
@@ -43,6 +43,8 @@ pub trait DecklinkOutputDeviceVideoScheduled: DecklinkOutputDeviceVideo {
     fn stop_playback(&mut self, stop_time: i64) -> Result<i64, SdkError>;
 }
 
+unsafe impl Send for DecklinkOutputDeviceVideoImpl {}
+unsafe impl Sync for DecklinkOutputDeviceVideoImpl {}
 pub struct DecklinkOutputDeviceVideoImpl {
     ptr: Arc<DecklinkOutputDevicePtr>,
     pub callback_wrapper: *mut CallbackWrapper,

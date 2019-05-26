@@ -17,6 +17,8 @@ pub mod notification;
 pub mod output;
 pub mod status;
 
+unsafe impl Send for DecklinkDevice {}
+unsafe impl Sync for DecklinkDevice {}
 pub struct DecklinkDevice {
     dev: *mut crate::sdk::cdecklink_device_t,
 

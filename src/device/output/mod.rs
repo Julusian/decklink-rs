@@ -19,7 +19,6 @@ use crate::frame::{
 use crate::{sdk, SdkError};
 use num_traits::FromPrimitive;
 use std::ptr::null_mut;
-use std::rc::Rc;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 
@@ -38,8 +37,8 @@ pub fn wrap_device_output(ptr: *mut crate::sdk::cdecklink_output_t) -> DecklinkO
     DecklinkOutputDevice {
         ptr: Arc::new(DecklinkOutputDevicePtr {
             dev: ptr,
-            video_active: Rc::new(AtomicBool::new(false)),
-            audio_active: Rc::new(AtomicBool::new(false)),
+            video_active: AtomicBool::new(false),
+            audio_active: AtomicBool::new(false),
         }),
     }
 }

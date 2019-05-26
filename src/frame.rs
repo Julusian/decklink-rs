@@ -85,6 +85,8 @@ impl Drop for DecklinkVideoMutableFrame {
     }
 }
 
+unsafe impl Send for DecklinkVideoMutableFrame {}
+unsafe impl Sync for DecklinkVideoMutableFrame {}
 impl DecklinkVideoMutableFrame {
     pub fn base(&self) -> &DecklinkVideoFrame {
         &self.base
@@ -94,20 +96,20 @@ impl DecklinkVideoMutableFrame {
         unsafe { sdk::cdecklink_mutable_video_frame_set_flags(self.frame, flags.bits()) };
     }
 
-    pub fn set_bytes(&mut self, data: &[u8]) -> bool {
+    pub fn set_bytes(&mut self, data: &[u8]) -> Result<(), SdkError> {
         let expected_len = (self.base.row_bytes() * self.base.height()) as usize;
         if data.len() != expected_len {
-            false
+            Err(SdkError::FAIL)
         } else {
             let mut bytes = null_mut();
             unsafe {
                 let r = sdk::cdecklink_video_frame_get_bytes(self.frame, &mut bytes);
                 if !SdkError::is_ok(r) {
                     // TODO - better
-                    false
+                    SdkError::result(r)
                 } else {
                     std::ptr::copy(data.as_ptr(), bytes as *mut u8, expected_len);
-                    true
+                    Ok(())
                 }
             }
         }

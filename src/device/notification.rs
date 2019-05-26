@@ -14,6 +14,8 @@ pub fn wrap_notification(ptr: *mut sdk::cdecklink_status_t) -> Arc<DecklinkDevic
     Arc::new(DecklinkDeviceNotification { dev: ptr })
 }
 
+unsafe impl Send for DecklinkDeviceNotification {}
+unsafe impl Sync for DecklinkDeviceNotification {}
 pub struct DecklinkDeviceNotification {
     dev: *mut sdk::cdecklink_status_t,
 }
