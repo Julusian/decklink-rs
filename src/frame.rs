@@ -28,9 +28,21 @@ bitflags! {
     }
 }
 
+unsafe impl Send for DecklinkVideoFrame {}
+unsafe impl Sync for DecklinkVideoFrame {}
 pub struct DecklinkVideoFrame {
     frame: *mut crate::sdk::cdecklink_video_frame_t,
     is_child: bool,
+}
+impl Clone for DecklinkVideoFrame {
+    fn clone(&self) -> Self {
+        unsafe { sdk::cdecklink_video_frame_add_ref(self.frame) };
+        // TODO - verify drop will be run multiple times as expected
+        DecklinkVideoFrame {
+            frame: self.frame,
+            is_child: false,
+        }
+    }
 }
 
 impl Drop for DecklinkVideoFrame {
@@ -71,6 +83,8 @@ impl DecklinkVideoFrame {
     }
 }
 
+unsafe impl Send for DecklinkVideoMutableFrame {}
+unsafe impl Sync for DecklinkVideoMutableFrame {}
 pub struct DecklinkVideoMutableFrame {
     base: DecklinkVideoFrame,
     frame: *mut crate::sdk::cdecklink_mutable_video_frame_t,
@@ -85,8 +99,6 @@ impl Drop for DecklinkVideoMutableFrame {
     }
 }
 
-unsafe impl Send for DecklinkVideoMutableFrame {}
-unsafe impl Sync for DecklinkVideoMutableFrame {}
 impl DecklinkVideoMutableFrame {
     pub fn base(&self) -> &DecklinkVideoFrame {
         &self.base
