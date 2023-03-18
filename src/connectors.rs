@@ -1,6 +1,7 @@
 use crate::sdk;
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     pub struct DecklinkVideoConnection: u32 {
         const SDI = sdk::_DecklinkVideoConnection_decklinkVideoConnectionSDI;
         const HDMI = sdk::_DecklinkVideoConnection_decklinkVideoConnectionHDMI;
@@ -12,6 +13,7 @@ bitflags! {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     pub struct DecklinkAudioConnection: u32 {
         const EMBEDDED = sdk::_DecklinkAudioConnection_decklinkAudioConnectionEmbedded;
         const AES_EBU = sdk::_DecklinkAudioConnection_decklinkAudioConnectionAESEBU;
@@ -24,6 +26,7 @@ bitflags! {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     pub struct DecklinkDeckControlConnection: u32 {
         const RS422_REMOTE_1 = sdk::_DecklinkDeckControlConnection_decklinkDeckControlConnectionRS422Remote1;
         const RS422_REMOTE_2 = sdk::_DecklinkDeckControlConnection_decklinkDeckControlConnectionRS422Remote2;

@@ -41,6 +41,7 @@ pub enum DecklinkStatusId {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     pub struct DecklinkVideoStatusFlags: u32 {
         const PSF = sdk::_DecklinkVideoStatusFlags_decklinkVideoStatusPsF;
         const DUAL_STREAM_3D = sdk::_DecklinkVideoStatusFlags_decklinkVideoStatusDualStream3D;

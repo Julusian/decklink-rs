@@ -57,6 +57,7 @@ pub enum DecklinkFieldDominance {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     pub struct DecklinkDisplayModeFlag: u32 {
         const SUPPORTS_3D = sdk::_DecklinkDisplayModeFlags_decklinkDisplayModeSupports3D;
         const COLORSPACE_REC601 = sdk::_DecklinkDisplayModeFlags_decklinkDisplayModeColorspaceRec601;

@@ -20,6 +20,7 @@ pub enum DecklinkPixelFormat {
 }
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     pub struct DecklinkFrameFlags: u32 {
         const FLIP_VERTICAL = sdk::_DecklinkFrameFlags_decklinkFrameFlagFlipVertical;
         const CONTAINS_HDR_METADATA = sdk::_DecklinkFrameFlags_decklinkFrameContainsHDRMetadata;

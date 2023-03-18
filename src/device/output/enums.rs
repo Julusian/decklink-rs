@@ -1,6 +1,7 @@
 use crate::sdk;
 
 bitflags! {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     pub struct DecklinkVideoOutputFlags: u32 {
         const VANC = sdk::_DecklinkVideoOutputFlags_decklinkVideoOutputVANC;
         const VITC = sdk::_DecklinkVideoOutputFlags_decklinkVideoOutputVITC;
