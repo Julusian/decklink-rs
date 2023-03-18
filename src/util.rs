@@ -52,13 +52,16 @@ impl SdkError {
     }
 }
 
-pub unsafe fn convert_string_inner(ptr: *const ::std::os::raw::c_char) -> String {
+pub(crate) unsafe fn convert_string_inner(ptr: *const ::std::os::raw::c_char) -> String {
     let str = CStr::from_ptr(ptr).to_str().unwrap_or_default().to_string();
     crate::sdk::cdecklink_free_string(ptr);
     str
 }
 
-pub unsafe fn convert_string(res: i32, ptr: *const ::std::os::raw::c_char) -> Option<String> {
+pub(crate) unsafe fn convert_string(
+    res: i32,
+    ptr: *const ::std::os::raw::c_char,
+) -> Option<String> {
     if res == 0 {
         Some(convert_string_inner(ptr))
     } else {

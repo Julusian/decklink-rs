@@ -78,7 +78,7 @@ impl DecklinkDeviceStatus {
     // TODO - do separate like attributes
     fn get_int(&self, id: u32) -> Result<i64, SdkError> {
         let mut value = 0;
-        let result = unsafe { sdk::cdecklink_status_get_int(self.dev, id as u32, &mut value) };
+        let result = unsafe { sdk::cdecklink_status_get_int(self.dev, id, &mut value) };
         SdkError::result_or(result, value)
     }
 
@@ -135,7 +135,7 @@ impl DecklinkDeviceStatus {
 
     fn get_bool(&self, id: u32) -> Result<bool, SdkError> {
         let mut value = false;
-        let result = unsafe { sdk::cdecklink_status_get_flag(self.dev, id as u32, &mut value) };
+        let result = unsafe { sdk::cdecklink_status_get_flag(self.dev, id, &mut value) };
         SdkError::result_or(result, value)
     }
 
@@ -148,15 +148,14 @@ impl DecklinkDeviceStatus {
 
     fn get_bytes(&self, id: u32) -> Result<Vec<u8>, SdkError> {
         let mut byte_count = 0;
-        let result = unsafe {
-            sdk::cdecklink_status_get_bytes(self.dev, id as u32, null_mut(), &mut byte_count)
-        };
+        let result =
+            unsafe { sdk::cdecklink_status_get_bytes(self.dev, id, null_mut(), &mut byte_count) };
         if SdkError::is_ok(result) {
             let mut bytes = vec![0; byte_count as usize];
             let result = unsafe {
                 sdk::cdecklink_status_get_bytes(
                     self.dev,
-                    id as u32,
+                    id,
                     bytes.as_mut_ptr() as *mut c_void,
                     &mut byte_count,
                 )

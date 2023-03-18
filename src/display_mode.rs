@@ -122,7 +122,7 @@ impl DecklinkDisplayMode {
     }
 }
 
-pub unsafe fn iterate_display_modes(
+pub(crate) unsafe fn iterate_display_modes(
     it: *mut sdk::cdecklink_display_mode_iterator_t,
 ) -> Result<Vec<DecklinkDisplayMode>, SdkError> {
     let mut res = Vec::new();

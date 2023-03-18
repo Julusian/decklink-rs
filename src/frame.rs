@@ -21,10 +21,10 @@ pub enum DecklinkPixelFormat {
 
 bitflags! {
     pub struct DecklinkFrameFlags: u32 {
-        const FLIP_VERTICAL = sdk::_DecklinkFrameFlags_decklinkFrameFlagFlipVertical as u32;
-        const CONTAINS_HDR_METADATA = sdk::_DecklinkFrameFlags_decklinkFrameContainsHDRMetadata as u32;
-        const CONTAINS_CINTEL_METADATA = sdk::_DecklinkFrameFlags_decklinkFrameContainsCintelMetadata as u32;
-        const HAS_NO_INPUT_SOURCE = sdk::_DecklinkFrameFlags_decklinkFrameHasNoInputSource as u32;
+        const FLIP_VERTICAL = sdk::_DecklinkFrameFlags_decklinkFrameFlagFlipVertical;
+        const CONTAINS_HDR_METADATA = sdk::_DecklinkFrameFlags_decklinkFrameContainsHDRMetadata;
+        const CONTAINS_CINTEL_METADATA = sdk::_DecklinkFrameFlags_decklinkFrameContainsCintelMetadata;
+        const HAS_NO_INPUT_SOURCE = sdk::_DecklinkFrameFlags_decklinkFrameHasNoInputSource;
     }
 }
 
@@ -114,7 +114,7 @@ impl DecklinkVideoMutableFrame {
     }
 }
 
-pub unsafe fn wrap_mutable_frame(
+pub(crate) unsafe fn wrap_mutable_frame(
     ptr: *mut sdk::cdecklink_mutable_video_frame_t,
 ) -> DecklinkVideoMutableFrame {
     DecklinkVideoMutableFrame {
@@ -125,13 +125,13 @@ pub unsafe fn wrap_mutable_frame(
         },
     }
 }
-pub unsafe fn wrap_frame(ptr: *mut sdk::cdecklink_video_frame_t) -> DecklinkVideoFrame {
+pub(crate) unsafe fn wrap_frame(ptr: *mut sdk::cdecklink_video_frame_t) -> DecklinkVideoFrame {
     sdk::cdecklink_mutable_video_frame_add_ref(ptr); // TODO - all types should do this
     DecklinkVideoFrame {
         frame: ptr,
         is_child: false,
     }
 }
-pub unsafe fn unwrap_frame(frame: &DecklinkVideoFrame) -> *mut sdk::cdecklink_video_frame_t {
+pub(crate) unsafe fn unwrap_frame(frame: &DecklinkVideoFrame) -> *mut sdk::cdecklink_video_frame_t {
     frame.frame
 }
