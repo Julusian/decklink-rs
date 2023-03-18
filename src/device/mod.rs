@@ -1,11 +1,11 @@
-use crate::device::attributes::{wrap_attributes, DecklinkDeviceAttributes};
+use crate::device::attributes::DecklinkDeviceAttributes;
 use crate::device::notification::DecklinkDeviceNotification;
-use crate::device::output::{wrap_device_output, DecklinkOutputDevice};
-use crate::device::status::{wrap_status, DecklinkDeviceStatus};
+use crate::device::output::DecklinkOutputDevice;
+use crate::device::status::DecklinkDeviceStatus;
 use crate::display_mode::{DecklinkDisplayMode, DecklinkDisplayModeId};
 use crate::frame::DecklinkPixelFormat;
 use crate::sdk;
-use crate::util::{convert_string, SdkError};
+use crate::util::{convert_and_release_c_string, SdkError};
 use std::ptr::{null, null_mut};
 use std::sync::{Arc, Mutex, Weak};
 
@@ -51,22 +51,32 @@ pub trait DecklinkDeviceDisplayModes<T> {
 impl DecklinkDevice {
     pub fn model_name(&self) -> Option<String> {
         let mut s = null();
-        unsafe { convert_string(sdk::cdecklink_device_get_model_name(self.dev, &mut s), s) }
+        let result = unsafe { sdk::cdecklink_device_get_model_name(self.dev, &mut s) };
+        if SdkError::is_ok(result) {
+            Some(unsafe { convert_and_release_c_string(s) })
+        } else {
+            None
+        }
     }
     pub fn display_name(&self) -> Option<String> {
         let mut s = null();
-        unsafe { convert_string(sdk::cdecklink_device_get_display_name(self.dev, &mut s), s) }
+        let result = unsafe { sdk::cdecklink_device_get_display_name(self.dev, &mut s) };
+        if SdkError::is_ok(result) {
+            Some(unsafe { convert_and_release_c_string(s) })
+        } else {
+            None
+        }
     }
 
     pub fn get_attributes(&self) -> Result<DecklinkDeviceAttributes, SdkError> {
         let mut s = null_mut();
         let r = unsafe { sdk::cdecklink_device_query_attributes(self.dev, &mut s) };
-        SdkError::result_or_else(r, || wrap_attributes(s))
+        SdkError::result_or_else(r, || DecklinkDeviceAttributes::from(s))
     }
     pub fn get_status(&self) -> Result<DecklinkDeviceStatus, SdkError> {
         let mut s = null_mut();
         let r = unsafe { sdk::cdecklink_device_query_status(self.dev, &mut s) };
-        SdkError::result_or_else(r, || wrap_status(s))
+        SdkError::result_or_else(r, || DecklinkDeviceStatus::from(s))
     }
     pub fn get_notification(&self) -> Result<Arc<DecklinkDeviceNotification>, SdkError> {
         if let Ok(locked) = self.notification.lock() {
@@ -88,7 +98,7 @@ impl DecklinkDevice {
         if !SdkError::is_ok(res) || output.is_null() {
             None
         } else {
-            Some(wrap_device_output(output))
+            Some(DecklinkOutputDevice::from(output))
         }
     }
 }

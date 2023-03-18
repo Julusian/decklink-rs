@@ -5,10 +5,6 @@ use num_traits::FromPrimitive;
 use std::os::raw::c_void;
 use std::ptr::null_mut;
 
-pub(crate) fn wrap_status(ptr: *mut sdk::cdecklink_status_t) -> DecklinkDeviceStatus {
-    DecklinkDeviceStatus { dev: ptr }
-}
-
 pub struct DecklinkDeviceStatus {
     dev: *mut sdk::cdecklink_status_t,
 }
@@ -76,6 +72,10 @@ where
 }
 
 impl DecklinkDeviceStatus {
+    pub(crate) fn from(ptr: *mut sdk::cdecklink_status_t) -> DecklinkDeviceStatus {
+        DecklinkDeviceStatus { dev: ptr }
+    }
+
     // TODO - do separate like attributes
     fn get_int(&self, id: u32) -> Result<i64, SdkError> {
         let mut value = 0;

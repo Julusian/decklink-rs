@@ -6,10 +6,6 @@ use crate::util::convert_and_release_c_string;
 use crate::{sdk, SdkError};
 use std::ptr::{null, null_mut};
 
-pub fn wrap_attributes(ptr: *mut sdk::cdecklink_attributes_t) -> DecklinkDeviceAttributes {
-    DecklinkDeviceAttributes { dev: ptr }
-}
-
 pub struct DecklinkDeviceAttributes {
     dev: *mut sdk::cdecklink_attributes_t,
 }
@@ -24,6 +20,10 @@ impl Drop for DecklinkDeviceAttributes {
 }
 
 impl DecklinkDeviceAttributes {
+    pub(crate) fn from(ptr: *mut sdk::cdecklink_attributes_t) -> DecklinkDeviceAttributes {
+        DecklinkDeviceAttributes { dev: ptr }
+    }
+
     fn get_flag(&self, id: DecklinkAttributeID) -> Result<bool, SdkError> {
         let mut val = false;
         let result = unsafe { sdk::cdecklink_attributes_get_flag(self.dev, id, &mut val) };

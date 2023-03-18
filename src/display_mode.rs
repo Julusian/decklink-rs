@@ -1,5 +1,4 @@
-use crate::util::convert_string;
-use crate::{sdk, SdkError};
+use crate::{sdk, util::convert_and_release_c_string, SdkError};
 use num_traits::FromPrimitive;
 use std::ptr::{null, null_mut};
 
@@ -81,7 +80,12 @@ impl Drop for DecklinkDisplayMode {
 impl DecklinkDisplayMode {
     pub fn name(&self) -> Option<String> {
         let mut s = null();
-        unsafe { convert_string(sdk::cdecklink_display_mode_get_name(self.mode, &mut s), s) }
+        let result = unsafe { sdk::cdecklink_display_mode_get_name(self.mode, &mut s) };
+        if SdkError::is_ok(result) {
+            Some(unsafe { convert_and_release_c_string(s) })
+        } else {
+            None
+        }
     }
     pub fn mode(&self) -> DecklinkDisplayModeId {
         DecklinkDisplayModeId::from_u32(unsafe {

@@ -57,14 +57,3 @@ pub(crate) unsafe fn convert_and_release_c_string(ptr: *const ::std::os::raw::c_
     crate::sdk::cdecklink_free_string(ptr);
     str
 }
-
-pub(crate) unsafe fn convert_string(
-    res: i32,
-    ptr: *const ::std::os::raw::c_char,
-) -> Option<String> {
-    if res == 0 {
-        Some(convert_and_release_c_string(ptr))
-    } else {
-        None
-    }
-}

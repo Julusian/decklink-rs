@@ -31,16 +31,6 @@ pub struct DecklinkOutputDevice {
     ptr: Arc<DecklinkOutputDevicePtr>,
 }
 
-pub fn wrap_device_output(ptr: *mut crate::sdk::cdecklink_output_t) -> DecklinkOutputDevice {
-    DecklinkOutputDevice {
-        ptr: Arc::new(DecklinkOutputDevicePtr {
-            dev: ptr,
-            video_active: Rc::new(AtomicBool::new(false)),
-            audio_active: Rc::new(AtomicBool::new(false)),
-        }),
-    }
-}
-
 impl DecklinkDeviceDisplayModes<enums::DecklinkVideoOutputFlags> for DecklinkOutputDevice {
     fn does_support_video_mode(
         &self,
@@ -87,6 +77,16 @@ impl DecklinkDeviceDisplayModes<enums::DecklinkVideoOutputFlags> for DecklinkOut
 }
 // TODO - this is currently a bag of methods, and it could do with some more sanity checking (eg allow schedule when video not enabled etc)
 impl DecklinkOutputDevice {
+    pub(crate) fn from(ptr: *mut crate::sdk::cdecklink_output_t) -> DecklinkOutputDevice {
+        DecklinkOutputDevice {
+            ptr: Arc::new(DecklinkOutputDevicePtr {
+                dev: ptr,
+                video_active: Rc::new(AtomicBool::new(false)),
+                audio_active: Rc::new(AtomicBool::new(false)),
+            }),
+        }
+    }
+
     /* Video Output */
 
     unsafe fn enable_video_output_inner(

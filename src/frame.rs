@@ -29,6 +29,7 @@ bitflags! {
     }
 }
 
+/// A frame of video
 pub trait DecklinkFrameBase {
     /// Get the width of the video frame
     fn width(&self) -> usize;
@@ -40,7 +41,7 @@ pub trait DecklinkFrameBase {
     fn pixel_format(&self) -> DecklinkPixelFormat;
     /// Get the flags of the video frame
     fn flags(&self) -> DecklinkFrameFlags;
-
+    /// Get the pixel data of the video frame
     fn bytes(&self) -> Result<&[u8], SdkError>;
 }
 
