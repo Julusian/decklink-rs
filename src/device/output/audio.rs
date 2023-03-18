@@ -3,7 +3,7 @@ use crate::{sdk, SdkError};
 use std::sync::atomic::Ordering;
 use std::sync::Arc;
 
-pub fn wrap_audio(ptr: &Arc<DecklinkOutputDevicePtr>) -> DecklinkOutputDeviceAudio {
+pub(crate) fn wrap_audio(ptr: &Arc<DecklinkOutputDevicePtr>) -> DecklinkOutputDeviceAudio {
     DecklinkOutputDeviceAudio { ptr: ptr.clone() }
 }
 

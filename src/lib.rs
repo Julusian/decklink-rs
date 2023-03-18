@@ -23,17 +23,32 @@ pub mod frame;
 mod util;
 
 use std::ptr::null;
-use util::convert_string;
+use util::convert_and_release_c_string;
 pub use util::SdkError;
 
-pub fn api_version() -> Option<String> {
+/// Return the api version of the loaded Decklink drivers.
+///
+/// # Examples
+///
+/// ```
+/// use decklink::api_version;
+/// let version = api_version().unwrap();
+/// println!("Version: {0}", version);
+pub fn api_version() -> Result<String, SdkError> {
     let it = unsafe { sdk::cdecklink_create_decklink_api_information_instance() };
     if it.is_null() {
-        None
+        Err(SdkError::FALSE)
     } else {
         let mut s = null();
-        let str = unsafe { convert_string(sdk::cdecklink_api_version(it, &mut s), s) };
+
+        let result = unsafe { sdk::cdecklink_api_version(it, &mut s) };
+
         unsafe { sdk::cdecklink_iterator_release(it) };
-        str
+
+        SdkError::result(result)?;
+
+        let str = unsafe { convert_and_release_c_string(s) };
+
+        Ok(str)
     }
 }

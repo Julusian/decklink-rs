@@ -1,15 +1,15 @@
-extern crate decklink_sdk;
+extern crate decklink;
 #[macro_use]
 extern crate text_io;
 
-use decklink_sdk::device::output::DecklinkVideoOutputFlags;
-use decklink_sdk::device::output::{
+use decklink::device::output::DecklinkVideoOutputFlags;
+use decklink::device::output::{
     DeckLinkVideoOutputCallback, DecklinkOutputDevice, DecklinkOutputFrameCompletionResult,
 };
-use decklink_sdk::device::DecklinkDeviceDisplayModes;
-use decklink_sdk::device::{get_devices, DecklinkDevice};
-use decklink_sdk::display_mode::DecklinkDisplayMode;
-use decklink_sdk::frame::{DecklinkFrameFlags, DecklinkPixelFormat, DecklinkVideoFrame};
+use decklink::device::DecklinkDeviceDisplayModes;
+use decklink::device::{get_devices, DecklinkDevice};
+use decklink::display_mode::DecklinkDisplayMode;
+use decklink::frame::{DecklinkFrameFlags, DecklinkPixelFormat, DecklinkVideoFrame};
 use std::sync::Arc;
 use std::thread::sleep;
 use std::time::Duration;

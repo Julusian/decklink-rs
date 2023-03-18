@@ -5,7 +5,7 @@ use num_traits::FromPrimitive;
 use std::os::raw::c_void;
 use std::ptr::null_mut;
 
-pub fn wrap_status(ptr: *mut sdk::cdecklink_status_t) -> DecklinkDeviceStatus {
+pub(crate) fn wrap_status(ptr: *mut sdk::cdecklink_status_t) -> DecklinkDeviceStatus {
     DecklinkDeviceStatus { dev: ptr }
 }
 

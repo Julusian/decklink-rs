@@ -1,16 +1,16 @@
-extern crate decklink_sdk;
+extern crate decklink;
 
-use decklink_sdk::api_version;
-use decklink_sdk::connectors::DecklinkVideoConnection;
-use decklink_sdk::device::output::DecklinkVideoOutputFlags;
-use decklink_sdk::device::DecklinkDisplayModeSupport;
-use decklink_sdk::device::{get_devices, DecklinkDevice, DecklinkDeviceDisplayModes};
-use decklink_sdk::display_mode::DecklinkDisplayMode;
-use decklink_sdk::frame::DecklinkPixelFormat;
+use decklink::api_version;
+use decklink::connectors::DecklinkVideoConnection;
+use decklink::device::output::DecklinkVideoOutputFlags;
+use decklink::device::DecklinkDisplayModeSupport;
+use decklink::device::{get_devices, DecklinkDevice, DecklinkDeviceDisplayModes};
+use decklink::display_mode::DecklinkDisplayMode;
+use decklink::frame::DecklinkPixelFormat;
 use strum::IntoEnumIterator;
 
 fn main() {
-    if let Some(version) = api_version() {
+    if let Ok(version) = api_version() {
         println!("Driver version: {}", version);
     } else {
         println!("Failed to get decklink driver version");

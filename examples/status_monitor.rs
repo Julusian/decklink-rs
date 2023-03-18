@@ -1,12 +1,12 @@
-extern crate decklink_sdk;
+extern crate decklink;
 #[macro_use]
 extern crate text_io;
 
-use decklink_sdk::device::get_devices;
-use decklink_sdk::device::notification::{
+use decklink::device::get_devices;
+use decklink::device::notification::{
     DeckLinkNotificationCallback, DecklinkDeviceNotificationExt, NotificationTopic,
 };
-use decklink_sdk::device::status::{DecklinkDeviceStatus, DecklinkStatusId};
+use decklink::device::status::{DecklinkDeviceStatus, DecklinkStatusId};
 use std::sync::Arc;
 
 struct NotificationCallback {
@@ -130,7 +130,7 @@ fn main() {
     let devices = get_devices()
         .expect("Unable to list Decklink devices. The Decklink drivers may not be insalled.");
     //    let device = devices.first().expect("Could not find any Decklink devices");
-    let device = &devices[1];
+    let device = &devices[0];
 
     let status = Arc::new(
         device

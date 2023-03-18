@@ -20,30 +20,30 @@ pub enum SdkError {
 
 impl SdkError {
     #[allow(overflowing_literals)]
-    pub fn from(value: i32) -> SdkError {
+    pub(crate) fn from(value: i32) -> SdkError {
         Self::from_i32(value).unwrap_or(SdkError::FALSE)
     }
-    pub fn is_false(value: i32) -> bool {
+    pub(crate) fn is_false(value: i32) -> bool {
         value == (SdkError::FALSE as i32)
     }
-    pub fn is_ok(value: i32) -> bool {
+    pub(crate) fn is_ok(value: i32) -> bool {
         value == 0
     }
 
-    pub fn result<T>(r: i32) -> Result<T, SdkError>
+    pub(crate) fn result<T>(r: i32) -> Result<T, SdkError>
     where
         T: Default,
     {
         Self::result_or_else(r, Default::default)
     }
-    pub fn result_or<T>(r: i32, def: T) -> Result<T, SdkError> {
+    pub(crate) fn result_or<T>(r: i32, def: T) -> Result<T, SdkError> {
         if Self::is_ok(r) {
             Ok(def)
         } else {
             Err(Self::from(r))
         }
     }
-    pub fn result_or_else<T, F: FnOnce() -> T>(r: i32, ok: F) -> Result<T, SdkError> {
+    pub(crate) fn result_or_else<T, F: FnOnce() -> T>(r: i32, ok: F) -> Result<T, SdkError> {
         if Self::is_ok(r) {
             Ok(ok())
         } else {
@@ -52,7 +52,7 @@ impl SdkError {
     }
 }
 
-pub(crate) unsafe fn convert_string_inner(ptr: *const ::std::os::raw::c_char) -> String {
+pub(crate) unsafe fn convert_and_release_c_string(ptr: *const ::std::os::raw::c_char) -> String {
     let str = CStr::from_ptr(ptr).to_str().unwrap_or_default().to_string();
     crate::sdk::cdecklink_free_string(ptr);
     str
@@ -63,7 +63,7 @@ pub(crate) unsafe fn convert_string(
     ptr: *const ::std::os::raw::c_char,
 ) -> Option<String> {
     if res == 0 {
-        Some(convert_string_inner(ptr))
+        Some(convert_and_release_c_string(ptr))
     } else {
         None
     }

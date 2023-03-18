@@ -2,7 +2,7 @@ use crate::connectors::{
     DecklinkAudioConnection, DecklinkDeckControlConnection, DecklinkVideoConnection,
 };
 use crate::sdk::DecklinkAttributeID;
-use crate::util::convert_string_inner;
+use crate::util::convert_and_release_c_string;
 use crate::{sdk, SdkError};
 use std::ptr::{null, null_mut};
 
@@ -194,7 +194,7 @@ impl DecklinkDeviceAttributes {
         unsafe {
             let mut val = null();
             let result = sdk::cdecklink_attributes_get_string(self.dev, id, &mut val);
-            SdkError::result_or_else(result, || convert_string_inner(val))
+            SdkError::result_or_else(result, || convert_and_release_c_string(val))
         }
     }
 

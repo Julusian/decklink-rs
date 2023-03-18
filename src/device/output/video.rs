@@ -5,7 +5,7 @@ use crate::{sdk, SdkError};
 use std::sync::atomic::Ordering;
 use std::sync::Arc;
 
-pub fn wrap_video(
+pub(crate) fn wrap_video(
     ptr: &Arc<DecklinkOutputDevicePtr>,
     wrapper: *mut CallbackWrapper,
     timescale: i64,

@@ -1,21 +1,21 @@
-extern crate decklink_sdk;
+extern crate decklink;
 #[macro_use]
 extern crate text_io;
 
-use decklink_sdk::device::output::{
+use decklink::device::output::{
     DeckLinkVideoOutputCallback, DecklinkOutputDeviceVideoScheduled,
     DecklinkOutputFrameCompletionResult, DecklinkVideoOutputFlags,
 };
-use decklink_sdk::device::DecklinkDisplayModeSupport;
-use decklink_sdk::device::{get_devices, DecklinkDeviceDisplayModes};
-use decklink_sdk::display_mode::DecklinkDisplayModeId;
-use decklink_sdk::frame::{DecklinkFrameFlags, DecklinkPixelFormat, DecklinkVideoFrame};
-use decklink_sdk::SdkError;
+use decklink::device::DecklinkDisplayModeSupport;
+use decklink::device::{get_devices, DecklinkDeviceDisplayModes};
+use decklink::display_mode::DecklinkDisplayModeId;
+use decklink::frame::{DecklinkFrameFlags, DecklinkPixelFormat, DecklinkVideoFrame};
+use decklink::SdkError;
 use std::sync::atomic::{AtomicI64, Ordering};
 use std::sync::{Arc, Mutex, Weak};
 
 struct OutputCallback {
-    output: Weak<Mutex<Box<DecklinkOutputDeviceVideoScheduled>>>,
+    output: Weak<Mutex<Box<dyn DecklinkOutputDeviceVideoScheduled>>>,
     duration: i64,
     timescale: i64,
 

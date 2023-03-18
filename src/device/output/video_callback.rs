@@ -5,7 +5,7 @@ use crate::{sdk, SdkError};
 use num_traits::FromPrimitive;
 use std::sync::{Arc, RwLock};
 
-pub fn free_callback_wrapper(wrapper: *mut CallbackWrapper) {
+pub(crate) fn free_callback_wrapper(wrapper: *mut CallbackWrapper) {
     unsafe {
         drop(Box::from_raw(wrapper));
     }
