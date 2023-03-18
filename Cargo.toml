@@ -8,13 +8,13 @@ build="build.rs"
 
 [dependencies]
 num-traits = "0.2"
-num-derive = "0.2"
-bitflags = "1.0"
-strum = "0.15.0"
-strum_macros = "0.15.0"
+num-derive = "0.3"
+bitflags = "2.0"
+strum = "0.24.1"
+strum_macros = "0.24.3"
 
 [build-dependencies]
-cmake = "0.1.38"
+bindgen = "0.53.1"
 
 [dev-dependencies]
 text_io = "0.1.7"

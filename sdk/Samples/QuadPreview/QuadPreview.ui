@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QuadPreview</class>
+ <widget class="QDialog" name="QuadPreview">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1077</width>
+    <height>436</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1077</width>
+    <height>436</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>QuadPreview</string>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>3</number>
+     </property>
+     <item>
+      <widget class="QGroupBox" name="configurationGroupBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>375</width>
+         <height>387</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Configuration</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QToolBox" name="toolBox">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>351</width>
+            <height>371</height>
+           </size>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="DeckLinkInputPage" name="devicePage1">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>351</width>
+             <height>201</height>
+            </rect>
+           </property>
+           <attribute name="label">
+            <string>Input 1: None</string>
+           </attribute>
+          </widget>
+          <widget class="DeckLinkInputPage" name="devicePage2">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>351</width>
+             <height>201</height>
+            </rect>
+           </property>
+           <attribute name="label">
+            <string>Input 2: None</string>
+           </attribute>
+          </widget>
+          <widget class="DeckLinkInputPage" name="devicePage3">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>351</width>
+             <height>201</height>
+            </rect>
+           </property>
+           <attribute name="label">
+            <string>Input 3: None</string>
+           </attribute>
+          </widget>
+          <widget class="DeckLinkInputPage" name="devicePage4">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>351</width>
+             <height>201</height>
+            </rect>
+           </property>
+           <attribute name="label">
+            <string>Input 4: None</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="displayConfigPage">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>351</width>
+             <height>201</height>
+            </rect>
+           </property>
+           <attribute name="label">
+            <string>Display Settings</string>
+           </attribute>
+           <widget class="QCheckBox" name="deviceLabelCheckBox">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>171</width>
+              <height>20</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Device Label</string>
+            </property>
+           </widget>
+           <widget class="QCheckBox" name="timecodeCheckBox">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>40</y>
+              <width>87</width>
+              <height>20</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Timecode</string>
+            </property>
+           </widget>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="previewGroupBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>653</width>
+         <height>400</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Quad Preview</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <layout class="QHBoxLayout" name="previewHorizontalLayout">
+          <item>
+           <widget class="QWidget" name="previewContainer" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>640</width>
+              <height>360</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>DeckLinkInputPage</class>
+   <extends>QWidget</extends>
+   <header>DeckLinkInputPage.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
