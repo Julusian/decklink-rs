@@ -7,7 +7,7 @@ use std::sync::{Arc, RwLock};
 
 pub fn free_callback_wrapper(wrapper: *mut CallbackWrapper) {
     unsafe {
-        Box::from_raw(wrapper);
+        drop(Box::from_raw(wrapper));
     }
 }
 
@@ -46,7 +46,7 @@ pub trait DeckLinkVideoOutputCallback {
 }
 
 pub struct CallbackWrapper {
-    pub handler: RwLock<Option<Arc<DeckLinkVideoOutputCallback>>>,
+    pub handler: RwLock<Option<Arc<dyn DeckLinkVideoOutputCallback>>>,
 }
 extern "C" fn schedule_frame_completed_callback(
     context: *mut ::std::os::raw::c_void,

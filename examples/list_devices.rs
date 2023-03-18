@@ -137,8 +137,11 @@ fn print_attributes(device: &DecklinkDevice) {
     }
 }
 
-fn print_modes<T>(modes: Vec<DecklinkDisplayMode>, dev: &DecklinkDeviceDisplayModes<T>, flags: T)
-where
+fn print_modes<T>(
+    modes: Vec<DecklinkDisplayMode>,
+    dev: &dyn DecklinkDeviceDisplayModes<T>,
+    flags: T,
+) where
     T: Copy,
 {
     for mode in modes {

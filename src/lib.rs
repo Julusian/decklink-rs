@@ -13,7 +13,7 @@ extern crate strum_macros;
     dead_code,
     clippy::all
 )]
-#[link(name = "decklink_c", kind = "static")]
+// #[link(name = "decklink_c", kind = "static")]
 mod sdk;
 
 pub mod connectors;

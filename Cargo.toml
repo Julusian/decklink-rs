@@ -3,7 +3,7 @@ name = "decklink-sdk"
 version = "0.1.0"
 license = "MIT/Apache-2.0"
 authors = ["Julian Waller <git@julusian.co.uk>"]
-edition = "2018"
+edition = "2021"
 build="build.rs"
 
 [dependencies]

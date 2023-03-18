@@ -34,7 +34,7 @@ pub trait DecklinkOutputDeviceVideoScheduled: DecklinkOutputDeviceVideo {
 
     fn set_callback(
         &mut self,
-        handler: Option<Arc<DeckLinkVideoOutputCallback>>,
+        handler: Option<Arc<dyn DeckLinkVideoOutputCallback>>,
     ) -> Result<(), SdkError>;
 
     fn buffered_video_frame_count(&self) -> Result<u32, SdkError>;
@@ -66,7 +66,7 @@ impl Drop for DecklinkOutputDeviceVideoImpl {
             sdk::cdecklink_output_disable_video_output(self.ptr.dev);
             self.ptr.video_active.store(false, Ordering::Relaxed);
 
-            Box::from_raw(self.callback_wrapper); // Reclaim the box so it gets freed
+            drop(Box::from_raw(self.callback_wrapper)); // Reclaim the box so it gets freed
         }
     }
 }
@@ -104,7 +104,7 @@ impl DecklinkOutputDeviceVideoScheduled for DecklinkOutputDeviceVideoImpl {
 
     fn set_callback(
         &mut self,
-        handler: Option<Arc<DeckLinkVideoOutputCallback>>,
+        handler: Option<Arc<dyn DeckLinkVideoOutputCallback>>,
     ) -> Result<(), SdkError> {
         if self.callback_wrapper.is_null() {
             Err(SdkError::HANDLE)

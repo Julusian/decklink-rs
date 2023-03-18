@@ -118,7 +118,7 @@ impl DecklinkOutputDevice {
         mode: DecklinkDisplayModeId,
         flags: enums::DecklinkVideoOutputFlags,
         timescale: i64,
-    ) -> Result<Box<DecklinkOutputDeviceVideoScheduled>, SdkError> {
+    ) -> Result<Box<dyn DecklinkOutputDeviceVideoScheduled>, SdkError> {
         match register_callback(&self.ptr) {
             // Don't do this if already running?
             Err(e) => Err(e),
@@ -126,7 +126,7 @@ impl DecklinkOutputDevice {
                 // TODO - this leaks on error
                 let result = unsafe { self.enable_video_output_inner(mode, flags) };
                 SdkError::result_or_else(result, || {
-                    let r: Box<DecklinkOutputDeviceVideoScheduled> =
+                    let r: Box<dyn DecklinkOutputDeviceVideoScheduled> =
                         Box::new(wrap_video(&self.ptr, wrapper, timescale));
                     r
                 })
@@ -137,10 +137,10 @@ impl DecklinkOutputDevice {
         &self,
         mode: DecklinkDisplayModeId,
         flags: enums::DecklinkVideoOutputFlags,
-    ) -> Result<Box<DecklinkOutputDeviceVideoSync>, SdkError> {
+    ) -> Result<Box<dyn DecklinkOutputDeviceVideoSync>, SdkError> {
         let result = unsafe { self.enable_video_output_inner(mode, flags) };
         SdkError::result_or_else(result, || {
-            let r: Box<DecklinkOutputDeviceVideoSync> =
+            let r: Box<dyn DecklinkOutputDeviceVideoSync> =
                 Box::new(wrap_video(&self.ptr, null_mut(), 1000));
             r
         })

@@ -142,6 +142,8 @@ pub unsafe fn iterate_display_modes(
     Ok(res)
 }
 
-pub unsafe fn wrap_display_mode(ptr: *mut sdk::cdecklink_display_mode_t) -> DecklinkDisplayMode {
+pub(crate) unsafe fn wrap_display_mode(
+    ptr: *mut sdk::cdecklink_display_mode_t,
+) -> DecklinkDisplayMode {
     DecklinkDisplayMode { mode: ptr }
 }

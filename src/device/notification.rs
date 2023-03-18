@@ -22,7 +22,7 @@ pub trait DecklinkDeviceNotificationExt {
     fn subscribe(
         &self,
         topic: NotificationTopic,
-        handler: Arc<DeckLinkNotificationCallback>,
+        handler: Arc<dyn DeckLinkNotificationCallback>,
     ) -> Result<DeckLinkNotificationCallbackHandle, SdkError>;
 }
 
@@ -30,7 +30,7 @@ impl DecklinkDeviceNotificationExt for Arc<DecklinkDeviceNotification> {
     fn subscribe(
         &self,
         topic: NotificationTopic,
-        handler: Arc<DeckLinkNotificationCallback>,
+        handler: Arc<dyn DeckLinkNotificationCallback>,
     ) -> Result<DeckLinkNotificationCallbackHandle, SdkError> {
         let ptr = Box::into_raw(Box::new(DecklinkNotificationWrapper {
             handler,
@@ -68,7 +68,7 @@ impl Drop for DeckLinkNotificationCallbackHandle {
                 (*self.wrapper).topic,
                 self.unsubscribe_token,
             );
-            Box::from_raw(self.wrapper); // Reclaim the box so it gets freed
+            drop(Box::from_raw(self.wrapper)); // Reclaim the box so it gets freed
         }
     }
 }
@@ -77,7 +77,7 @@ pub trait DeckLinkNotificationCallback {
     fn notify_status(&self, id: DecklinkStatusId) -> bool;
 }
 struct DecklinkNotificationWrapper {
-    handler: Arc<DeckLinkNotificationCallback>,
+    handler: Arc<dyn DeckLinkNotificationCallback>,
     topic: u32,
 }
 
