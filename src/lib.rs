@@ -26,7 +26,9 @@ use std::ptr::null;
 use util::convert_and_release_c_string;
 pub use util::SdkError;
 
-/// Return the api version of the loaded Decklink drivers.
+/// Fetch the api version of the installed Decklink drivers.
+///
+/// If an error is returned, the drivers were not found on this system.
 ///
 /// # Examples
 ///

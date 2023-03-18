@@ -89,11 +89,13 @@ impl DecklinkDisplayMode {
         })
         .unwrap_or(DecklinkDisplayModeId::Unknown)
     }
-    pub fn width(&self) -> i64 {
-        unsafe { sdk::cdecklink_display_mode_get_width(self.mode) }
+    pub fn width(&self) -> usize {
+        let width = unsafe { sdk::cdecklink_display_mode_get_width(self.mode) };
+        width as usize
     }
-    pub fn height(&self) -> i64 {
-        unsafe { sdk::cdecklink_display_mode_get_height(self.mode) }
+    pub fn height(&self) -> usize {
+        let height = unsafe { sdk::cdecklink_display_mode_get_height(self.mode) };
+        height as usize
     }
     pub fn framerate(&self) -> Option<(i64, i64)> {
         unsafe {

@@ -1,6 +1,6 @@
 use crate::device::output::enums::DecklinkOutputFrameCompletionResult;
 use crate::device::output::DecklinkOutputDevicePtr;
-use crate::frame::{wrap_frame, DecklinkVideoFrame};
+use crate::frame::DecklinkVideoFrame;
 use crate::{sdk, SdkError};
 use num_traits::FromPrimitive;
 use std::sync::{Arc, RwLock};
@@ -60,7 +60,7 @@ extern "C" fn schedule_frame_completed_callback(
         let frame_internal = if frame.is_null() {
             None
         } else {
-            unsafe { Some(wrap_frame(frame)) }
+            unsafe { Some(DecklinkVideoFrame::from(frame)) }
         };
 
         let result_internal = DecklinkOutputFrameCompletionResult::from_u32(result)

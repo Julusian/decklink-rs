@@ -6,7 +6,7 @@ use decklink::device::output::{DecklinkOutputDevice, DecklinkVideoOutputFlags};
 use decklink::device::DecklinkDeviceDisplayModes;
 use decklink::device::{get_devices, DecklinkDevice};
 use decklink::display_mode::DecklinkDisplayMode;
-use decklink::frame::{DecklinkFrameFlags, DecklinkPixelFormat};
+use decklink::frame::{DecklinkFrameFlags, DecklinkPixelFormat, DecklinkVideoMutableFrame};
 
 fn select_output_and_format() -> Option<(DecklinkDevice, DecklinkOutputDevice, DecklinkDisplayMode)>
 {
@@ -75,18 +75,16 @@ fn select_output_and_format() -> Option<(DecklinkDevice, DecklinkOutputDevice, D
 
 fn main() {
     if let Some((_device, output, mode)) = select_output_and_format() {
-        let mut frame = output
-            .create_video_frame(
-                mode.width() as i32,
-                mode.height() as i32,
-                (mode.width() * 4) as i32,
-                DecklinkPixelFormat::Format8BitBGRA,
-                DecklinkFrameFlags::empty(),
-            )
-            .expect("Failed to create video frame");
+        let mut frame = DecklinkVideoMutableFrame::create(
+            mode.width(),
+            mode.height(),
+            mode.width() * 4,
+            DecklinkPixelFormat::Format8BitBGRA,
+            DecklinkFrameFlags::empty(),
+        );
 
         let bytes = vec![120u8; (mode.width() * mode.height() * 4) as usize];
-        if !frame.set_bytes(&bytes) {
+        if frame.set_bytes(bytes).is_err() {
             println!("Failed to set frame bytes");
             return;
         }
@@ -96,7 +94,7 @@ fn main() {
             .expect("Failed to enable video output");
 
         video_output
-            .display_frame(frame.base())
+            .display_frame_copy(&frame)
             .expect("Failed to display frame");
 
         println!("Press enter to continue");

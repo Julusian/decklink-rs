@@ -4,7 +4,7 @@ use std::rc::Rc;
 use std::sync::atomic::AtomicBool;
 
 pub struct DecklinkOutputDevicePtr {
-    pub dev: *mut crate::sdk::cdecklink_output_t,
+    pub(crate) dev: *mut crate::sdk::cdecklink_output_t,
     pub video_active: Rc<AtomicBool>,
     pub audio_active: Rc<AtomicBool>,
 }

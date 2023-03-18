@@ -29,110 +29,198 @@ bitflags! {
     }
 }
 
+pub trait DecklinkFrameBase {
+    /// Get the width of the video frame
+    fn width(&self) -> usize;
+    /// Get the height of the video frame
+    fn height(&self) -> usize;
+    /// Get the byte count per row of the video frame
+    fn row_bytes(&self) -> usize;
+    /// Get the pixel format of the video frame
+    fn pixel_format(&self) -> DecklinkPixelFormat;
+    /// Get the flags of the video frame
+    fn flags(&self) -> DecklinkFrameFlags;
+
+    fn bytes(&self) -> Result<&[u8], SdkError>;
+}
+
+/// This represents a video frame that has been received from a decklink device.
 pub struct DecklinkVideoFrame {
     frame: *mut crate::sdk::cdecklink_video_frame_t,
-    is_child: bool,
 }
 
 impl Drop for DecklinkVideoFrame {
     fn drop(&mut self) {
         if !self.frame.is_null() {
-            if !self.is_child {
-                unsafe { sdk::cdecklink_video_frame_release(self.frame) };
-            }
+            unsafe { sdk::cdecklink_video_frame_release(self.frame) };
             self.frame = null_mut();
         }
+    }
+}
+
+impl DecklinkFrameBase for DecklinkVideoFrame {
+    /// Get the width of the video frame
+    fn width(&self) -> usize {
+        assert!(!self.frame.is_null());
+
+        let width = unsafe { sdk::cdecklink_video_frame_get_width(self.frame) };
+        width as usize
+    }
+    /// Get the height of the video frame
+    fn height(&self) -> usize {
+        assert!(!self.frame.is_null());
+
+        let height = unsafe { sdk::cdecklink_video_frame_get_height(self.frame) };
+        height as usize
+    }
+    /// Get the byte count per row of the video frame
+    fn row_bytes(&self) -> usize {
+        assert!(!self.frame.is_null());
+
+        let row_bytes = unsafe { sdk::cdecklink_video_frame_get_row_bytes(self.frame) };
+        row_bytes as usize
+    }
+    /// Get the pixel format of the video frame
+    fn pixel_format(&self) -> DecklinkPixelFormat {
+        assert!(!self.frame.is_null());
+
+        let format = unsafe { sdk::cdecklink_video_frame_get_pixel_format(self.frame) };
+
+        DecklinkPixelFormat::from_u32(format).unwrap_or(DecklinkPixelFormat::Format8BitYUV)
+    }
+    /// Get the flags of the video frame
+    fn flags(&self) -> DecklinkFrameFlags {
+        assert!(!self.frame.is_null());
+
+        let flags = unsafe { sdk::cdecklink_video_frame_get_flags(self.frame) };
+
+        DecklinkFrameFlags::from_bits_truncate(flags)
+    }
+
+    fn bytes(&self) -> Result<&[u8], SdkError> {
+        self.bytes_handle()
     }
 }
 
 impl DecklinkVideoFrame {
-    pub fn width(&self) -> i64 {
-        unsafe { sdk::cdecklink_video_frame_get_width(self.frame) }
+    /// Get the pixel data of the video frame
+    pub fn bytes_copy(&self) -> Result<Vec<u8>, SdkError> {
+        assert!(!self.frame.is_null());
+
+        let bytes = null_mut();
+        let result = unsafe { sdk::cdecklink_video_frame_get_bytes(self.frame, bytes) };
+        SdkError::result(result)?;
+
+        assert!(!bytes.is_null());
+
+        let byte_count = self.row_bytes() * self.height();
+        let mut result = vec![0; byte_count];
+
+        unsafe { std::ptr::copy(bytes as *const u8, result.as_mut_ptr(), byte_count) };
+
+        Ok(result)
     }
-    pub fn height(&self) -> i64 {
-        unsafe { sdk::cdecklink_video_frame_get_height(self.frame) }
+
+    /// Get the pixel data of the video frame
+    pub fn bytes_handle(&self) -> Result<&[u8], SdkError> {
+        assert!(!self.frame.is_null());
+
+        let bytes = null_mut();
+        let result = unsafe { sdk::cdecklink_video_frame_get_bytes(self.frame, bytes) };
+        SdkError::result(result)?;
+
+        assert!(!bytes.is_null());
+
+        let byte_count = self.row_bytes() * self.height();
+
+        let slice = unsafe { std::slice::from_raw_parts(bytes as *const u8, byte_count) };
+        Ok(slice)
     }
-    pub fn row_bytes(&self) -> i64 {
-        unsafe { sdk::cdecklink_video_frame_get_row_bytes(self.frame) }
+
+    /// Get the raw pointer for the wrapped frame
+    pub(crate) unsafe fn get_cdecklink_ptr(&self) -> *mut sdk::cdecklink_video_frame_t {
+        self.frame
     }
-    pub fn pixel_format(&self) -> DecklinkPixelFormat {
-        DecklinkPixelFormat::from_u32(unsafe {
-            sdk::cdecklink_video_frame_get_pixel_format(self.frame)
-        })
-        .unwrap_or(DecklinkPixelFormat::Format8BitYUV)
-    }
-    pub fn flags(&self) -> DecklinkFrameFlags {
-        DecklinkFrameFlags::from_bits_truncate(unsafe {
-            sdk::cdecklink_video_frame_get_flags(self.frame)
-        })
-    }
-    pub fn bytes(&self) {
-        // TODO
-        //        unsafe { sdk::cdecklink_video_frame_bytes()}
+    /// Wrap a raw pointer
+    pub(crate) unsafe fn from(ptr: *mut sdk::cdecklink_video_frame_t) -> Self {
+        sdk::cdecklink_mutable_video_frame_add_ref(ptr); // TODO - all types should do this
+        Self { frame: ptr }
     }
 }
 
 pub struct DecklinkVideoMutableFrame {
-    base: DecklinkVideoFrame,
-    frame: *mut crate::sdk::cdecklink_mutable_video_frame_t,
-}
+    width: usize,
+    height: usize,
+    row_bytes: usize,
+    pixel_format: DecklinkPixelFormat,
+    flags: DecklinkFrameFlags,
 
-impl Drop for DecklinkVideoMutableFrame {
-    fn drop(&mut self) {
-        if !self.frame.is_null() {
-            unsafe { sdk::cdecklink_mutable_video_frame_release(self.frame) };
-            self.frame = null_mut();
-        }
+    bytes: Vec<u8>,
+}
+impl DecklinkFrameBase for DecklinkVideoMutableFrame {
+    fn width(&self) -> usize {
+        self.width
+    }
+
+    fn height(&self) -> usize {
+        self.height
+    }
+
+    fn row_bytes(&self) -> usize {
+        self.row_bytes
+    }
+
+    fn pixel_format(&self) -> DecklinkPixelFormat {
+        self.pixel_format
+    }
+
+    fn flags(&self) -> DecklinkFrameFlags {
+        self.flags
+    }
+
+    fn bytes(&self) -> Result<&[u8], SdkError> {
+        Ok(&self.bytes)
     }
 }
-
 impl DecklinkVideoMutableFrame {
-    pub fn base(&self) -> &DecklinkVideoFrame {
-        &self.base
-    }
-
-    pub fn set_flags(&mut self, flags: DecklinkFrameFlags) {
-        unsafe { sdk::cdecklink_mutable_video_frame_set_flags(self.frame, flags.bits()) };
-    }
-
-    pub fn set_bytes(&mut self, data: &[u8]) -> bool {
-        let expected_len = (self.base.row_bytes() * self.base.height()) as usize;
-        if data.len() != expected_len {
-            false
-        } else {
-            let mut bytes = null_mut();
-            unsafe {
-                let r = sdk::cdecklink_video_frame_get_bytes(self.frame, &mut bytes);
-                if !SdkError::is_ok(r) {
-                    // TODO - better
-                    false
-                } else {
-                    std::ptr::copy(data.as_ptr(), bytes as *mut u8, expected_len);
-                    true
-                }
-            }
+    pub fn create(
+        width: usize,
+        height: usize,
+        row_bytes: usize,
+        pixel_format: DecklinkPixelFormat,
+        flags: DecklinkFrameFlags,
+    ) -> Self {
+        Self {
+            width,
+            height,
+            row_bytes,
+            pixel_format,
+            flags,
+            bytes: Vec::new(), // empty
         }
     }
-}
 
-pub(crate) unsafe fn wrap_mutable_frame(
-    ptr: *mut sdk::cdecklink_mutable_video_frame_t,
-) -> DecklinkVideoMutableFrame {
-    DecklinkVideoMutableFrame {
-        frame: ptr,
-        base: DecklinkVideoFrame {
-            frame: sdk::cdecklink_mutable_video_frame_to_video_frame(ptr),
-            is_child: true,
-        },
+    pub fn set_bytes(&mut self, bytes: Vec<u8>) -> Result<(), SdkError> {
+        if bytes.len() < self.row_bytes * self.height {
+            Err(SdkError::INVALIDARG)
+        } else {
+            self.bytes = bytes;
+            Ok(())
+        }
     }
-}
-pub(crate) unsafe fn wrap_frame(ptr: *mut sdk::cdecklink_video_frame_t) -> DecklinkVideoFrame {
-    sdk::cdecklink_mutable_video_frame_add_ref(ptr); // TODO - all types should do this
-    DecklinkVideoFrame {
-        frame: ptr,
-        is_child: false,
+
+    pub fn copy_bytes(&mut self, bytes: &[u8]) -> Result<(), SdkError> {
+        let byte_count = self.row_bytes * self.height;
+
+        if bytes.len() < byte_count {
+            Err(SdkError::INVALIDARG)
+        } else {
+            if self.bytes.len() < byte_count {
+                self.bytes = vec![0; byte_count];
+            }
+
+            self.bytes.copy_from_slice(bytes);
+            Ok(())
+        }
     }
-}
-pub(crate) unsafe fn unwrap_frame(frame: &DecklinkVideoFrame) -> *mut sdk::cdecklink_video_frame_t {
-    frame.frame
 }

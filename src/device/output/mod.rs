@@ -11,9 +11,7 @@ use crate::device::output::video_callback::register_callback;
 use crate::display_mode::{
     iterate_display_modes, wrap_display_mode, DecklinkDisplayMode, DecklinkDisplayModeId,
 };
-use crate::frame::{
-    wrap_mutable_frame, DecklinkFrameFlags, DecklinkPixelFormat, DecklinkVideoMutableFrame,
-};
+use crate::frame::DecklinkPixelFormat;
 use crate::{sdk, SdkError};
 use num_traits::FromPrimitive;
 use std::ptr::null_mut;
@@ -146,32 +144,32 @@ impl DecklinkOutputDevice {
         })
     }
 
-    pub fn create_video_frame(
-        &self,
-        width: i32,
-        height: i32,
-        row_bytes: i32,
-        pixel_format: DecklinkPixelFormat,
-        flags: DecklinkFrameFlags,
-    ) -> Result<DecklinkVideoMutableFrame, SdkError> {
-        unsafe {
-            let mut frame = null_mut();
-            let res = sdk::cdecklink_output_create_video_frame(
-                self.ptr.dev,
-                width,
-                height,
-                row_bytes,
-                pixel_format as u32,
-                flags.bits(),
-                &mut frame,
-            );
-            if SdkError::is_ok(res) {
-                Ok(wrap_mutable_frame(frame))
-            } else {
-                Err(SdkError::from(res))
-            }
-        }
-    }
+    // pub fn create_video_frame(
+    //     &self,
+    //     width: i32,
+    //     height: i32,
+    //     row_bytes: i32,
+    //     pixel_format: DecklinkPixelFormat,
+    //     flags: DecklinkFrameFlags,
+    // ) -> Result<DecklinkVideoMutableFrame, SdkError> {
+    //     unsafe {
+    //         let mut frame = null_mut();
+    //         let res = sdk::cdecklink_output_create_video_frame(
+    //             self.ptr.dev,
+    //             width,
+    //             height,
+    //             row_bytes,
+    //             pixel_format as u32,
+    //             flags.bits(),
+    //             &mut frame,
+    //         );
+    //         if SdkError::is_ok(res) {
+    //             Ok(wrap_mutable_frame(frame))
+    //         } else {
+    //             Err(SdkError::from(res))
+    //         }
+    //     }
+    // }
 
     /* Audio Output */
 
