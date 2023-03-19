@@ -6,19 +6,6 @@ use std::ptr::null_mut;
 use std::sync::atomic::Ordering;
 use std::sync::Arc;
 
-pub(crate) fn wrap_video(
-    ptr: &Arc<DecklinkOutputDevicePtr>,
-    wrapper: *mut CallbackWrapper,
-    timescale: i64,
-) -> DecklinkOutputDeviceVideoImpl {
-    DecklinkOutputDeviceVideoImpl {
-        ptr: ptr.clone(),
-        callback_wrapper: wrapper,
-        scheduled_running: false,
-        scheduled_timescale: timescale,
-    }
-}
-
 pub trait DecklinkOutputDeviceVideo {}
 pub trait DecklinkOutputDeviceVideoSync: DecklinkOutputDeviceVideo {
     // TODO return type
@@ -46,7 +33,7 @@ pub trait DecklinkOutputDeviceVideoScheduled: DecklinkOutputDeviceVideo {
     fn stop_playback(&mut self, stop_time: i64) -> Result<i64, SdkError>;
 }
 
-pub struct DecklinkOutputDeviceVideoImpl {
+pub(crate) struct DecklinkOutputDeviceVideoImpl {
     ptr: Arc<DecklinkOutputDevicePtr>,
     pub callback_wrapper: *mut CallbackWrapper,
     pub scheduled_running: bool,
@@ -214,6 +201,19 @@ impl DecklinkOutputDeviceVideoScheduled for DecklinkOutputDeviceVideoImpl {
 }
 
 impl DecklinkOutputDeviceVideoImpl {
+    pub(crate) fn from(
+        ptr: &Arc<DecklinkOutputDevicePtr>,
+        wrapper: *mut CallbackWrapper,
+        timescale: i64,
+    ) -> DecklinkOutputDeviceVideoImpl {
+        DecklinkOutputDeviceVideoImpl {
+            ptr: ptr.clone(),
+            callback_wrapper: wrapper,
+            scheduled_running: false,
+            scheduled_timescale: timescale,
+        }
+    }
+
     pub(crate) fn convert_decklink_frame_without_bytes(
         &self,
         frame: &dyn DecklinkFrameBase,

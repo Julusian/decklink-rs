@@ -4,9 +4,7 @@ mod enums;
 mod video;
 mod video_callback;
 
-use crate::device::output::audio::wrap_audio;
 use crate::device::output::device::DecklinkOutputDevicePtr;
-use crate::device::output::video::wrap_video;
 use crate::device::output::video_callback::register_callback;
 use crate::display_mode::{
     iterate_display_modes, wrap_display_mode, DecklinkDisplayMode, DecklinkDisplayModeId,
@@ -26,6 +24,8 @@ pub use crate::device::output::video::{
 };
 pub use crate::device::output::video_callback::DeckLinkVideoOutputCallback;
 use crate::device::{DecklinkDeviceDisplayModes, DecklinkDisplayModeSupport};
+
+use self::video::DecklinkOutputDeviceVideoImpl;
 
 pub struct DecklinkOutputDevice {
     ptr: Arc<DecklinkOutputDevicePtr>,
@@ -124,8 +124,9 @@ impl DecklinkOutputDevice {
                 // TODO - this leaks on error
                 let result = unsafe { self.enable_video_output_inner(mode, flags) };
                 SdkError::result_or_else(result, || {
-                    let r: Box<dyn DecklinkOutputDeviceVideoScheduled> =
-                        Box::new(wrap_video(&self.ptr, wrapper, timescale));
+                    let r: Box<dyn DecklinkOutputDeviceVideoScheduled> = Box::new(
+                        DecklinkOutputDeviceVideoImpl::from(&self.ptr, wrapper, timescale),
+                    );
                     r
                 })
             }
@@ -138,8 +139,9 @@ impl DecklinkOutputDevice {
     ) -> Result<Box<dyn DecklinkOutputDeviceVideoSync>, SdkError> {
         let result = unsafe { self.enable_video_output_inner(mode, flags) };
         SdkError::result_or_else(result, || {
-            let r: Box<dyn DecklinkOutputDeviceVideoSync> =
-                Box::new(wrap_video(&self.ptr, null_mut(), 1000));
+            let r: Box<dyn DecklinkOutputDeviceVideoSync> = Box::new(
+                DecklinkOutputDeviceVideoImpl::from(&self.ptr, null_mut(), 1000),
+            );
             r
         })
     }
@@ -165,7 +167,7 @@ impl DecklinkOutputDevice {
                     channels,
                     stream_type as u32,
                 );
-                SdkError::result_or_else(result, || wrap_audio(&self.ptr))
+                SdkError::result_or_else(result, || DecklinkOutputDeviceAudio::from(&self.ptr))
             }
         }
     }

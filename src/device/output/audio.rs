@@ -3,10 +3,6 @@ use crate::{sdk, SdkError};
 use std::sync::atomic::Ordering;
 use std::sync::Arc;
 
-pub(crate) fn wrap_audio(ptr: &Arc<DecklinkOutputDevicePtr>) -> DecklinkOutputDeviceAudio {
-    DecklinkOutputDeviceAudio { ptr: ptr.clone() }
-}
-
 pub struct DecklinkOutputDeviceAudio {
     ptr: Arc<DecklinkOutputDevicePtr>,
 }
@@ -19,6 +15,9 @@ impl Drop for DecklinkOutputDeviceAudio {
     }
 }
 impl DecklinkOutputDeviceAudio {
+    pub(crate) fn from(ptr: &Arc<DecklinkOutputDevicePtr>) -> DecklinkOutputDeviceAudio {
+        DecklinkOutputDeviceAudio { ptr: ptr.clone() }
+    }
     //    pub fn write_audio_samples_sync(&self, )
     //    HRESULT cdecklink_output_write_audio_samples_sync(cdecklink_output_t *output, void *buffer,
     //    uint32_t sampleFrameCount, uint32_t *sampleFramesWritten);
