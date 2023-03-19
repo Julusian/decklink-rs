@@ -142,10 +142,10 @@ impl DecklinkVideoFrame {
         Ok(slice)
     }
 
-    /// Get the raw pointer for the wrapped frame
-    pub(crate) unsafe fn get_cdecklink_ptr(&self) -> *mut sdk::cdecklink_video_frame_t {
-        self.frame
-    }
+    // /// Get the raw pointer for the wrapped frame
+    // pub(crate) unsafe fn get_cdecklink_ptr(&self) -> *mut sdk::cdecklink_video_frame_t {
+    //     self.frame
+    // }
     /// Wrap a raw pointer
     pub(crate) unsafe fn from(ptr: *mut sdk::cdecklink_video_frame_t) -> Self {
         sdk::cdecklink_mutable_video_frame_add_ref(ptr); // TODO - all types should do this
@@ -185,6 +185,11 @@ impl DecklinkFrameBase for DecklinkVideoMutableFrame {
 
     fn bytes(&self) -> Result<&[u8], SdkError> {
         Ok(&self.bytes)
+    }
+}
+impl DecklinkFrameBase2 for DecklinkVideoMutableFrame {
+    fn into_vec(self: Box<Self>) -> Result<Vec<u8>, SdkError> {
+        Ok(self.bytes)
     }
 }
 impl DecklinkVideoMutableFrame {

@@ -75,13 +75,13 @@ fn select_output_and_format() -> Option<(DecklinkDevice, DecklinkOutputDevice, D
 
 fn main() {
     if let Some((_device, output, mode)) = select_output_and_format() {
-        let mut frame = DecklinkVideoMutableFrame::create(
+        let mut frame = Box::new(DecklinkVideoMutableFrame::create(
             mode.width(),
             mode.height(),
             mode.width() * 4,
             DecklinkPixelFormat::Format8BitBGRA,
             DecklinkFrameFlags::empty(),
-        );
+        ));
 
         let bytes = vec![120u8; (mode.width() * mode.height() * 4) as usize];
         if frame.set_bytes(bytes).is_err() {
@@ -94,7 +94,7 @@ fn main() {
             .expect("Failed to enable video output");
 
         video_output
-            .display_frame_copy(&frame)
+            .display_custom_frame(frame)
             .expect("Failed to display frame");
 
         println!("Press enter to continue");

@@ -9,7 +9,10 @@ use decklink::device::output::{
 use decklink::device::DecklinkDisplayModeSupport;
 use decklink::device::{get_devices, DecklinkDeviceDisplayModes};
 use decklink::display_mode::DecklinkDisplayModeId;
-use decklink::frame::{DecklinkFrameFlags, DecklinkPixelFormat, DecklinkVideoFrame};
+use decklink::frame::{
+    DecklinkFrameBase, DecklinkFrameFlags, DecklinkPixelFormat, DecklinkVideoFrame,
+    DecklinkVideoMutableFrame,
+};
 use decklink::SdkError;
 use std::sync::atomic::{AtomicI64, Ordering};
 use std::sync::{Arc, Mutex, Weak};
@@ -56,7 +59,7 @@ impl OutputCallback {
         return (hours, minutes, seconds, frames);
     }
 
-    fn schedule_next_frame(&self, frame: &DecklinkVideoFrame) -> Result<(), SdkError> {
+    fn schedule_next_frame(&self, frame: &dyn DecklinkFrameBase) -> Result<(), SdkError> {
         if let Some(output) = self.output.upgrade() {
             let num = self.scheduled.fetch_add(1, Ordering::SeqCst);
             let _timecode = self.convert_frame_number_to_timecode(num);
@@ -98,15 +101,13 @@ fn main() {
     let display_mode = sm.1.unwrap();
     let fps = display_mode.framerate().expect("Could not get framerate");
 
-    let mut frame = output
-        .create_video_frame(
-            display_mode.width() as i32,
-            display_mode.height() as i32,
-            display_mode.width() as i32 * 4,
-            pixel_format,
-            DecklinkFrameFlags::empty(),
-        )
-        .expect("Could not create an output frame");
+    let mut frame = DecklinkVideoMutableFrame::create(
+        display_mode.width(),
+        display_mode.height(),
+        display_mode.width() * 4,
+        pixel_format,
+        DecklinkFrameFlags::empty(),
+    );
 
     {
         // let blue_data = [0x40aa298, 0x2a8a62a8, 0x298aa040, 0x2a8102a8];
@@ -120,7 +121,7 @@ fn main() {
         for i in 0..frame_data.len() {
             frame_data[i] = blue_data[i % blue_data.len()];
         }
-        frame.set_bytes(frame_data.as_slice());
+        frame.set_bytes(frame_data).expect("set bytes failed");
     }
 
     let output_scheduled = Arc::new(Mutex::new(
@@ -138,7 +139,7 @@ fn main() {
 
     for _ in 0..4 {
         callback
-            .schedule_next_frame(frame.base())
+            .schedule_next_frame(&frame)
             .expect("Could not schedule video frame");
     }
 

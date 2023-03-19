@@ -1,6 +1,6 @@
 use crate::device::output::video_callback::{CallbackWrapper, DeckLinkVideoOutputCallback};
 use crate::device::output::DecklinkOutputDevicePtr;
-use crate::frame::{DecklinkFrameBase, DecklinkFrameBase2, DecklinkVideoFrame};
+use crate::frame::{DecklinkFrameBase, DecklinkFrameBase2};
 use crate::{sdk, SdkError};
 use std::ptr::null_mut;
 use std::sync::atomic::Ordering;
@@ -17,7 +17,7 @@ pub trait DecklinkOutputDeviceVideoScheduled: DecklinkOutputDeviceVideo {
     // TODO return type
     fn schedule_frame(
         &self,
-        frame: &DecklinkVideoFrame,
+        frame: &dyn DecklinkFrameBase,
         display_time: i64,
         duration: i64,
     ) -> Result<(), SdkError>;
@@ -122,14 +122,15 @@ impl DecklinkOutputDeviceVideoSync for DecklinkOutputDeviceVideoImpl {
 impl DecklinkOutputDeviceVideoScheduled for DecklinkOutputDeviceVideoImpl {
     fn schedule_frame(
         &self,
-        frame: &DecklinkVideoFrame,
+        frame: &dyn DecklinkFrameBase,
         display_time: i64,
         duration: i64,
     ) -> Result<(), SdkError> {
         unsafe {
+            let frame = self.convert_decklink_frame_without_bytes(frame)?;
             let result = sdk::cdecklink_output_schedule_video_frame(
                 self.ptr.dev,
-                frame.get_cdecklink_ptr(),
+                frame.ptr,
                 display_time,
                 duration,
                 self.scheduled_timescale,
