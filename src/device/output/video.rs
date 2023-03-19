@@ -1,6 +1,6 @@
 use crate::device::output::video_callback::{CallbackWrapper, DeckLinkVideoOutputCallback};
 use crate::device::output::DecklinkOutputDevicePtr;
-use crate::frame::{DecklinkFrameBase, DecklinkVideoFrame};
+use crate::frame::{DecklinkFrameBase, DecklinkFrameBase2, DecklinkVideoFrame};
 use crate::{sdk, SdkError};
 use std::ptr::null_mut;
 use std::sync::atomic::Ordering;
@@ -23,6 +23,8 @@ pub trait DecklinkOutputDeviceVideo {}
 pub trait DecklinkOutputDeviceVideoSync: DecklinkOutputDeviceVideo {
     // TODO return type
     fn display_frame_copy(&self, frame: &dyn DecklinkFrameBase) -> Result<(), SdkError>;
+    // TODO return type
+    fn display_custom_frame(&self, frame: Box<dyn DecklinkFrameBase2>) -> Result<(), SdkError>;
 }
 pub trait DecklinkOutputDeviceVideoScheduled: DecklinkOutputDeviceVideo {
     // TODO return type
@@ -96,17 +98,38 @@ impl DecklinkOutputDeviceVideoSync for DecklinkOutputDeviceVideoImpl {
         SdkError::result(result)
     }
 
-    // fn display_frame(&self, frame: Box<dyn DecklinkFrameBase>) -> Result<(), SdkError> {
-    //     let decklink_frame = self.convert_decklink_frame_without_bytes(frame)?;
+    fn display_custom_frame(&self, frame: Box<dyn DecklinkFrameBase2>) -> Result<(), SdkError> {
+        let mut decklink_frame = WrappedCustomFrame { ptr: null_mut() };
+        let result = unsafe {
+            sdk::cdecklink_custom_video_frame_create_frame(
+                frame.width() as i64,
+                frame.height() as i64,
+                frame.row_bytes() as i64,
+                frame.pixel_format() as u32,
+                frame.flags().bits(),
+                &mut decklink_frame.ptr,
+            )
+        };
+        SdkError::result(result)?;
 
-    //     // TODO - this needs to pass ownership of the bytes and make sure it can be freed correctly
+        let bytes = frame.into_vec()?;
+        let context = Box::new(LeakableVec { vec: bytes });
 
-    //     let result = unsafe {
-    //         sdk::cdecklink_output_display_video_frame_sync(self.ptr.dev, decklink_frame.ptr)
-    //     };
+        unsafe {
+            sdk::cdecklink_custom_video_frame_set_bytes(
+                decklink_frame.ptr,
+                context.vec.as_ptr() as *mut _,
+                Some(free_vec),
+                Box::<LeakableVec>::into_raw(context) as *mut _,
+            )
+        };
 
-    //     SdkError::result(result)
-    // }
+        let result = unsafe {
+            sdk::cdecklink_output_display_video_frame_sync(self.ptr.dev, decklink_frame.ptr)
+        };
+
+        SdkError::result(result)
+    }
 }
 
 impl DecklinkOutputDeviceVideoScheduled for DecklinkOutputDeviceVideoImpl {
@@ -222,4 +245,28 @@ impl Drop for WrappedSdkFrame {
             sdk::cdecklink_video_frame_release(self.ptr);
         }
     }
+}
+
+pub(crate) struct WrappedCustomFrame {
+    pub ptr: *mut crate::sdk::cdecklink_custom_video_frame_t,
+}
+impl Drop for WrappedCustomFrame {
+    fn drop(&mut self) {
+        unsafe {
+            sdk::cdecklink_custom_video_frame_release(self.ptr);
+        }
+    }
+}
+
+struct LeakableVec {
+    pub vec: Vec<u8>,
+}
+
+unsafe extern "C" fn free_vec(
+    _ptr: *mut ::std::os::raw::c_void,
+    context: *mut ::std::os::raw::c_void,
+) {
+    let wrapper = Box::from_raw(context as *mut LeakableVec);
+
+    drop(wrapper);
 }

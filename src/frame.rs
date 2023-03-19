@@ -44,6 +44,10 @@ pub trait DecklinkFrameBase {
     /// Get the pixel data of the video frame
     fn bytes(&self) -> Result<&[u8], SdkError>;
 }
+pub trait DecklinkFrameBase2: DecklinkFrameBase {
+    /// Get the pixel data of the video frame
+    fn into_vec(self: Box<Self>) -> Result<Vec<u8>, SdkError>;
+}
 
 /// This represents a video frame that has been received from a decklink device.
 pub struct DecklinkVideoFrame {

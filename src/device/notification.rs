@@ -10,11 +10,11 @@ pub enum NotificationTopic {
     StatusChanged = sdk::_DecklinkNotifications_decklinkStatusChanged as isize,
 }
 
-pub(crate) fn wrap_notification(
-    ptr: *mut sdk::cdecklink_status_t,
-) -> Arc<DecklinkDeviceNotification> {
-    Arc::new(DecklinkDeviceNotification { dev: ptr })
-}
+// pub(crate) fn wrap_notification(
+//     ptr: *mut sdk::cdecklink_status_t,
+// ) -> Arc<DecklinkDeviceNotification> {
+//     Arc::new(DecklinkDeviceNotification { dev: ptr })
+// }
 
 pub struct DecklinkDeviceNotification {
     dev: *mut sdk::cdecklink_status_t,
