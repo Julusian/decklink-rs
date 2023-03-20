@@ -1,10 +1,18 @@
 [package]
 name = "decklink"
+description = "Blackmagic Decklink NDI bindings for rust"
 version = "0.1.0"
 license = "MIT/Apache-2.0"
 authors = ["Julian Waller <git@julusian.co.uk>"]
+homepage = "https://github.com/julusian/rust-decklink"
+repository = "https://github.com/julusian/rust-decklink"
+keywords = ["blackmagic", "decklink", "sdi", "video", "audio"]
 edition = "2021"
 build="build.rs"
+readme = "README.md"
+exclude = [
+    "gen-bindings.sh",
+]
 
 [dependencies]
 num-traits = "0.2"

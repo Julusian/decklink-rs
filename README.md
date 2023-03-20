@@ -1,12 +1,15 @@
 # Rust Decklink
 
-Blackmagic Design Decklink SDK wrapper for use in Rust.
+Blackmagic Design Decklink SDK bindings for Rust.  
 This aims to be an easy to use and safe wrapper around the official C++ SDK.
 This makes use of a [C wrapper](https://github.com/Julusian/decklink-c) as rust does not support using some of the needed C++ directly.
 
-Note: This is very incomplete, but is working. The examples currently follow the official examples as closely as possible
+Note: This is very incomplete, but is working. The examples try to follow the official examples as closely as possible
+
+Currently only tested on Linux x64, other platforms will likely need some work. Help on that is appreciated!
 
 ## Installation
+
 
 You will need to have the Decklink drivers (>=10.9.12) installed on your machine and a compatible device connected to do much with it.
 
