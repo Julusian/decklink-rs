@@ -124,19 +124,19 @@ fn main() {
                 .expect("Failed to enable video output");
 
             video_output
-                .schedule_frame(frame.as_ref(), 1000, 1000)
+                .schedule_frame_copy(frame.as_ref(), 1000, 1000)
                 .expect("Failed to schedule frame");
             video_output
-                .schedule_frame(frame.as_ref(), 2000, 1000)
+                .schedule_frame_copy(frame.as_ref(), 2000, 1000)
                 .expect("Failed to schedule frame");
             video_output
-                .schedule_frame(frame.as_ref(), 200000000, 1000)
+                .schedule_frame_copy(frame.as_ref(), 200000000, 1000)
                 .expect("Failed to schedule frame");
             video_output
-                .schedule_frame(frame.as_ref(), 300000000, 1000)
+                .schedule_frame_copy(frame.as_ref(), 300000000, 1000)
                 .expect("Failed to schedule frame");
             video_output
-                .schedule_frame(frame.as_ref(), 400000000, 1000)
+                .schedule_frame_copy(frame.as_ref(), 400000000, 1000)
                 .expect("Failed to schedule frame");
 
             let handler = Arc::new(CompletionCallback {});

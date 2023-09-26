@@ -43,12 +43,15 @@ pub trait DecklinkFrameBase {
     /// Get the flags of the video frame
     fn flags(&self) -> DecklinkFrameFlags;
     /// Get the pixel data of the video frame
-    fn bytes(&self) -> Result<&[u8], SdkError>;
+    fn bytes(&self) -> Result<DecklinkAlignedBytes, SdkError>;
 }
 pub trait DecklinkFrameBase2: DecklinkFrameBase {
     /// Get the pixel data of the video frame
     fn into_avec(self: Box<Self>) -> Result<DecklinkAlignedVec, SdkError>;
 }
+
+#[repr(align(64))]
+pub struct DecklinkAlignedBytes<'a>(pub &'a [u8]);
 
 /// Decklinks require byte arrays to be aligned to 64byte boundaries
 pub type DecklinkAlignedVec = AVec<u8, ConstAlign<64>>;
@@ -106,14 +109,14 @@ impl DecklinkFrameBase for DecklinkVideoFrame {
         DecklinkFrameFlags::from_bits_truncate(flags)
     }
 
-    fn bytes(&self) -> Result<&[u8], SdkError> {
+    fn bytes(&self) -> Result<DecklinkAlignedBytes, SdkError> {
         self.bytes_handle()
     }
 }
 
 impl DecklinkVideoFrame {
     /// Get the pixel data of the video frame
-    pub fn bytes_copy(&self) -> Result<Vec<u8>, SdkError> {
+    pub fn bytes_to_vec(&self) -> Result<Vec<u8>, SdkError> {
         assert!(!self.frame.is_null());
 
         let bytes = null_mut();
@@ -131,7 +134,7 @@ impl DecklinkVideoFrame {
     }
 
     /// Get the pixel data of the video frame
-    pub fn bytes_handle(&self) -> Result<&[u8], SdkError> {
+    pub fn bytes_handle(&self) -> Result<DecklinkAlignedBytes, SdkError> {
         assert!(!self.frame.is_null());
 
         let bytes = null_mut();
@@ -143,7 +146,7 @@ impl DecklinkVideoFrame {
         let byte_count = self.row_bytes() * self.height();
 
         let slice = unsafe { std::slice::from_raw_parts(bytes as *const u8, byte_count) };
-        Ok(slice)
+        Ok(DecklinkAlignedBytes(slice))
     }
 
     // /// Get the raw pointer for the wrapped frame
@@ -187,8 +190,8 @@ impl DecklinkFrameBase for DecklinkVideoMutableFrame {
         self.flags
     }
 
-    fn bytes(&self) -> Result<&[u8], SdkError> {
-        Ok(&self.bytes)
+    fn bytes(&self) -> Result<DecklinkAlignedBytes, SdkError> {
+        Ok(DecklinkAlignedBytes(&self.bytes))
     }
 }
 impl DecklinkFrameBase2 for DecklinkVideoMutableFrame {

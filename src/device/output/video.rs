@@ -16,7 +16,7 @@ pub trait DecklinkOutputDeviceVideoSync: DecklinkOutputDeviceVideo {
 }
 pub trait DecklinkOutputDeviceVideoScheduled: DecklinkOutputDeviceVideo {
     // TODO return type
-    fn schedule_frame(
+    fn schedule_frame_copy(
         &self,
         frame: &dyn DecklinkFrameBase,
         display_time: i64,
@@ -75,10 +75,10 @@ impl DecklinkOutputDeviceVideoSync for DecklinkOutputDeviceVideoImpl {
 
         let byte_count = frame.row_bytes() * frame.height();
         let src_bytes = frame.bytes()?;
-        if src_bytes.len() < byte_count {
+        if src_bytes.0.len() < byte_count {
             Err(SdkError::INVALIDARG)?;
         }
-        unsafe { std::ptr::copy(src_bytes.as_ptr(), ptr as *mut _, byte_count) };
+        unsafe { std::ptr::copy(src_bytes.0.as_ptr(), ptr as *mut _, byte_count) };
 
         let result = unsafe {
             sdk::cdecklink_output_display_video_frame_sync(self.ptr.dev, decklink_frame.ptr)
@@ -135,23 +135,39 @@ impl DecklinkOutputDeviceVideoSync for DecklinkOutputDeviceVideoImpl {
 }
 
 impl DecklinkOutputDeviceVideoScheduled for DecklinkOutputDeviceVideoImpl {
-    fn schedule_frame(
+    fn schedule_frame_copy(
         &self,
         frame: &dyn DecklinkFrameBase,
         display_time: i64,
         duration: i64,
     ) -> Result<(), SdkError> {
-        unsafe {
-            let frame = self.convert_decklink_frame_without_bytes(frame)?;
-            let result = sdk::cdecklink_output_schedule_video_frame(
+        let frame_bytes = frame.bytes()?;
+        let byte_count = frame.row_bytes() * frame.height();
+        if frame_bytes.0.len() < byte_count {
+            Err(SdkError::INVALIDARG)?;
+        }
+
+        let frame = self.convert_decklink_frame_without_bytes(frame)?;
+
+        let mut bytes_ptr = std::ptr::null_mut();
+        let result = unsafe { sdk::cdecklink_video_frame_get_bytes(frame.ptr, &mut bytes_ptr) };
+        SdkError::result(result)?;
+        if bytes_ptr.is_null() {
+            Err(SdkError::FAIL)?;
+        }
+
+        unsafe { std::ptr::copy(frame_bytes.0.as_ptr(), bytes_ptr as *mut _, byte_count) };
+
+        let result = unsafe {
+            sdk::cdecklink_output_schedule_video_frame(
                 self.ptr.dev,
                 frame.ptr,
                 display_time,
                 duration,
                 self.scheduled_timescale,
-            );
-            SdkError::result(result)
-        }
+            )
+        };
+        SdkError::result(result)
     }
 
     fn set_callback(
@@ -246,6 +262,12 @@ impl DecklinkOutputDeviceVideoImpl {
                 &mut c_frame,
             );
             SdkError::result(res)?;
+
+            if c_frame.is_null() {
+                Err(SdkError::FAIL)?;
+            }
+
+            sdk::cdecklink_video_frame_add_ref(c_frame);
         }
 
         Ok(WrappedSdkFrame { ptr: c_frame })
