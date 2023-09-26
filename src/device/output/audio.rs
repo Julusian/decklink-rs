@@ -1,10 +1,10 @@
 use crate::device::output::DecklinkOutputDevicePtr;
 use crate::{sdk, SdkError};
+use std::rc::Rc;
 use std::sync::atomic::Ordering;
-use std::sync::Arc;
 
 pub struct DecklinkOutputDeviceAudio {
-    ptr: Arc<DecklinkOutputDevicePtr>,
+    ptr: Rc<DecklinkOutputDevicePtr>,
 }
 impl Drop for DecklinkOutputDeviceAudio {
     fn drop(&mut self) {
@@ -15,7 +15,7 @@ impl Drop for DecklinkOutputDeviceAudio {
     }
 }
 impl DecklinkOutputDeviceAudio {
-    pub(crate) fn from(ptr: &Arc<DecklinkOutputDevicePtr>) -> DecklinkOutputDeviceAudio {
+    pub(crate) fn from(ptr: &Rc<DecklinkOutputDevicePtr>) -> DecklinkOutputDeviceAudio {
         DecklinkOutputDeviceAudio { ptr: ptr.clone() }
     }
     //    pub fn write_audio_samples_sync(&self, )

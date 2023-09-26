@@ -3,6 +3,7 @@ use crate::device::output::DecklinkOutputDevicePtr;
 use crate::frame::{DecklinkFrameBase, DecklinkFrameBase2};
 use crate::{sdk, SdkError};
 use std::ptr::null_mut;
+use std::rc::Rc;
 use std::sync::atomic::Ordering;
 use std::sync::Arc;
 
@@ -34,7 +35,7 @@ pub trait DecklinkOutputDeviceVideoScheduled: DecklinkOutputDeviceVideo {
 }
 
 pub(crate) struct DecklinkOutputDeviceVideoImpl {
-    ptr: Arc<DecklinkOutputDevicePtr>,
+    ptr: Rc<DecklinkOutputDevicePtr>,
     pub callback_wrapper: *mut CallbackWrapper,
     pub scheduled_running: bool,
     pub scheduled_timescale: i64,
@@ -203,7 +204,7 @@ impl DecklinkOutputDeviceVideoScheduled for DecklinkOutputDeviceVideoImpl {
 
 impl DecklinkOutputDeviceVideoImpl {
     pub(crate) fn from(
-        ptr: &Arc<DecklinkOutputDevicePtr>,
+        ptr: &Rc<DecklinkOutputDevicePtr>,
         wrapper: *mut CallbackWrapper,
         timescale: i64,
     ) -> DecklinkOutputDeviceVideoImpl {

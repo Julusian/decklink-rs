@@ -3,6 +3,7 @@ use crate::device::output::DecklinkOutputDevicePtr;
 use crate::frame::DecklinkVideoFrame;
 use crate::{sdk, SdkError};
 use num_traits::FromPrimitive;
+use std::rc::Rc;
 use std::sync::{Arc, RwLock};
 
 pub(crate) fn free_callback_wrapper(wrapper: *mut CallbackWrapper) {
@@ -12,7 +13,7 @@ pub(crate) fn free_callback_wrapper(wrapper: *mut CallbackWrapper) {
 }
 
 pub fn register_callback(
-    ptr: &Arc<DecklinkOutputDevicePtr>,
+    ptr: &Rc<DecklinkOutputDevicePtr>,
 ) -> Result<*mut CallbackWrapper, SdkError> {
     let callback_wrapper = Box::into_raw(Box::new(CallbackWrapper {
         handler: RwLock::new(None),

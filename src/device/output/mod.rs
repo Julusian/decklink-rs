@@ -15,7 +15,6 @@ use num_traits::FromPrimitive;
 use std::ptr::null_mut;
 use std::rc::Rc;
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::Arc;
 
 pub use crate::device::output::audio::DecklinkOutputDeviceAudio;
 pub use crate::device::output::enums::*;
@@ -28,7 +27,7 @@ use crate::device::{DecklinkDeviceDisplayModes, DecklinkDisplayModeSupport};
 use self::video::DecklinkOutputDeviceVideoImpl;
 
 pub struct DecklinkOutputDevice {
-    ptr: Arc<DecklinkOutputDevicePtr>,
+    ptr: Rc<DecklinkOutputDevicePtr>,
 }
 
 impl DecklinkDeviceDisplayModes<enums::DecklinkVideoOutputFlags> for DecklinkOutputDevice {
@@ -79,7 +78,7 @@ impl DecklinkDeviceDisplayModes<enums::DecklinkVideoOutputFlags> for DecklinkOut
 impl DecklinkOutputDevice {
     pub(crate) fn from(ptr: *mut crate::sdk::cdecklink_output_t) -> DecklinkOutputDevice {
         DecklinkOutputDevice {
-            ptr: Arc::new(DecklinkOutputDevicePtr {
+            ptr: Rc::new(DecklinkOutputDevicePtr {
                 dev: ptr,
                 video_active: Rc::new(AtomicBool::new(false)),
                 audio_active: Rc::new(AtomicBool::new(false)),
