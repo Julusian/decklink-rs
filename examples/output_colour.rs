@@ -84,7 +84,7 @@ fn main() {
         ));
 
         let bytes = vec![120u8; (mode.width() * mode.height() * 4) as usize];
-        if frame.set_bytes(bytes).is_err() {
+        if frame.copy_bytes(&bytes).is_err() {
             println!("Failed to set frame bytes");
             return;
         }

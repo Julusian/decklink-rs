@@ -1,4 +1,5 @@
 use crate::{sdk, SdkError};
+use aligned_vec::{AVec, ConstAlign};
 use num_traits::FromPrimitive;
 use std::ptr::null_mut;
 
@@ -46,8 +47,11 @@ pub trait DecklinkFrameBase {
 }
 pub trait DecklinkFrameBase2: DecklinkFrameBase {
     /// Get the pixel data of the video frame
-    fn into_vec(self: Box<Self>) -> Result<Vec<u8>, SdkError>;
+    fn into_avec(self: Box<Self>) -> Result<DecklinkAlignedVec, SdkError>;
 }
+
+/// Decklinks require byte arrays to be aligned to 64byte boundaries
+pub type DecklinkAlignedVec = AVec<u8, ConstAlign<64>>;
 
 /// This represents a video frame that has been received from a decklink device.
 pub struct DecklinkVideoFrame {
@@ -160,7 +164,7 @@ pub struct DecklinkVideoMutableFrame {
     pixel_format: DecklinkPixelFormat,
     flags: DecklinkFrameFlags,
 
-    bytes: Vec<u8>,
+    bytes: DecklinkAlignedVec,
 }
 impl DecklinkFrameBase for DecklinkVideoMutableFrame {
     fn width(&self) -> usize {
@@ -188,7 +192,7 @@ impl DecklinkFrameBase for DecklinkVideoMutableFrame {
     }
 }
 impl DecklinkFrameBase2 for DecklinkVideoMutableFrame {
-    fn into_vec(self: Box<Self>) -> Result<Vec<u8>, SdkError> {
+    fn into_avec(self: Box<Self>) -> Result<DecklinkAlignedVec, SdkError> {
         Ok(self.bytes)
     }
 }
@@ -206,11 +210,11 @@ impl DecklinkVideoMutableFrame {
             row_bytes,
             pixel_format,
             flags,
-            bytes: Vec::new(), // empty
+            bytes: AVec::new(64),
         }
     }
 
-    pub fn set_bytes(&mut self, bytes: Vec<u8>) -> Result<(), SdkError> {
+    pub fn set_bytes(&mut self, bytes: DecklinkAlignedVec) -> Result<(), SdkError> {
         if bytes.len() < self.row_bytes * self.height {
             Err(SdkError::INVALIDARG)
         } else {
@@ -226,10 +230,12 @@ impl DecklinkVideoMutableFrame {
             Err(SdkError::INVALIDARG)
         } else {
             if self.bytes.len() < byte_count {
-                self.bytes = vec![0; byte_count];
+                // TODO - this may not be very performant?
+                self.bytes = AVec::from_slice(64, bytes);
+            } else {
+                self.bytes.copy_from_slice(bytes);
             }
 
-            self.bytes.copy_from_slice(bytes);
             Ok(())
         }
     }

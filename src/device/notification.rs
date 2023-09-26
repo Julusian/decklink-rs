@@ -64,13 +64,16 @@ pub struct DeckLinkNotificationCallbackHandle {
 }
 impl Drop for DeckLinkNotificationCallbackHandle {
     fn drop(&mut self) {
-        unsafe {
-            sdk::cdecklink_notification_unsubscribe(
-                self.parent.dev,
-                (*self.wrapper).topic,
-                self.unsubscribe_token,
-            );
-            drop(Box::from_raw(self.wrapper)); // Reclaim the box so it gets freed
+        if !self.wrapper.is_null() {
+            unsafe {
+                sdk::cdecklink_notification_unsubscribe(
+                    self.parent.dev,
+                    (*self.wrapper).topic,
+                    self.unsubscribe_token,
+                );
+                drop(Box::from_raw(self.wrapper)); // Reclaim the box so it gets freed
+            }
+            self.wrapper = null_mut();
         }
     }
 }

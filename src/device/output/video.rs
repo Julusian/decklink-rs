@@ -1,6 +1,6 @@
 use crate::device::output::video_callback::{CallbackWrapper, DeckLinkVideoOutputCallback};
 use crate::device::output::DecklinkOutputDevicePtr;
-use crate::frame::{DecklinkFrameBase, DecklinkFrameBase2};
+use crate::frame::{DecklinkAlignedVec, DecklinkFrameBase, DecklinkFrameBase2};
 use crate::{sdk, SdkError};
 use std::ptr::null_mut;
 use std::rc::Rc;
@@ -42,6 +42,7 @@ pub(crate) struct DecklinkOutputDeviceVideoImpl {
 }
 impl Drop for DecklinkOutputDeviceVideoImpl {
     fn drop(&mut self) {
+        // TODO - safety!
         unsafe {
             if self.scheduled_running {
                 let mut actual_stop = 0;
@@ -100,7 +101,20 @@ impl DecklinkOutputDeviceVideoSync for DecklinkOutputDeviceVideoImpl {
         };
         SdkError::result(result)?;
 
-        let bytes = frame.into_vec()?;
+        if decklink_frame.ptr.is_null() {
+            Err(SdkError::FAIL)?;
+        }
+
+        let required_bytes = frame.row_bytes() * frame.height();
+        let bytes = frame.into_avec()?;
+        if bytes.len() < required_bytes {
+            Err(SdkError::INVALIDARG)?;
+        }
+        if required_bytes % 64 != 0 {
+            // Must be a multiple of 64 to be valid for avx512
+            Err(SdkError::INVALIDARG)?;
+        }
+
         let context = Box::new(LeakableVec { vec: bytes });
 
         unsafe {
@@ -243,8 +257,11 @@ pub(crate) struct WrappedSdkFrame {
 }
 impl Drop for WrappedSdkFrame {
     fn drop(&mut self) {
-        unsafe {
-            sdk::cdecklink_video_frame_release(self.ptr);
+        if !self.ptr.is_null() {
+            unsafe {
+                sdk::cdecklink_video_frame_release(self.ptr);
+            }
+            self.ptr = null_mut();
         }
     }
 }
@@ -254,14 +271,17 @@ pub(crate) struct WrappedCustomFrame {
 }
 impl Drop for WrappedCustomFrame {
     fn drop(&mut self) {
-        unsafe {
-            sdk::cdecklink_custom_video_frame_release(self.ptr);
+        if !self.ptr.is_null() {
+            unsafe {
+                sdk::cdecklink_custom_video_frame_release(self.ptr);
+            }
+            self.ptr = null_mut();
         }
     }
 }
 
 struct LeakableVec {
-    pub vec: Vec<u8>,
+    pub vec: DecklinkAlignedVec,
 }
 
 unsafe extern "C" fn free_vec(

@@ -8,6 +8,7 @@ pub struct DecklinkOutputDeviceAudio {
 }
 impl Drop for DecklinkOutputDeviceAudio {
     fn drop(&mut self) {
+        // TODO - this is not safe!
         unsafe {
             sdk::cdecklink_output_disable_audio_output(self.ptr.dev);
             self.ptr.audio_active.store(false, Ordering::Relaxed)

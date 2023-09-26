@@ -20,6 +20,7 @@ num-derive = "0.3"
 bitflags = "2.0"
 strum = "0.24"
 strum_macros = "0.24"
+aligned-vec = "0.5"
 
 [build-dependencies]
 cmake = "0.1"
