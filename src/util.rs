@@ -52,8 +52,12 @@ impl SdkError {
     }
 }
 
+pub(crate) unsafe fn convert_c_string(ptr: *const ::std::os::raw::c_char) -> String {
+    CStr::from_ptr(ptr).to_str().unwrap_or_default().to_string()
+}
+
 pub(crate) unsafe fn convert_and_release_c_string(ptr: *const ::std::os::raw::c_char) -> String {
-    let str = CStr::from_ptr(ptr).to_str().unwrap_or_default().to_string();
+    let str = convert_c_string(ptr);
     crate::sdk::cdecklink_free_string(ptr);
     str
 }
