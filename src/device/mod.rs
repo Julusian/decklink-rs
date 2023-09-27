@@ -93,6 +93,7 @@ impl DecklinkDevice {
     }
 
     pub fn output(&self) -> Option<DecklinkOutputDevice> {
+        // TODO - store the result for subsequent calls
         let mut output = null_mut();
         let res = unsafe { sdk::cdecklink_device_query_output(self.dev, &mut output) };
         if !SdkError::is_ok(res) || output.is_null() {

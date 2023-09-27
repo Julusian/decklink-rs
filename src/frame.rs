@@ -167,7 +167,7 @@ pub struct DecklinkVideoMutableFrame {
     pixel_format: DecklinkPixelFormat,
     flags: DecklinkFrameFlags,
 
-    bytes: DecklinkAlignedVec,
+    bytes: Option<DecklinkAlignedVec>,
 }
 impl DecklinkFrameBase for DecklinkVideoMutableFrame {
     fn width(&self) -> usize {
@@ -191,12 +191,20 @@ impl DecklinkFrameBase for DecklinkVideoMutableFrame {
     }
 
     fn bytes(&self) -> Result<DecklinkAlignedBytes, SdkError> {
-        Ok(DecklinkAlignedBytes(&self.bytes))
+        if let Some(bytes) = &self.bytes {
+            Ok(DecklinkAlignedBytes(&bytes))
+        } else {
+            Err(SdkError::FALSE)
+        }
     }
 }
 impl DecklinkFrameBase2 for DecklinkVideoMutableFrame {
     fn into_avec(self: Box<Self>) -> Result<DecklinkAlignedVec, SdkError> {
-        Ok(self.bytes)
+        if let Some(bytes) = self.bytes {
+            Ok(bytes)
+        } else {
+            Err(SdkError::FALSE)
+        }
     }
 }
 impl DecklinkVideoMutableFrame {
@@ -213,7 +221,7 @@ impl DecklinkVideoMutableFrame {
             row_bytes,
             pixel_format,
             flags,
-            bytes: AVec::new(64),
+            bytes: None,
         }
     }
 
@@ -221,7 +229,7 @@ impl DecklinkVideoMutableFrame {
         if bytes.len() < self.row_bytes * self.height {
             Err(SdkError::INVALIDARG)
         } else {
-            self.bytes = bytes;
+            self.bytes = Some(bytes);
             Ok(())
         }
     }
@@ -232,11 +240,16 @@ impl DecklinkVideoMutableFrame {
         if bytes.len() < byte_count {
             Err(SdkError::INVALIDARG)
         } else {
-            if self.bytes.len() < byte_count {
-                // TODO - this may not be very performant?
-                self.bytes = AVec::from_slice(64, bytes);
+            if let Some(current_bytes) = &mut self.bytes {
+                if current_bytes.len() < byte_count {
+                    // TODO - this may not be very performant?
+                    self.bytes = Some(AVec::from_slice(64, bytes));
+                } else {
+                    // AVec::new(64)
+                    current_bytes.copy_from_slice(bytes);
+                }
             } else {
-                self.bytes.copy_from_slice(bytes);
+                self.bytes = Some(AVec::from_slice(64, bytes));
             }
 
             Ok(())

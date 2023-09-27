@@ -58,7 +58,10 @@ impl Drop for DecklinkOutputDeviceVideoImpl {
             sdk::cdecklink_output_disable_video_output(self.ptr.dev);
             self.ptr.video_active.store(false, Ordering::Relaxed);
 
-            drop(Box::from_raw(self.callback_wrapper)); // Reclaim the box so it gets freed
+            if !self.callback_wrapper.is_null() {
+                drop(Box::from_raw(self.callback_wrapper)); // Reclaim the box so it gets freed
+                self.callback_wrapper = null_mut();
+            }
         }
     }
 }
@@ -115,14 +118,14 @@ impl DecklinkOutputDeviceVideoSync for DecklinkOutputDeviceVideoImpl {
             Err(SdkError::INVALIDARG)?;
         }
 
-        let context = Box::new(LeakableVec { vec: bytes });
+        let context = LeakableVec::from(bytes);
 
         unsafe {
             sdk::cdecklink_custom_video_frame_set_bytes(
                 decklink_frame.ptr,
-                context.vec.as_ptr() as *mut _,
+                context.get_data_ptr(),
                 Some(free_vec),
-                Box::<LeakableVec>::into_raw(context) as *mut _,
+                context.into_raw_ptr(),
             )
         };
 
@@ -303,7 +306,24 @@ impl Drop for WrappedCustomFrame {
 }
 
 struct LeakableVec {
-    pub vec: DecklinkAlignedVec,
+    vec: DecklinkAlignedVec,
+}
+trait LeakableVec2 {
+    fn into_raw_ptr(self) -> *mut ::std::os::raw::c_void;
+    fn get_data_ptr(&self) -> *mut ::std::os::raw::c_void;
+}
+impl LeakableVec2 for Box<LeakableVec> {
+    fn into_raw_ptr(self) -> *mut ::std::os::raw::c_void {
+        Box::<LeakableVec>::into_raw(self) as *mut _
+    }
+    fn get_data_ptr(&self) -> *mut ::std::os::raw::c_void {
+        self.vec.as_ptr() as *mut _
+    }
+}
+impl LeakableVec {
+    pub fn from(vec: DecklinkAlignedVec) -> Box<LeakableVec> {
+        Box::new(LeakableVec { vec })
+    }
 }
 
 unsafe extern "C" fn free_vec(
